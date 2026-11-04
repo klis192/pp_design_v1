@@ -1,0 +1,51 @@
+{
+  "status": "published",
+  "sourceRevision": "ce2d4ec2a6fdb516c7aca7e3593f5d5477fdf75e",
+  "apiRevision": "8060b64491c8dab8d373768e858fcc89233d978a",
+  "release": "20261104-mobile-roles-ce2d4ec",
+  "publishedAt": "2026-11-04T18:26:01.899862+00:00",
+  "postflightAt": "2026-11-04T18:26:58.154882+00:00",
+  "publicOrigin": "https://sklad-kontur.92.118.115.96.nip.io",
+  "staticOnly": true,
+  "protectedApiImage": "sha256:79f6f978c87154a173f5c9e29c72471c97c494fe0ea82e6137eb0e7b890bedc7",
+  "schemaMigrationsUnchanged": 16,
+  "containerIdentitiesPreserved": 29,
+  "protectedConfigurationFilesPreserved": 43,
+  "assets": {
+    "total": 497,
+    "previousPreserved": 451,
+    "newBuildChecked": 54
+  },
+  "downloadsPreserved": 7,
+  "directDesktopTlsGets": 57,
+  "publicFileShaChecks": 55,
+  "publicLoginViewports": [
+    1440,
+    390
+  ],
+  "publicBrowserErrors": 0,
+  "publicBrowserFailedRequests": 0,
+  "publicBrowserWrites": 0,
+  "health": {
+    "status": "ok",
+    "service": "warehouse-api",
+    "databaseBackend": "postgres",
+    "databaseSchema": "relational-v3",
+    "fileStorage": "local",
+    "volatileStore": "postgres"
+  },
+  "reviewedBaselineRefresh": {
+    "onlyExternalNeighborsChanged": true,
+    "wirehouseProtectedComponentsUnchanged": true,
+    "originalRetained": true,
+    "twoFreshSnapshotsStable": true
+  },
+  "physicalDevice": {
+    "applicationScenariosRun": false,
+    "state": "device-disconnected"
+  },
+  "boundaries": [
+    "Authenticated role scenarios used the built bundle and isolated test API; public browser smoke checked unauthenticated login only.",
+    "No API/image/Compose/nginx/environment/schema/1C change or restart; no test business rows copied to production."
+  ]
+}

@@ -1,9 +1,10 @@
+import { ActionIcon } from "../business/ActionIcon";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import {
   ticketCategoryOptions,
   ticketPriorityOptions,
 } from "../../projectData";
-import { Button, Input, Select, Textarea } from "../../ui";
+import { Button, IconButton, Input, Select, Textarea } from "../../ui";
 export function ManagerTicketCreate() {
   const {
     setManagerScreen,
@@ -19,14 +20,15 @@ export function ManagerTicketCreate() {
   return (
     <section className="mvp-page">
       <div className="mvp-detail-head">
-        <Button
+        <IconButton
+          label={managerUi.back}
           variant="plain"
           className="mvp-back"
           onClick={() => setManagerScreen("tickets")}
           type="button"
         >
-          {managerUi.back}
-        </Button>
+          <ActionIcon name="back" />
+        </IconButton>
         <div>
           <h2>{managerUi.titles.ticketCreate}</h2>
         </div>

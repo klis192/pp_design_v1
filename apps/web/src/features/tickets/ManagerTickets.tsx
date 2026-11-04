@@ -7,7 +7,8 @@ import { ticketStatusOptions } from "../../projectData";
 import { ResponsiveTable } from "../../ResponsiveTable";
 import { getSlaState, getTicketStatusLabel } from "../../shared/format";
 import { type TicketFilter } from "../../shared/types";
-import { Button, Checkbox, Select, Input } from "../../ui";
+import { Button, IconButton, Checkbox, Select, Input } from "../../ui";
+import { ActionIcon } from "../business/ActionIcon";
 export function ManagerTickets() {
   const [query, setQuery] = useState(""),
     [from, setFrom] = useState(""),
@@ -50,20 +51,20 @@ export function ManagerTickets() {
         </div>
         <div className="mvp-actions">
           <div className="view-switch" role="group" aria-label="Вид заявок">
-            <Button
-              variant="plain"
+            <IconButton
+              label="Список"
               aria-pressed={ticketView === "table"}
               onClick={() => setTicketView("table")}
             >
-              Список
-            </Button>
-            <Button
-              variant="plain"
+              <ActionIcon name="list" />
+            </IconButton>
+            <IconButton
+              label="Канбан"
               aria-pressed={ticketView === "board"}
               onClick={() => setTicketView("board")}
             >
-              Канбан
-            </Button>
+              <ActionIcon name="board" />
+            </IconButton>
           </div>
           <Select
             className="filter-select"
@@ -93,11 +94,17 @@ export function ManagerTickets() {
         </div>
       </div>
 
-      <div className="business-form">
-        <label>
-          Поиск по номеру, тексту, помещению, заявителю
+      <div
+        className="workspace-filter-grid"
+        role="search"
+        aria-label="Фильтры заявок"
+      >
+        <label className="workspace-filter-search">
+          Поиск
           <Input
             type="search"
+            aria-label="Поиск по номеру, тексту, помещению, заявителю"
+            placeholder="Номер, текст, помещение, заявитель"
             value={query}
             maxLength={300}
             onChange={(e) => setQuery(e.target.value)}

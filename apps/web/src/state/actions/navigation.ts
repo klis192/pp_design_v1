@@ -6,6 +6,7 @@ import {
 } from "../../shared/types";
 import type { WorkspaceBase } from "../types";
 import type { useDataActions } from "./data";
+import { ticketOriginForOpen } from "../../shared/ticket-route";
 export function useNavigationActions(
   deps: Pick<
     WorkspaceBase,
@@ -14,6 +15,9 @@ export function useNavigationActions(
     | "selectedPropertyId"
     | "setSelectedPropertyId"
     | "setManagerScreen"
+    | "managerScreen"
+    | "ticketFrom"
+    | "setTicketFrom"
     | "overview"
     | "setSelectedTenantId"
     | "setTenantDetailTab"
@@ -32,6 +36,9 @@ export function useNavigationActions(
     selectedPropertyId,
     setSelectedPropertyId,
     setManagerScreen,
+    managerScreen,
+    ticketFrom,
+    setTicketFrom,
     overview,
     setSelectedTenantId,
     setTenantDetailTab,
@@ -85,6 +92,7 @@ export function useNavigationActions(
   const openTicketDetail = (ticketId: string) => {
     setSelectedTicketId(ticketId);
     if (isManagerShell) {
+      setTicketFrom(ticketOriginForOpen(managerScreen, ticketFrom));
       setManagerScreen("ticket-detail");
       return;
     }

@@ -2,6 +2,10 @@ import {
   resourcesForPath,
   type RealtimeResource,
 } from "../../../../packages/contracts/src/realtime.ts";
+import {
+  isRequestCancelled,
+  RequestCancelledError,
+} from "../api/read-errors.ts";
 
 export type QuerySnapshot<T> = { data?: T; error: string; loading: boolean };
 type Entry = {
@@ -102,21 +106,31 @@ export class QueryClient {
     this.queued.delete(e);
     const generation = e.generation;
     const abort = new AbortController();
+    let cancelled = false;
     e.abort = abort;
     e.stale = false;
     this.publish(e, { ...e.snapshot, loading: true });
     const pending = Promise.resolve()
       .then(() => this.read(e.token, e.path, abort.signal))
       .then((data) => {
-        if (abort.signal.aborted) return data;
+        if (abort.signal.aborted) throw new RequestCancelledError();
         e.attempts = 0;
         this.publish(e, { data, error: "", loading: false });
         return data;
       })
       .catch((error: unknown) => {
         e.stale = true;
-        if (abort.signal.aborted) throw error;
         const status = (error as { status?: number }).status ?? 0;
+        const accessFailure = [401, 403, 404].includes(status);
+        if (
+          !accessFailure &&
+          (isRequestCancelled(error, abort.signal) ||
+            generation !== e.generation)
+        ) {
+          cancelled = true;
+          this.publish(e, { ...e.snapshot, loading: false });
+          throw new RequestCancelledError(error);
+        }
         const retryable =
           !status || status >= 500 || status === 408 || status === 429;
         this.publish(e, {
@@ -145,7 +159,7 @@ export class QueryClient {
         e.abort = undefined;
         // Changes committed during an HTTP read require exactly one follow-up.
         if (
-          (generation !== e.generation || abort.signal.aborted) &&
+          (generation !== e.generation || cancelled || abort.signal.aborted) &&
           e.listeners.size
         ) {
           e.stale = true;

@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Register } from "../business/shared";
+import { useEffect, useRef, useState } from "react";
+import { ActionIcon, Register } from "../business/shared";
 import { Disclosure } from "../business/shared";
 import { AccessWorkspace } from "../business/AccessWorkspace";
 import { ReadingsWorkspace } from "../business/ReadingsWorkspace";
 import { MaintenanceProgress } from "../business/MaintenanceProgress";
 import { MaintenanceImport } from "../platform/MaintenanceImport";
-import { Button, Input, Select } from "../../ui";
+import { Button, IconButton, Input, Select } from "../../ui";
 import { OperationCard } from "./OperationCard";
 import { OperationEditor } from "./OperationEditor";
 import {
@@ -21,10 +21,25 @@ import { useOperationsModel } from "./useOperationsModel";
 import { Catalog } from "../platform/Catalog";
 import { Estimates } from "../platform/Estimates";
 import { AuditLog } from "../platform/AuditLog";
+import {
+  isOperationsTab,
+  operationsRouteError,
+  supportsOperationsRecord,
+} from "../../shared/operations-route";
 export function Operations(props: Props) {
   const model = useOperationsModel(props);
-  const [selectedRow, setSelectedRow] = useState("");
+  const [localSelectedRow, setLocalSelectedRow] = useState("");
+  const routeError = props.route ? operationsRouteError(props.route) : "";
+  const useRecordRoute =
+    props.route && supportsOperationsRecord(props.route.tab);
+  const selectedRow = useRecordRoute ? props.route!.recordId : localSelectedRow;
+  const setSelectedRow = (recordId: string) => {
+    if (useRecordRoute && props.onRouteChange)
+      props.onRouteChange((current) => ({ ...current, recordId }));
+    else setLocalSelectedRow(recordId);
+  };
   const [meterView, setMeterView] = useState("meters");
+  const detail = useRef<HTMLDivElement>(null);
   const {
     initialTab,
     user,
@@ -72,8 +87,49 @@ export function Operations(props: Props) {
     setDraft(null);
     setError("");
     setQuery("");
-    setProperty("");
+    if (!props.route) setProperty("");
   };
+  useEffect(() => {
+    setLocalSelectedRow("");
+    setDraft(null);
+    setReadingMeter("");
+    setMeterView("meters");
+  }, [tab, setDraft, setReadingMeter]);
+  const selectedRecord = (data[tab as keyof typeof data] ?? []).find(
+    (r) => r.id === selectedRow && (!property || r.propertyId === property),
+  );
+  useEffect(() => {
+    if (!selectedRecord) return;
+    const frame = requestAnimationFrame(() => {
+      detail.current?.scrollIntoView({ block: "nearest", behavior: "instant" });
+      detail.current
+        ?.querySelector<HTMLHeadingElement>("h3")
+        ?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [selectedRecord?.id, tab]);
+  if (routeError)
+    return (
+      <section className="mvp-page operations-page">
+        <div className="mvp-page-header">
+          <h2>Эксплуатация</h2>
+        </div>
+        <p className="notice notice--error" role="alert">
+          {routeError}
+        </p>
+        <Button
+          onClick={() =>
+            props.onRouteChange?.((current) => ({
+              tab: isOperationsTab(current.tab) ? current.tab : "equipment",
+              recordId: "",
+              propertyId: "",
+            }))
+          }
+        >
+          Открыть список раздела
+        </Button>
+      </section>
+    );
   return (
     <section className="mvp-page operations-page">
       <div className="mvp-page-header">
@@ -107,14 +163,7 @@ export function Operations(props: Props) {
               className={`mvp-tab ${group === key ? "mvp-tab--active" : ""}`}
               key={key}
               disabled={busy}
-              onClick={() => {
-                model.setNotice("");
-                setTab(key);
-                setDraft(null);
-                setError("");
-                setQuery("");
-                setProperty("");
-              }}
+              onClick={() => switchTab(key)}
             >
               {label}
             </Button>
@@ -294,24 +343,32 @@ export function Operations(props: Props) {
                       ? r.isActive
                         ? "Активен"
                         : "Заблокирован"
-                      : (r.status ??
-                        (r.active === false ? "Отключено" : "Действует")),
+                      : r.status
+                        ? (statusNames[String(r.status)] ?? "Другой статус")
+                        : r.active === false
+                          ? "Отключено"
+                          : "Действует",
               },
             ]}
           />
-          {rows.some((r) => r.id === selectedRow) && (
-            <div className="business-detail operation-detail">
+          {selectedRecord && (
+            <div className="business-detail operation-detail" ref={detail}>
               <div className="register-heading">
-                <h3>Детали записи</h3>
-                <Button onClick={() => setSelectedRow("")}>
-                  Закрыть детали
-                </Button>
+                <h3 tabIndex={-1}>Детали записи</h3>
+                <IconButton
+                  label="Закрыть детали"
+                  onClick={() => setSelectedRow("")}
+                >
+                  <ActionIcon name="close" />
+                </IconButton>
               </div>
-              <OperationCard
-                row={rows.find((r) => r.id === selectedRow)!}
-                model={model}
-              />
+              <OperationCard row={selectedRecord} model={model} />
             </div>
+          )}
+          {selectedRow && model.loaded && !error && !selectedRecord && (
+            <p className="notice" role="status">
+              Запись не найдена или недоступна в выбранном контексте.
+            </p>
           )}
           {!rows.length && (
             <div className="mvp-card empty-state">

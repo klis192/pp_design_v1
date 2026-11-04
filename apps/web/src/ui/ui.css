@@ -107,6 +107,45 @@ a:focus-visible {
   outline: 2px solid var(--ui-accent);
   outline-offset: 3px;
 }
+.ui-button.ui-icon-button {
+  display: inline-flex;
+  align-items: center;
+  width: var(--ui-control-height);
+  min-width: var(--ui-control-height);
+  height: var(--ui-control-height);
+  padding: 0;
+  flex-shrink: 0;
+  justify-content: center;
+}
+.ui-button--plain.ui-icon-button {
+  background: transparent;
+  border: 0;
+  color: var(--ui-text);
+}
+.ui-button--plain.ui-icon-button:hover:not(:disabled) {
+  background: var(--ui-border);
+}
+.ui-button.ui-icon-button.ui-button--text {
+  color: var(--ui-text);
+}
+.ui-button.ui-icon-button.ui-button--text[aria-expanded="true"] {
+  background: #e8f4ef;
+  color: var(--ui-accent-hover);
+}
+.ui-button.ui-icon-button[aria-pressed="true"] {
+  background: #e8f4ef;
+  color: var(--ui-accent-hover);
+}
+.ui-icon-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  pointer-events: none;
+}
+.ui-icon-button__icon svg {
+  display: block;
+}
 .ui-control {
   display: block;
   width: 100%;

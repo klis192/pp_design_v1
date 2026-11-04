@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { operationsRouteKeys } from "./shared/operations-route";
 export const initialRoute = Object.fromEntries(
   new URLSearchParams(window.location.hash.slice(1)),
 );
@@ -39,6 +40,7 @@ export function useBrowserNavigation(
       "ticket",
       "tenant",
       "unit",
+      ...operationsRouteKeys,
     ].some((key) => previous.get(key) !== next.get(key));
     const method = last.current && changedScreen ? "pushState" : "replaceState";
     window.history[method](

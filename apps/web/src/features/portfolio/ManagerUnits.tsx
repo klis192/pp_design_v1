@@ -1,3 +1,5 @@
+import { ActionIcon } from "../business/ActionIcon";
+import { IconButton } from "../../ui";
 import { Disclosure } from "../../ui/Disclosure";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { StructureWorkspace } from "../platform/StructureWorkspace";
@@ -163,17 +165,16 @@ export function ManagerUnits() {
                     {t.unitStatuses[unit.status as keyof typeof t.unitStatuses]}
                   </td>
                   <td>
-                    <Button
-                      variant="secondary"
-                      className="secondary-button secondary-button--compact"
+                    <IconButton
+                      label={adminEditLabel}
                       onClick={(event) => {
                         event.stopPropagation();
                         openManagerUnitEdit(unit);
                       }}
                       type="button"
                     >
-                      {adminEditLabel}
-                    </Button>
+                      <ActionIcon name="edit" />
+                    </IconButton>
                     {canDeletePortfolioItems ? (
                       <Button
                         variant="text"

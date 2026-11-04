@@ -28,6 +28,7 @@ export function useTicketsActions(
     | "t"
     | "isManagerShell"
     | "setManagerScreen"
+    | "setTicketFrom"
     | "setSelectedSection"
     | "isTenant"
     | "paymentProofForm"
@@ -66,6 +67,7 @@ export function useTicketsActions(
     t,
     isManagerShell,
     setManagerScreen,
+    setTicketFrom,
     setSelectedSection,
     refreshWorkspace,
     isTenant,
@@ -127,6 +129,7 @@ export function useTicketsActions(
       }));
       setNotice(t.messages.ticketCreated);
       if (isManagerShell) {
+        setTicketFrom("tickets");
         setManagerScreen("ticket-detail");
       } else {
         setSelectedSection("service");

@@ -20,3 +20,6 @@
 @import "./styles/platform.css" layer(application);
 @import "./styles/navigation.css" layer(application);
 @import "./styles/business.css";
+@import "./ui/workspace-density.css";
+@import "./ui/scrollbars.css";
+@import "./ui/dashboard-workspace.css";

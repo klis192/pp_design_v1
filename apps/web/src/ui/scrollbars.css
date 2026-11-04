@@ -1,0 +1,35 @@
+/* Scroll geometry is constant; the thumb is revealed without moving content. */
+* {
+  --scrollbar-thumb: transparent;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+*:hover,
+*:focus-within {
+  --scrollbar-thumb: #b2b2b2;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 6px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+@media (pointer: coarse) {
+  * {
+    --scrollbar-thumb: #b2b2b2;
+  }
+}
+@media (forced-colors: active) {
+  * {
+    scrollbar-color: auto;
+    scrollbar-width: auto;
+  }
+}

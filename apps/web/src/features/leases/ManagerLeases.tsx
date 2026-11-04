@@ -1,3 +1,5 @@
+import { ActionIcon } from "../business/ActionIcon";
+import { IconButton } from "../../ui";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { leaseStageOptions } from "../../projectData";
 import { ResponsiveTable } from "../../ResponsiveTable";
@@ -139,14 +141,13 @@ export function ManagerLeases() {
                     </Button>
                   </td>
                   <td>
-                    <Button
-                      variant="secondary"
-                      className="secondary-button secondary-button--compact"
+                    <IconButton
+                      label={adminEditLabel}
                       onClick={() => openManagerLeaseEdit(lease)}
                       type="button"
                     >
-                      {adminEditLabel}
-                    </Button>
+                      <ActionIcon name="edit" />
+                    </IconButton>
                     {canDeletePortfolioItems ? (
                       <Button
                         variant="text"

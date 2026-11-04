@@ -1,10 +1,11 @@
+import { ActionIcon } from "./ActionIcon";
 import { useState, type FormEvent } from "react";
 import { ExchangeJournal } from "./ExchangeJournal";
 import type { AccountingWorkspace as Data } from "../../../../../packages/contracts/src/accounting";
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { apiRequest } from "../../api/client";
-import { Button, Input, Select } from "../../ui";
+import { Button, IconButton, Input, Select } from "../../ui";
 import {
   Disclosure,
   Feedback,
@@ -170,7 +171,9 @@ export function AccountingWorkspace() {
             <h3>
               ЛС {account.number} · {sourceName(account.sourceId)}
             </h3>
-            <Button onClick={() => setSelected("")}>Закрыть детали</Button>
+            <IconButton label="Закрыть детали" onClick={() => setSelected("")}>
+              <ActionIcon name="close" />
+            </IconButton>
           </div>
           <p className="field-hint">
             Внешний ID: {account.externalId}. Данные этого источника не

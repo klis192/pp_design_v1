@@ -1,3 +1,4 @@
+import { ActionIcon } from "./ActionIcon";
 import { Fragment, useEffect, useState, type FormEvent } from "react";
 import type {
   ReadingPeriod,
@@ -6,7 +7,14 @@ import type {
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { apiRequest } from "../../api/client";
-import { Button, Checkbox, Input, Select, Textarea } from "../../ui";
+import {
+  Button,
+  IconButton,
+  Checkbox,
+  Input,
+  Select,
+  Textarea,
+} from "../../ui";
 import {
   Disclosure,
   Feedback,
@@ -302,7 +310,9 @@ export function ReadingsWorkspace({
         <section className="business-detail">
           <div className="register-heading">
             <h3>{data.meters.find((m) => m.id === current.meterId)?.name}</h3>
-            <Button onClick={() => setSelected("")}>Закрыть детали</Button>
+            <IconButton label="Закрыть детали" onClick={() => setSelected("")}>
+              <ActionIcon name="close" />
+            </IconButton>
           </div>
           <dl className="business-stats">
             <div>

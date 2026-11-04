@@ -1,7 +1,8 @@
 import { useLiveQuery } from "../../realtime/RealtimeContext";
 import { useState } from "react";
 import { apiRequest } from "../../api/client";
-import { Button, Input, Select } from "../../ui";
+import { Button, IconButton, Input, Select } from "../../ui";
+import { ActionIcon } from "../business/ActionIcon";
 import type {
   Structure,
   Building,
@@ -258,12 +259,12 @@ export function StructureWorkspace(props: Props) {
                   <div className="structure-node-header">
                     <h4>{nodeLabel("Корпус", b.name)}</h4>
                     {props.canWrite && (
-                      <Button
-                        variant="text"
+                      <IconButton
+                        label="Изменить корпус"
                         onClick={() => edit("buildings", b)}
                       >
-                        Изменить корпус
-                      </Button>
+                        <ActionIcon name="edit" />
+                      </IconButton>
                     )}
                   </div>
                   <div className="structure-entrances">
@@ -274,12 +275,12 @@ export function StructureWorkspace(props: Props) {
                           <div className="structure-node-header">
                             <h5>{nodeLabel("Подъезд", e.name)}</h5>
                             {props.canWrite && (
-                              <Button
-                                variant="text"
+                              <IconButton
+                                label="Изменить подъезд"
                                 onClick={() => edit("entrances", e)}
                               >
-                                Изменить подъезд
-                              </Button>
+                                <ActionIcon name="edit" />
+                              </IconButton>
                             )}
                           </div>
                           <div className="structure-floors">
@@ -303,12 +304,12 @@ export function StructureWorkspace(props: Props) {
                                       помещений
                                     </h6>
                                     {props.canWrite && (
-                                      <Button
-                                        variant="text"
+                                      <IconButton
+                                        label="Изменить этаж"
                                         onClick={() => edit("floors", f)}
                                       >
-                                        Изменить этаж
-                                      </Button>
+                                        <ActionIcon name="edit" />
+                                      </IconButton>
                                     )}
                                   </div>
                                   <div className="structure-units">

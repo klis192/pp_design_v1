@@ -1,5 +1,5 @@
 import { useEffect, useId, useState, type ReactNode } from "react";
-import { Button, Checkbox, Input, Select } from "../../ui";
+import { Checkbox, IconButton, Input, Select } from "../../ui";
 import { ResponsiveTable } from "../../ResponsiveTable";
 import { ActionIcon } from "./ActionIcon";
 import { initialPageSize } from "./register-preferences";
@@ -136,24 +136,23 @@ export function Register<T extends { id: string }>({
           />
         </div>
         {filters && (
-          <Button
+          <IconButton
+            label="Фильтры"
             aria-expanded={filterOpen}
             aria-controls={id + "-filters"}
             onClick={() => setFilterOpen(!filterOpen)}
           >
             <ActionIcon name="filter" />
-            Фильтры
-          </Button>
+          </IconButton>
         )}
-        <Button
-          aria-label={`Вид таблицы: ${title}`}
+        <IconButton
+          label={`Вид таблицы: ${title}`}
           aria-expanded={settingsOpen}
           aria-controls={id + "-settings"}
           onClick={() => setSettingsOpen(!settingsOpen)}
         >
           <ActionIcon name="settings" />
-          <span>Вид</span>
-        </Button>
+        </IconButton>
       </div>
       {filterOpen && (
         <div className="register-options" id={id + "-filters"}>
@@ -276,18 +275,20 @@ export function Register<T extends { id: string }>({
           <span role="status">
             {offset + 1}–{Math.min(offset + size, total)} из {total}
           </span>
-          <Button
+          <IconButton
+            label="Назад"
             disabled={currentPage === 1}
             onClick={() => changePage(currentPage - 1)}
           >
-            Назад
-          </Button>
-          <Button
+            <ActionIcon name="prev" />
+          </IconButton>
+          <IconButton
+            label="Далее"
             disabled={currentPage === pageCount}
             onClick={() => changePage(currentPage + 1)}
           >
-            Далее
-          </Button>
+            <ActionIcon name="next" />
+          </IconButton>
         </nav>
       )}
     </section>

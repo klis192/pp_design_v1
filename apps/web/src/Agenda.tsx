@@ -1,6 +1,11 @@
 import { Disclosure } from "./ui/Disclosure";
 import { useLiveQuery } from "./realtime/RealtimeContext";
-import { useState, type FormEvent } from "react";
+import {
+  useState,
+  type Dispatch,
+  type FormEvent,
+  type SetStateAction,
+} from "react";
 import type {
   AgendaDto,
   AgendaItemDto,
@@ -10,6 +15,11 @@ import type {
 } from "../../../packages/contracts/src/agenda";
 import "./agenda.css";
 import { apiRequest, runtimeApiBase } from "./api/client";
+import {
+  agendaOperationsTarget,
+  type OperationsRoute,
+} from "./shared/operations-route";
+import { parseAgendaRoute, type AgendaRoute } from "./shared/agenda-route";
 import {
   Alert,
   Badge,
@@ -46,8 +56,10 @@ type Props = {
   properties: { id: string; name: string }[];
   onTicket: (id: string) => void;
   onLease: (id: string) => void;
-  onOperations: () => void;
+  onOperations: (target: OperationsRoute) => void;
   onBilling: () => void;
+  route?: AgendaRoute;
+  onRouteChange?: Dispatch<SetStateAction<AgendaRoute>>;
 };
 export function Agenda({
   token,
@@ -56,10 +68,17 @@ export function Agenda({
   onLease,
   onOperations,
   onBilling,
+  route,
+  onRouteChange,
 }: Props) {
-  const [days, setDays] = useState("30");
-  const [property, setProperty] = useState("");
-  const [kind, setKind] = useState<AgendaKind | "all">("all");
+  const [localRoute, setLocalRoute] = useState(() => parseAgendaRoute({}));
+  const context = route ?? localRoute;
+  const { days, kind, propertyId: property } = context;
+  const updateRoute = (patch: Partial<AgendaRoute>) =>
+    (onRouteChange ?? setLocalRoute)((current) => ({ ...current, ...patch }));
+  const unavailableProperty = Boolean(
+    property && !properties.some((p) => p.id === property),
+  );
   const [failure, setError] = useState("");
   const [exporting, setExporting] = useState(false);
   const query = new URLSearchParams({
@@ -70,9 +89,13 @@ export function Agenda({
     token,
     `/api/agenda?${query}`,
     null,
+    { enabled: !unavailableProperty },
   );
-  const { data, loading } = resource;
-  const error = failure || resource.error;
+  const data = unavailableProperty ? null : resource.data;
+  const loading = resource.loading && !resource.hasData;
+  const error = unavailableProperty
+    ? "Объект календаря недоступен. Выберите другой доступный объект."
+    : failure || resource.error;
   async function download() {
     setExporting(true);
     setError("");
@@ -106,7 +129,10 @@ export function Agenda({
     if (item.kind === "ticket") onTicket(item.entityId);
     else if (item.kind === "lease") onLease(item.entityId);
     else if (item.kind === "payment") onBilling();
-    else onOperations();
+    else {
+      const target = agendaOperationsTarget(item);
+      if (target) onOperations(target);
+    }
   };
   return (
     <section className="mvp-page agenda-page">
@@ -128,7 +154,9 @@ export function Agenda({
             <Select
               {...props}
               value={days}
-              onChange={(e) => setDays(e.target.value)}
+              onChange={(e) =>
+                updateRoute({ days: e.target.value as AgendaRoute["days"] })
+              }
             >
               {["7", "30", "60", "90"].map((v) => (
                 <option key={v} value={v}>
@@ -143,9 +171,14 @@ export function Agenda({
             <Select
               {...props}
               value={property}
-              onChange={(e) => setProperty(e.target.value)}
+              onChange={(e) => updateRoute({ propertyId: e.target.value })}
             >
               <option value="">Все доступные объекты</option>
+              {unavailableProperty && (
+                <option value={property} disabled>
+                  Недоступный объект
+                </option>
+              )}
               {properties.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.name}
@@ -159,7 +192,9 @@ export function Agenda({
             <Select
               {...props}
               value={kind}
-              onChange={(e) => setKind(e.target.value as AgendaKind | "all")}
+              onChange={(e) =>
+                updateRoute({ kind: e.target.value as AgendaRoute["kind"] })
+              }
             >
               <option value="all">Все события</option>
               {Object.entries(kindLabels).map(([id, name]) => (

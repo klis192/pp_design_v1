@@ -2,6 +2,7 @@ import { startTransition } from "react";
 import { useQueryClient } from "../../realtime/RealtimeContext";
 import { assertProductRole } from "../../mobile-product";
 import { TOKEN_KEY } from "../../shared/navigation";
+import { completeActiveRead, isRequestCancelled } from "../../api/read-errors";
 import {
   type BillingInvoice,
   type BillingReconciliation,
@@ -109,6 +110,7 @@ export function useDataActions(
       });
       applyWorkspaceData(nextOverview, nextTickets);
     } catch (caughtError) {
+      if (isRequestCancelled(caughtError)) return;
       const failure = caughtError as { status?: number; code?: string };
       const invalid =
         [401, 403].includes(failure.status ?? 0) ||
@@ -219,10 +221,11 @@ export function useDataActions(
     applyWorkspaceData,
     fetchWorkspaceData,
     hydrateSession,
-    refreshWorkspace,
-    loadImportBatches,
-    loadImportApprovals,
-    loadSystemReadiness,
-    loadBillingInvoices,
+    refreshWorkspace: (preferredTicketId?: string) =>
+      completeActiveRead(() => refreshWorkspace(preferredTicketId)),
+    loadImportBatches: () => completeActiveRead(loadImportBatches),
+    loadImportApprovals: () => completeActiveRead(loadImportApprovals),
+    loadSystemReadiness: () => completeActiveRead(loadSystemReadiness),
+    loadBillingInvoices: () => completeActiveRead(loadBillingInvoices),
   };
 }

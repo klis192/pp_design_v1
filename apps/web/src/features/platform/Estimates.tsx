@@ -1,7 +1,8 @@
+import { ActionIcon } from "../business/ActionIcon";
 import { EstimateLines } from "./EstimateLines";
 import { ResponsiveTable } from "../../ResponsiveTable";
 import { useState } from "react";
-import { Button, Input, Select } from "../../ui";
+import { Button, IconButton, Input, Select } from "../../ui";
 import { usePlatform } from "./usePlatform";
 import type {
   Estimate,
@@ -250,7 +251,9 @@ export function Estimates(props: Props & { services: Row[] }) {
         <article className="mvp-card platform-section">
           <div className="mvp-card-head">
             <h3>{current.name}</h3>
-            <Button onClick={() => setSelected("")}>Закрыть</Button>
+            <IconButton label="Закрыть" onClick={() => setSelected("")}>
+              <ActionIcon name="close" />
+            </IconButton>
           </div>
           <p>
             {names[current.status]} · версия {current.version}
@@ -343,7 +346,9 @@ export function Estimates(props: Props & { services: Row[] }) {
         >
           <div className="mvp-actions no-print">
             <Button onClick={() => window.print()}>Печать / PDF</Button>
-            <Button onClick={() => setAct(null)}>Закрыть акт</Button>
+            <IconButton label="Закрыть акт" onClick={() => setAct(null)}>
+              <ActionIcon name="close" />
+            </IconButton>
           </div>
           <h2>Акт выполненных работ № {act.number}</h2>
           <p>

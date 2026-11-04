@@ -5,7 +5,8 @@ import {
   formatDateTime,
   getChatRoleLabel,
 } from "../../shared/format";
-import { Button, Select, Textarea } from "../../ui";
+import { Button, IconButton, Select, Textarea } from "../../ui";
+import { ActionIcon } from "../business/ActionIcon";
 export function ManagerChat() {
   const {
     managerUi,
@@ -79,13 +80,13 @@ export function ManagerChat() {
         </article>
 
         <article className="mvp-card chat-conversation-pane">
-          <Button
-            variant="text"
+          <IconButton
+            label="К списку чатов"
             className="chat-back"
             onClick={() => setConversationOpen(false)}
           >
-            К списку чатов
-          </Button>
+            <ActionIcon name="back" />
+          </IconButton>
           <div className="mvp-card-head">
             <div>
               <h3>{selectedChatThread?.tenantName ?? managerUi.nav.chat}</h3>

@@ -1,7 +1,8 @@
 import { Disclosure } from "../../ui/Disclosure";
 import type { AuditEvent } from "../../../../../packages/contracts/src/registry";
 import { permissionLabels } from "../../../../../packages/contracts/src/permissions";
-import { Button } from "../../ui";
+import { IconButton } from "../../ui";
+import { ActionIcon } from "../business/ActionIcon";
 const labels: Record<string, string> = {
   full_name: "Имя",
   fullName: "Имя",
@@ -112,7 +113,9 @@ export function AuditEventDetails({
     <section id={"audit-detail-" + event.id} aria-label="Подробности изменения">
       <div className="audit-detail-heading">
         <strong>Изменённые поля</strong>
-        <Button onClick={onClose}>Закрыть подробности</Button>
+        <IconButton label="Закрыть подробности" onClick={onClose}>
+          <ActionIcon name="close" />
+        </IconButton>
       </div>
       {fields.length ? (
         <dl className="audit-changes">

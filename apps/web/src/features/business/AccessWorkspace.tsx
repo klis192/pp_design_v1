@@ -7,7 +7,15 @@ import {
 } from "../../../../../packages/contracts/src/permissions";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { apiRequest } from "../../api/client";
-import { Button, Checkbox, Input, Select, Textarea } from "../../ui";
+import {
+  Button,
+  IconButton,
+  Checkbox,
+  Input,
+  Select,
+  Textarea,
+} from "../../ui";
+import { ActionIcon } from "./ActionIcon";
 import { Disclosure, Feedback, Register, date, useResource } from "./shared";
 import type { AccountingWorkspace } from "../../../../../packages/contracts/src/accounting";
 type Participant = {
@@ -219,7 +227,9 @@ export function AccessWorkspace() {
             render: (a) =>
               !a.revokedAt ? (
                 <div className="mvp-actions">
-                  <Button onClick={() => openEdit(a)}>Изменить</Button>
+                  <IconButton label="Изменить" onClick={() => openEdit(a)}>
+                    <ActionIcon name="edit" />
+                  </IconButton>
                   <Button variant="text" onClick={() => setRevoke(a.id)}>
                     Отозвать
                   </Button>

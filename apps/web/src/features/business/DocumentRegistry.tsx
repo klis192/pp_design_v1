@@ -1,9 +1,10 @@
+import { ActionIcon } from "./ActionIcon";
 import { useState, type FormEvent } from "react";
 import type { EntityDocument } from "../../../../../packages/contracts/src/business-workflows";
 import type { AccountingWorkspace } from "../../../../../packages/contracts/src/accounting";
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
 import { useWorkspace } from "../../app/WorkspaceContext";
-import { Button, Input, Select } from "../../ui";
+import { Button, IconButton, Input, Select } from "../../ui";
 import {
   Disclosure,
   Feedback,
@@ -170,7 +171,9 @@ export function DocumentRegistry({
         <section className="business-detail">
           <div className="register-heading">
             <h3>{doc.name}</h3>
-            <Button onClick={() => setSelected("")}>Закрыть детали</Button>
+            <IconButton label="Закрыть детали" onClick={() => setSelected("")}>
+              <ActionIcon name="close" />
+            </IconButton>
           </div>
           <p>{doc.links.map(linkLabel).join("; ")}</p>
           <p className="field-hint">

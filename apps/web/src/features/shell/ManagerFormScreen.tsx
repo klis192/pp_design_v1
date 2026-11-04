@@ -1,7 +1,8 @@
+import { ActionIcon } from "../business/ActionIcon";
 import { useEffect } from "react";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { type AdminPanel, type ManagerScreen } from "../../shared/types";
-import { Button } from "../../ui";
+import { IconButton } from "../../ui";
 import { AdminForm } from "../administration/AdminForm";
 export function ManagerFormScreen({
   screen,
@@ -41,19 +42,11 @@ export function ManagerFormScreen({
         : screen === "unit-add"
           ? managerUi.titles.unitAdd
           : managerUi.titles.leaseAdd;
-  const subtitle =
-    screen === "tenant-add"
-      ? managerUi.subtitles.tenantAdd
-      : screen === "property-add"
-        ? managerUi.subtitles.propertyAdd
-        : screen === "unit-add"
-          ? managerUi.subtitles.unitAdd
-          : managerUi.subtitles.leaseAdd;
-
   return (
     <section className="mvp-page">
       <div className="mvp-detail-head">
-        <Button
+        <IconButton
+          label={managerUi.back}
           variant="plain"
           className="mvp-back"
           onClick={() => {
@@ -64,15 +57,10 @@ export function ManagerFormScreen({
           }}
           type="button"
         >
-          {managerUi.back}
-        </Button>
+          <ActionIcon name="back" />
+        </IconButton>
         <div>
           <h2>{title}</h2>
-          <p>
-            {isEditing
-              ? "Измените нужные поля и сохраните."
-              : "Заполните данные новой записи."}
-          </p>
         </div>
       </div>
 

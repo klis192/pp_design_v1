@@ -1,5 +1,6 @@
+import { ActionIcon } from "../business/ActionIcon";
 import { useWorkspace } from "../../app/WorkspaceContext";
-import { Button, Input, Select } from "../../ui";
+import { Button, IconButton, Input, Select } from "../../ui";
 export function ManagerStaffCreate() {
   const {
     setManagerScreen,
@@ -17,17 +18,17 @@ export function ManagerStaffCreate() {
   return (
     <section className="mvp-page">
       <div className="mvp-detail-head">
-        <Button
+        <IconButton
+          label={managerUi.back}
           variant="plain"
           className="mvp-back"
           onClick={() => setManagerScreen("staff")}
           type="button"
         >
-          {managerUi.back}
-        </Button>
+          <ActionIcon name="back" />
+        </IconButton>
         <div>
           <h2>{managerUi.titles.staffAdd}</h2>
-          <p>{managerUi.subtitles.staffAdd}</p>
         </div>
       </div>
 

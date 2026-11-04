@@ -1,0 +1,124 @@
+/* Shared working headers: title and actions stay together above the content. */
+:is(.mvp-page-header, .ui-page-header, .mvp-detail-head, .surface-head) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  min-width: 0;
+  margin-block: 0;
+}
+
+:is(.mvp-page-header, .ui-page-header, .mvp-detail-head, .surface-head)
+  > div:not(.mvp-actions):not(.ui-actions) {
+  min-width: 0;
+}
+
+:is(.mvp-page-header, .ui-page-header, .mvp-detail-head, .surface-head)
+  :is(h1, h2, h3) {
+  margin: 0;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.mvp-page-header > div:has(> h2) {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.mvp-page-header > div:has(> h2) > p {
+  margin: 0;
+  font-size: 14px;
+}
+
+:is(.mvp-page-header, .ui-page-header, .mvp-detail-head, .surface-head)
+  :is(.mvp-actions, .ui-actions) {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+:is(.mvp-page-header, .ui-page-header, .mvp-detail-head, .surface-head)
+  > :is(.ui-button, .mvp-actions, .ui-actions) {
+  flex-shrink: 0;
+}
+
+.mvp-page:has(> :is(.mvp-page-header, .ui-page-header, .mvp-detail-head)) {
+  row-gap: 12px;
+}
+
+.surface > .surface-head {
+  margin-bottom: 12px;
+}
+
+.mvp-detail-head:has(> .mvp-back) {
+  justify-content: flex-start;
+}
+
+.mvp-detail-head > .mvp-back + div {
+  flex: 1 1 160px;
+}
+
+.workspace-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: end;
+  gap: 12px;
+  min-width: 0;
+}
+
+.workspace-filter-grid > label:not(.ui-checkbox) {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  margin: 0;
+}
+
+.workspace-filter-grid > .workspace-filter-search {
+  grid-column: span 2;
+}
+
+.register-toolbar {
+  flex-wrap: nowrap;
+}
+
+.register-toolbar > .register-search {
+  flex-basis: 160px;
+  min-width: 0;
+}
+
+@media (min-width: 761px) {
+  .operations-page > .operations-mobile-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .workspace-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .workspace-filter-grid > .ui-checkbox {
+    grid-column: 1 / -1;
+  }
+  :is(.mvp-page-header, .ui-page-header, .mvp-detail-head, .surface-head) {
+    gap: 8px 12px;
+  }
+
+  :is(.mvp-page-header, .ui-page-header, .mvp-detail-head, .surface-head)
+    > :is(.mvp-actions, .ui-actions) {
+    max-width: 100%;
+    flex-shrink: 1;
+  }
+
+  .mvp-page:has(> :is(.mvp-page-header, .ui-page-header, .mvp-detail-head)) {
+    row-gap: 12px;
+  }
+}

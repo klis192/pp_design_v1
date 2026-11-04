@@ -5,6 +5,12 @@ import { useBrowserNavigation } from "../navigation";
 import { brand } from "../projectData";
 import { TOKEN_KEY } from "../shared/navigation";
 import {
+  parseOperationsRoute,
+  serializeOperationsRoute,
+} from "../shared/operations-route";
+import { parseAgendaRoute, serializeAgendaRoute } from "../shared/agenda-route";
+import { parseTicketFrom } from "../shared/ticket-route";
+import {
   type AdminPanel,
   type Lease,
   type ManagerScreen,
@@ -23,11 +29,17 @@ export function useWorkspaceEffects(model: WorkspaceModel) {
     setMobileNavOpen,
     mobileMenuButton,
     managerScreen,
+    operationsRoute,
+    setOperationsRoute,
+    agendaRoute,
+    setAgendaRoute,
     selectedSection,
     selectedPropertyId,
     selectedTenantId,
     selectedUnitId,
     selectedTicketId,
+    ticketFrom,
+    setTicketFrom,
     tenantDetailTab,
     editingAdmin,
     editReturnScreen,
@@ -141,11 +153,14 @@ export function useWorkspaceEffects(model: WorkspaceModel) {
   useBrowserNavigation(
     {
       screen: managerScreen,
+      ...serializeOperationsRoute(operationsRoute),
+      ...serializeAgendaRoute(agendaRoute),
       section: selectedSection,
       property: selectedPropertyId,
       tenant: selectedTenantId,
       unit: selectedUnitId,
       ticket: selectedTicketId,
+      ticketFrom,
       tab: tenantDetailTab,
       editProperty: editingAdmin.property || "",
       editTenant: editingAdmin.tenant || "",
@@ -155,11 +170,14 @@ export function useWorkspaceEffects(model: WorkspaceModel) {
     },
     (route) => {
       setManagerScreen((route.screen as ManagerScreen) || "dashboard");
+      setOperationsRoute(parseOperationsRoute(route));
+      setAgendaRoute(parseAgendaRoute(route));
       setSelectedSection((route.section as Section) || "overview");
       setSelectedPropertyId(route.property || "");
       setSelectedTenantId(route.tenant || "");
       setSelectedUnitId(route.unit || "");
       setSelectedTicketId(route.ticket || "");
+      setTicketFrom(parseTicketFrom(route.ticketFrom));
       setTenantDetailTab((route.tab as TenantDetailTab) || "info");
       setEditingAdmin({
         property: route.editProperty || null,

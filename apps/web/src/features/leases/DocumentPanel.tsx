@@ -4,7 +4,8 @@ import {
   formatFileSize,
   supportedFileHint,
 } from "../../shared/format";
-import { Button, Input } from "../../ui";
+import { Button, IconButton, Input } from "../../ui";
+import { ActionIcon } from "../business/ActionIcon";
 export function DocumentPanel() {
   const {
     documentPanelLease,
@@ -35,17 +36,16 @@ export function DocumentPanel() {
               {documentPanelLease.unitNumber ?? "—"}
             </p>
           </div>
-          <Button
-            variant="secondary"
-            className="secondary-button secondary-button--compact"
+          <IconButton
+            label={locale === "ru" ? "Закрыть" : "Close"}
             onClick={() => {
               setDocumentPanelLease(null);
               setLeaseDocuments([]);
             }}
             type="button"
           >
-            {locale === "ru" ? "Закрыть" : "Close"}
-          </Button>
+            <ActionIcon name="close" />
+          </IconButton>
         </div>
 
         {canManageDocuments ? (

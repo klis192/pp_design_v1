@@ -1,8 +1,9 @@
+import { ActionIcon } from "./ActionIcon";
 import { useState } from "react";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { getTicketStatusLabel } from "../../shared/format";
 import { apiRequest } from "../../api/client";
-import { Button, Input, Textarea } from "../../ui";
+import { Button, IconButton, Input, Textarea } from "../../ui";
 import { Disclosure, Feedback, Register, date, useResource } from "./shared";
 type Item = {
   ticketId: string;
@@ -115,7 +116,12 @@ export function MaintenanceProgress() {
               <Button onClick={() => openTicketDetail(item.ticketId)}>
                 Открыть заявку
               </Button>
-              <Button onClick={() => setSelected("")}>Закрыть детали</Button>
+              <IconButton
+                label="Закрыть детали"
+                onClick={() => setSelected("")}
+              >
+                <ActionIcon name="close" />
+              </IconButton>
             </div>
           </div>
           {(item.capabilities.reschedule || item.capabilities.remark) && (

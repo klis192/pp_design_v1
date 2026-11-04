@@ -43,6 +43,32 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     );
   },
 );
+type IconButtonProps = Omit<ButtonProps, "aria-label" | "title"> & {
+  label: string;
+  title?: string;
+  children: ReactNode;
+};
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+  function IconButton(
+    { label, title, variant = "text", className = "", children, ...props },
+    ref,
+  ) {
+    return (
+      <Button
+        {...props}
+        ref={ref}
+        variant={variant}
+        aria-label={label}
+        title={title ?? label}
+        className={`ui-icon-button ${className}`}
+      >
+        <span className="ui-icon-button__icon" aria-hidden="true">
+          {children}
+        </span>
+      </Button>
+    );
+  },
+);
 export const Input = forwardRef<
   HTMLInputElement,
   InputHTMLAttributes<HTMLInputElement>

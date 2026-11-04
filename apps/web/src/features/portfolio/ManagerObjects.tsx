@@ -1,3 +1,5 @@
+import { ActionIcon } from "../business/ActionIcon";
+import { IconButton } from "../../ui";
 import { Disclosure } from "../business/shared";
 import { DocumentRegistry } from "../business/DocumentRegistry";
 import { useWorkspace } from "../../app/WorkspaceContext";
@@ -174,14 +176,13 @@ export function ManagerObjects() {
             </div>
             {selectedProperty && canManagePortfolio ? (
               <div className="mvp-actions">
-                <Button
-                  variant="secondary"
-                  className="secondary-button"
+                <IconButton
+                  label={adminEditLabel}
                   onClick={() => openManagerPropertyEdit(selectedProperty)}
                   type="button"
                 >
-                  {adminEditLabel}
-                </Button>
+                  <ActionIcon name="edit" />
+                </IconButton>
                 {canDeletePortfolioItems ? (
                   <Button
                     variant="text"

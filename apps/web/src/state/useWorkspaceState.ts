@@ -1,6 +1,9 @@
 import { useRef, useState } from "react";
 import { mobileProduct } from "../mobile-product";
 import { initialRoute } from "../navigation";
+import { parseOperationsRoute } from "../shared/operations-route";
+import { parseAgendaRoute } from "../shared/agenda-route";
+import { parseTicketFrom } from "../shared/ticket-route";
 import { type OperationsData } from "../features/operations/shared";
 import { documentCategoryOptions } from "../shared/navigation";
 import {
@@ -52,6 +55,12 @@ export function useWorkspaceState() {
   const [managerScreen, setManagerScreen] = useState<ManagerScreen>(
     (initialRoute.screen as ManagerScreen) || "dashboard",
   );
+  const [operationsRoute, setOperationsRoute] = useState(() =>
+    parseOperationsRoute(initialRoute),
+  );
+  const [agendaRoute, setAgendaRoute] = useState(() =>
+    parseAgendaRoute(initialRoute),
+  );
   const [selectedPropertyId, setSelectedPropertyId] = useState(
     initialRoute.property || "",
   );
@@ -61,6 +70,9 @@ export function useWorkspaceState() {
   const [selectedUnitId, setSelectedUnitId] = useState(initialRoute.unit || "");
   const [selectedTicketId, setSelectedTicketId] = useState(
     initialRoute.ticket || "",
+  );
+  const [ticketFrom, setTicketFrom] = useState(() =>
+    parseTicketFrom(initialRoute.ticketFrom),
   );
   const [selectedChatTicketId, setSelectedChatTicketId] = useState("");
   const [billingInvoices, setBillingInvoices] = useState<BillingInvoice[]>([]);
@@ -286,6 +298,10 @@ export function useWorkspaceState() {
     setSelectedSection,
     managerScreen,
     setManagerScreen,
+    operationsRoute,
+    setOperationsRoute,
+    agendaRoute,
+    setAgendaRoute,
     selectedPropertyId,
     setSelectedPropertyId,
     selectedTenantId,
@@ -294,6 +310,8 @@ export function useWorkspaceState() {
     setSelectedUnitId,
     selectedTicketId,
     setSelectedTicketId,
+    ticketFrom,
+    setTicketFrom,
     selectedChatTicketId,
     setSelectedChatTicketId,
     billingInvoices,

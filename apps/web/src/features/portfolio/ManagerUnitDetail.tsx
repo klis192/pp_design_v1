@@ -1,7 +1,8 @@
+import { ActionIcon } from "../business/ActionIcon";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { ResponsiveTable } from "../../ResponsiveTable";
 import { formatArea, formatDate } from "../../shared/format";
-import { Button, Input } from "../../ui";
+import { Button, IconButton, Input } from "../../ui";
 export function ManagerUnitDetail() {
   const {
     setManagerScreen,
@@ -28,14 +29,15 @@ export function ManagerUnitDetail() {
   return (
     <section className="mvp-page">
       <div className="mvp-detail-head">
-        <Button
+        <IconButton
+          label={managerUi.back}
           variant="plain"
           className="mvp-back"
           onClick={() => setManagerScreen("units")}
           type="button"
         >
-          {managerUi.back}
-        </Button>
+          <ActionIcon name="back" />
+        </IconButton>
         <div>
           <h2>
             {selectedUnit
@@ -53,14 +55,13 @@ export function ManagerUnitDetail() {
             >
               {unitExportLabel}
             </Button>
-            <Button
-              variant="secondary"
-              className="secondary-button"
+            <IconButton
+              label={adminEditLabel}
               onClick={() => openManagerUnitEdit(selectedUnit)}
               type="button"
             >
-              {adminEditLabel}
-            </Button>
+              <ActionIcon name="edit" />
+            </IconButton>
             {canDeletePortfolioItems ? (
               <Button
                 variant="text"

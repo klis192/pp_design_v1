@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Button, Checkbox, Input, Select, Textarea } from "../../ui";
+import {
+  Button,
+  IconButton,
+  Checkbox,
+  Input,
+  Select,
+  Textarea,
+} from "../../ui";
+import { ActionIcon } from "../business/ActionIcon";
 import { usePlatform } from "./usePlatform";
 import type { CatalogItem } from "../../../../../packages/contracts/src/operations-platform";
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
@@ -214,9 +222,13 @@ export function Catalog({
               </span>
               <span>{row.active === false ? "Отключён" : row.contact}</span>
               {canWrite && (
-                <Button disabled={busy} onClick={() => setDraft({ ...row })}>
-                  Изменить
-                </Button>
+                <IconButton
+                  label="Изменить"
+                  disabled={busy}
+                  onClick={() => setDraft({ ...row })}
+                >
+                  <ActionIcon name="edit" />
+                </IconButton>
               )}
             </article>
           ))}

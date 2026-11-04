@@ -1,3 +1,4 @@
+import { ActionIcon } from "../business/ActionIcon";
 import { TicketWorkflowPanel } from "../business/TicketWorkflowPanel";
 import { DocumentRegistry } from "../business/DocumentRegistry";
 import { Disclosure } from "../business/shared";
@@ -5,12 +6,13 @@ import { useWorkspace } from "../../app/WorkspaceContext";
 import { TicketOperations } from "../operations/TicketOperations";
 import { ticketStatusOptions } from "../../projectData";
 import { formatDateTime, getTicketStatusLabel } from "../../shared/format";
-import { Button, Select, Textarea } from "../../ui";
+import { Button, IconButton, Select, Textarea } from "../../ui";
 import { TicketAttachmentBlock } from "./TicketAttachmentBlock";
 import { TicketOperationsBlock } from "./TicketOperationsBlock";
 export function ManagerTicketDetail() {
   const {
     setManagerScreen,
+    ticketFrom,
     managerUi,
     selectedTicket,
     session,
@@ -42,14 +44,15 @@ export function ManagerTicketDetail() {
   return (
     <section className="mvp-page">
       <div className="mvp-detail-head">
-        <Button
+        <IconButton
+          label={managerUi.back}
           variant="plain"
           className="mvp-back"
-          onClick={() => setManagerScreen("tickets")}
+          onClick={() => setManagerScreen(ticketFrom)}
           type="button"
         >
-          {managerUi.back}
-        </Button>
+          <ActionIcon name="back" />
+        </IconButton>
         <div>
           <h2>{selectedTicket?.title ?? managerUi.titles.ticketDetail}</h2>
         </div>
@@ -61,7 +64,6 @@ export function ManagerTicketDetail() {
             <div className="mvp-card-head">
               <div>
                 <div className="record-number">{selectedTicket.number}</div>
-                <h3>{selectedTicket.title}</h3>
               </div>
             </div>
             <p>{selectedTicket.description}</p>
@@ -214,6 +216,7 @@ export function ManagerTicketDetail() {
             <form className="comment-form" onSubmit={handleCommentSubmit}>
               <Textarea
                 name="content"
+                aria-label={locale === "ru" ? "Комментарий" : "Comment"}
                 onChange={handleFieldChange(setCommentForm)}
                 rows={4}
                 value={commentForm.content}

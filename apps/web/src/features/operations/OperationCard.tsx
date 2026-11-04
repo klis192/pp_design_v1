@@ -1,6 +1,7 @@
 import { Disclosure } from "../../ui/Disclosure";
 import { BotLinkPanel } from "../../MessengerButtons";
-import { Button } from "../../ui";
+import { Button, IconButton } from "../../ui";
+import { ActionIcon } from "../business/ActionIcon";
 import {
   Row,
   auditLabel,
@@ -48,18 +49,17 @@ export function OperationCard({
         </div>
         {tabPermission[tab] &&
           hasPermission(model.user, tabPermission[tab]) && (
-            <Button
-              variant="secondary"
+            <IconButton
+              label="Изменить"
               type="button"
-              className="secondary-button"
               disabled={busy}
               onClick={() => {
                 setDraft({ ...row, password: "" });
                 setError("");
               }}
             >
-              Изменить
-            </Button>
+              <ActionIcon name="edit" />
+            </IconButton>
           )}
       </div>
       {tab === "equipment" && (

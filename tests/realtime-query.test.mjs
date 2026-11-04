@@ -2,6 +2,12 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { parseRealtimeServerMessage } from "../packages/contracts/src/realtime.ts";
 import { QueryClient } from "../apps/web/src/realtime/query-client.ts";
+import {
+  ApiError,
+  completeActiveRead,
+  isRequestCancelled,
+  normalizeRequestError,
+} from "../apps/web/src/api/read-errors.ts";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const until = async (fn) => {
@@ -112,6 +118,159 @@ test("Unsubscribing cancels obsolete requests and remounting recovers without ha
   t.after(remount);
   await until(() => client.snapshot("a", "/api/audit?q=old").data?.current);
   assert.equal(calls, 2);
+});
+
+test("Cancelling inactive ticket threads never reaches an imperative user-error callback", async (t) => {
+  for (const suffix of ["comments", "attachments", "history"]) {
+    const path = `/api/tickets/ticket-a/${suffix}`;
+    const userErrors = [];
+    let calls = 0;
+    const client = new QueryClient((_token, _path, signal) => {
+      calls++;
+      if (calls > 1) return Promise.resolve({ items: ["current"] });
+      return new Promise((_resolve, reject) => {
+        const cancel = () =>
+          reject(new Error("Underlying transport cancelled"));
+        if (signal.aborted) cancel();
+        else signal.addEventListener("abort", cancel, { once: true });
+      });
+    }, 5);
+    t.after(() => client.dispose());
+    const stop = client.subscribe("user", path, () => {
+      const error = client.snapshot("user", path).error;
+      if (error) userErrors.push(error);
+    });
+    const refresh = completeActiveRead(async () => {
+      await client.request("user", path, true);
+    }).catch((error) => userErrors.push(error.message));
+    await until(() => calls === 1);
+    stop();
+    await refresh;
+    assert.deepEqual(userErrors, [], suffix);
+    assert.equal(client.snapshot("user", path).loading, false);
+    const remount = client.subscribe("user", path, () => {});
+    t.after(remount);
+    await until(
+      () => client.snapshot("user", path).data?.items[0] === "current",
+    );
+    assert.equal(calls, 2);
+  }
+});
+
+test("Native browser cancellation and superseded read failures recover without publishing user errors", async (t) => {
+  for (const nativeAbort of [true, false]) {
+    const userErrors = [];
+    let calls = 0,
+      rejectFirst;
+    const client = new QueryClient(() => {
+      calls++;
+      if (calls > 1) return Promise.resolve({ current: true });
+      return new Promise((_resolve, reject) => {
+        rejectFirst = reject;
+      });
+    }, 5);
+    t.after(() => client.dispose());
+    const stop = client.subscribe("user", "/api/tickets", () => {
+      const error = client.snapshot("user", "/api/tickets").error;
+      if (error) userErrors.push(error);
+    });
+    t.after(stop);
+    await until(() => calls === 1);
+    if (!nativeAbort) client.invalidate("user");
+    rejectFirst(
+      nativeAbort
+        ? new DOMException("signal is aborted without reason", "AbortError")
+        : new TypeError("Superseded transport failure"),
+    );
+    await until(() => client.snapshot("user", "/api/tickets").data?.current);
+    assert.deepEqual(userErrors, []);
+    assert.equal(calls, 2);
+  }
+});
+
+test("Real network and access failures still reach the user and 403 evicts private cache even after supersession", async (t) => {
+  let failure;
+  const client = new QueryClient(async () => {
+    if (failure) throw failure;
+    return { privateValue: "scoped fixture" };
+  }, 5);
+  t.after(() => client.dispose());
+  await client.request("user", "/api/accounting");
+  const userErrors = [];
+  const refresh = () =>
+    completeActiveRead(async () => {
+      await client.request("user", "/api/accounting", true);
+    }).catch((error) => userErrors.push(error.message));
+  failure = new TypeError("Failed to fetch");
+  await refresh();
+  assert.match(
+    client.snapshot("user", "/api/accounting").error,
+    /Failed to fetch/,
+  );
+  assert.equal(
+    client.snapshot("user", "/api/accounting").data.privateValue,
+    "scoped fixture",
+  );
+  failure = Object.assign(new Error("Access denied"), { status: 403 });
+  const denied = refresh();
+  client.invalidate("user");
+  await denied;
+  assert.deepEqual(userErrors, ["Failed to fetch", "Access denied"]);
+  assert.equal(client.snapshot("user", "/api/accounting").data, undefined);
+  assert.match(
+    client.snapshot("user", "/api/accounting").error,
+    /Access denied/,
+  );
+});
+
+test("Cancellation detection does not silence deadlines or similarly worded real errors", () => {
+  assert.equal(
+    isRequestCancelled(new DOMException("Cancelled", "AbortError")),
+    true,
+  );
+  assert.equal(
+    isRequestCancelled(new DOMException("Deadline", "TimeoutError")),
+    false,
+  );
+  assert.equal(
+    isRequestCancelled(new TypeError("signal is aborted without reason")),
+    false,
+  );
+  assert.equal(
+    isRequestCancelled(Object.assign(new Error("Forbidden"), { status: 403 })),
+    false,
+  );
+  const deadline = new DOMException("Deadline", "TimeoutError");
+  const signal = AbortSignal.abort(deadline);
+  assert.equal(isRequestCancelled(deadline, signal), false);
+});
+
+test("API transport messages are readable while original causes and domain validation stay intact", () => {
+  const transport = new TypeError("Failed to fetch");
+  const network = normalizeRequestError(transport);
+  assert.ok(network instanceof ApiError);
+  assert.match(network.message, /Не удалось связаться с сервером/);
+  assert.equal(network.code, "NETWORK_ERROR");
+  assert.equal(network.status, 0);
+  assert.equal(network.cause, transport);
+  const deadline = new DOMException("signal timed out", "TimeoutError");
+  const timeout = normalizeRequestError(deadline);
+  assert.match(timeout.message, /Сервер не ответил вовремя/);
+  assert.equal(timeout.code, "REQUEST_TIMEOUT");
+  assert.equal(timeout.status, 0);
+  assert.equal(timeout.cause, deadline);
+  assert.equal(isRequestCancelled(timeout), false);
+  for (const status of [400, 403]) {
+    const domain = new ApiError("Серверное сообщение", status, "DOMAIN_RULE", [
+      { path: "title", message: "Заполните название" },
+    ]);
+    assert.equal(normalizeRequestError(domain), domain);
+    assert.equal(domain.fields[0].message, "Заполните название");
+  }
+  const cancelled = normalizeRequestError(
+    new DOMException("Aborted", "AbortError"),
+  );
+  assert.equal(isRequestCancelled(cancelled), true);
 });
 
 test("Realtime protocol rejects malformed, unknown and oversized invalidations", () => {

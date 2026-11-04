@@ -1,6 +1,7 @@
+import { ActionIcon } from "../business/ActionIcon";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { type TenantDetailTab } from "../../shared/types";
-import { Button } from "../../ui";
+import { Button, IconButton } from "../../ui";
 import { TenantInfoTab } from "./components/TenantInfoTab";
 import { TenantContractsTab } from "./components/TenantContractsTab";
 import { TenantPaymentsTab } from "./components/TenantPaymentsTab";
@@ -32,10 +33,7 @@ export function ManagerTenantDetail() {
     { id: "payments", label: ui.payments },
     {
       id: "meters",
-      label:
-        localeText(managerUi, "ru")
-          ? "Счетчики"
-          : "Meters",
+      label: localeText(managerUi, "ru") ? "Счетчики" : "Meters",
     },
     { id: "notes", label: ui.notes },
     { id: "tickets", label: managerUi.nav.tickets },
@@ -49,14 +47,15 @@ export function ManagerTenantDetail() {
   return (
     <section className="mvp-page">
       <div className="mvp-detail-head">
-        <Button
+        <IconButton
+          label={managerUi.back}
           variant="plain"
           className="mvp-back"
           onClick={() => setManagerScreen("tenants")}
           type="button"
         >
-          {managerUi.back}
-        </Button>
+          <ActionIcon name="back" />
+        </IconButton>
         <div>
           <h2>
             {tenantDetail?.tenant.name ??
@@ -66,14 +65,13 @@ export function ManagerTenantDetail() {
         </div>
         {tenantDetail ? (
           <div className="mvp-actions">
-            <Button
-              variant="secondary"
-              className="secondary-button"
+            <IconButton
+              label={adminEditLabel}
               onClick={() => openManagerTenantEdit(tenantDetail.tenant)}
               type="button"
             >
-              {adminEditLabel}
-            </Button>
+              <ActionIcon name="edit" />
+            </IconButton>
             {canDeletePortfolioItems ? (
               <Button
                 variant="text"

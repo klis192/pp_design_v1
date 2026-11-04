@@ -107,6 +107,10 @@ export function ManagerScreen() {
     openTicketDetail,
     openManagerLeaseEdit,
     setManagerScreen,
+    operationsRoute,
+    setOperationsRoute,
+    agendaRoute,
+    setAgendaRoute,
     tickets,
     refreshWorkspace,
     openUnitDetail,
@@ -115,6 +119,8 @@ export function ManagerScreen() {
   if (managerScreen === "agenda")
     return (
       <Agenda
+        route={agendaRoute}
+        onRouteChange={setAgendaRoute}
         token={session.token}
         properties={overview.properties}
         onTicket={openTicketDetail}
@@ -122,13 +128,18 @@ export function ManagerScreen() {
           const lease = overview.leases.find((l) => l.id === id);
           if (lease) openManagerLeaseEdit(lease);
         }}
-        onOperations={() => setManagerScreen("operations")}
+        onOperations={(target) => {
+          setOperationsRoute(target);
+          setManagerScreen("operations");
+        }}
         onBilling={() => setManagerScreen("billing")}
       />
     );
   if (managerScreen === "operations")
     return (
       <Operations
+        route={operationsRoute}
+        onRouteChange={setOperationsRoute}
         token={session.token}
         user={session.user}
         overview={overview}

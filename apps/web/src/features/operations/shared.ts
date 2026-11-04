@@ -1,4 +1,6 @@
 import { apiRequest } from "../../api/client";
+import type { Dispatch, SetStateAction } from "react";
+import type { OperationsRoute } from "../../shared/operations-route";
 import type { Permission } from "../../../../../packages/contracts/src/permissions";
 export const tabPermission: Record<string, Permission> = {
   equipment: "equipment.write",
@@ -168,6 +170,8 @@ export type Props = {
   onUnit: (id: string) => void;
   onTicket: (id: string) => void;
   initialTab?: string;
+  route?: OperationsRoute;
+  onRouteChange?: Dispatch<SetStateAction<OperationsRoute>>;
   onCreateUser?: () => void;
 };
 

@@ -7,6 +7,10 @@ import {
 } from "../../../../../packages/contracts/src/permissions";
 import { Checkbox, Input, Select, Textarea } from "../../ui";
 import {
+  isOperationsTab,
+  supportsOperationsProperty,
+} from "../../shared/operations-route";
+import {
   OperationsData,
   Props,
   emptyData,
@@ -23,9 +27,22 @@ export function useOperationsModel({
   onUnit,
   onTicket,
   initialTab = "equipment",
+  route,
+  onRouteChange,
   onCreateUser,
 }: Props) {
-  const [tab, setTab] = useState(initialTab);
+  const [localTab, setLocalTab] = useState(initialTab);
+  const tab = route?.tab ?? localTab;
+  const setTab = (value: string) => {
+    if (route && onRouteChange && isOperationsTab(value))
+      onRouteChange((current) => ({
+        ...current,
+        tab: value,
+        recordId: "",
+        propertyId: supportsOperationsProperty(value) ? current.propertyId : "",
+      }));
+    else setLocalTab(value);
+  };
   const resource = useLiveQuery<OperationsData>(
     token,
     "/api/operations",
@@ -37,7 +54,17 @@ export function useOperationsModel({
   const error = failure || resource.error;
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
-  const [property, setProperty] = useState("");
+  const [localProperty, setLocalProperty] = useState("");
+  const property = route?.propertyId ?? localProperty;
+  const setProperty = (value: string) => {
+    if (route && onRouteChange)
+      onRouteChange((current) => ({
+        ...current,
+        propertyId: value,
+        recordId: "",
+      }));
+    else setLocalProperty(value);
+  };
   const [query, setQuery] = useState("");
   const [readingMeter, setReadingMeter] = useState("");
   const load = resource.load;
@@ -230,6 +257,7 @@ export function useOperationsModel({
     tab,
     setTab,
     data,
+    loaded: resource.hasData,
     draft,
     setDraft,
     error,

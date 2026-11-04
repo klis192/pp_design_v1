@@ -1,0 +1,2437 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-04",
+  "revision": "85f8e146869ae71f129d67b5dbf31a7eb512f9ef",
+  "method": "Static read-only audit; no runtime, production, 1C or device execution. Existing tests inspected as specifications, not newly executed proof.",
+  "source": {
+    "path": "../materials/specification-original.docx",
+    "sha256": "efbb3352de407c93668f242d4716b29ac9ae9eea39a1618fad36196bceeb4a01",
+    "xmlParagraphs": 315,
+    "all155SourceTextsMatched": true,
+    "paragraphIndexIsZeroBased": true
+  },
+  "statusCounts": {
+    "реализовано": 95,
+    "частично": 38,
+    "нужен внешний доступ": 4,
+    "нет": 13,
+    "не проверено": 5
+  },
+  "scopeCounts": {
+    "MVP": 123,
+    "следующий этап": 21,
+    "сопровождение": 6,
+    "схема": 3,
+    "внедрение": 2
+  },
+  "groups": {
+    "ARC": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Операционная CRM отделена от учетной проекции; связанные с 1С договоры блокируют локальное начисление и оплату. Клиенты обращаются к CRM API.",
+      "evidencePaths": [
+        "apps/api/src/domain/accounting.js",
+        "apps/api/src/database/billing.js",
+        "apps/api/src/operations.js",
+        "apps/mobile/scripts/prepare.mjs",
+        "tests/accounting.test.mjs"
+      ]
+    },
+    "IDENTITY": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Идентичность sourceId + entityType + externalId, версии/снимки, запрет угадывания связей. Две реальные базы 1С совместно в этом аудите не проверялись.",
+      "evidencePaths": [
+        "apps/api/src/domain/accounting.js",
+        "packages/contracts/src/accounting.ts",
+        "tests/accounting-catalog.test.mjs",
+        "tests/accounting-master.test.mjs"
+      ]
+    },
+    "ACCESS": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Контекстные назначения, период, retainHistory, отдельные действия и отзыв; собственник не получает финансовые права арендатора автоматически. Матрица заказчика требует утверждения.",
+      "evidencePaths": [
+        "apps/api/src/domain/context-access.js",
+        "apps/api/src/domain/financial-access.js",
+        "packages/contracts/src/access.ts",
+        "packages/contracts/src/permissions.ts",
+        "apps/web/src/features/business/AccessWorkspace.tsx",
+        "tests/business-workflows.test.mjs",
+        "tests/history-access.test.mjs"
+      ]
+    },
+    "OTP": {
+      "status": "нужен внешний доступ",
+      "scope": "MVP",
+      "finding": "Телефонный OTP, TTL/attempts и доставка через Telegram/VK/WhatsApp есть. Нужны реальные согласованные телефон, привязка и канал; тестовая admin-сессия не доказывает доставку OTP.",
+      "evidencePaths": [
+        "apps/api/src/routes/auth.js",
+        "apps/api/src/services/delivery.js",
+        "apps/api/src/bot-links.js",
+        "apps/web/src/features/auth/LoginPage.tsx",
+        "tests/bot-links.test.mjs"
+      ]
+    },
+    "MOBILE": {
+      "status": "частично",
+      "scope": "MVP",
+      "finding": "Два appId client/worker, раздельные ресурсы, подготовка Android/iOS и ограничение ролей есть. Нет доказательства четырех release-подписей, физических камер/файлов, background/resume, плохой сети, iOS и push.",
+      "evidencePaths": [
+        "apps/mobile/scripts/prepare.mjs",
+        "apps/mobile/scripts/android-debug.mjs",
+        "apps/web/src/mobile-product.ts",
+        "apps/mobile/README.md",
+        "tests/mobile-products.mjs",
+        "tests/realtime-mobile-origin.test.mjs"
+      ]
+    },
+    "CRM": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Рабочие экраны и серверные permissions есть; функции распределены по многим разделам. У каждой роли собственные приоритеты и приемочные сценарии; единый экран со всеми функциями не является целью.",
+      "evidencePaths": [
+        "apps/web/src/features/shell/ManagerScreen.tsx",
+        "apps/web/src/features/shell/ManagerShell.tsx",
+        "packages/contracts/src/permissions.ts",
+        "tests/platform.test.mjs",
+        "tests/browser.mjs"
+      ]
+    },
+    "REGISTRATION": {
+      "status": "частично",
+      "scope": "MVP",
+      "finding": "Номер, помещение, категория, приоритет, описание и автор сохраняются. В форме диспетчера нет отдельного канала/контактов звонящего; арендатор выбирается первым незавершенным договором помещения. Нужны явный заявитель и выбор договора при неоднозначности.",
+      "evidencePaths": [
+        "apps/web/src/features/tickets/ManagerTicketCreate.tsx",
+        "apps/web/src/state/actions/tickets.ts",
+        "apps/api/src/routes/tickets.js",
+        "apps/api/src/database/tickets.js",
+        "tests/ticket-consistency.test.mjs"
+      ]
+    },
+    "WORKFLOW": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Регистрация, назначение, выполнение, пауза, результат, независимая приемка, возврат и закрытие с версией решения и запретом обхода прямой сменой статуса.",
+      "evidencePaths": [
+        "apps/api/src/domain/ticket-workflow.js",
+        "apps/api/src/routes/business-workflows.js",
+        "apps/web/src/features/business/TicketWorkflowPanel.tsx",
+        "tests/business-workflows.test.mjs",
+        "tests/postgres/business-workflows.test.mjs"
+      ]
+    },
+    "DISPATCH": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Службы/участники и маршрут категория → служба/принимающий уже есть; назначение проверяет состав службы. Нужен удобный вход в ежедневную диспетчеризацию, не повторная реализация модуля.",
+      "evidencePaths": [
+        "apps/api/src/domain/dispatch.js",
+        "apps/api/src/persistence/migrations/015-dispatch.sql",
+        "apps/web/src/features/business/DispatchWorkspace.tsx",
+        "tests/dispatch.test.mjs",
+        "tests/postgres/dispatch.test.mjs"
+      ]
+    },
+    "ADMIN_CONFIG": {
+      "status": "частично",
+      "scope": "MVP",
+      "finding": "Пользователи, права, справочники, службы/маршруты редактируются. Статусы и SLA остаются константами; редактора статусов/SLA/эскалаций нет. Допустимую конфигурацию надо согласовать поверх стабильных команд/этапов.",
+      "evidencePaths": [
+        "apps/web/src/features/business/AccessWorkspace.tsx",
+        "apps/web/src/features/business/DispatchWorkspace.tsx",
+        "apps/api/src/database/constants.js",
+        "apps/web/src/projectData.ts",
+        "packages/contracts/src/business-workflows.ts"
+      ]
+    },
+    "APPROVAL": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Текущая смета/условия согласуются уполномоченным лицом; новая версия снимает старое согласие; начало/акт требуют актуального решения. Виды платных услуг и согласующие задаются заказчиком.",
+      "evidencePaths": [
+        "apps/api/src/domain/estimates.js",
+        "apps/api/src/domain/ticket-workflow.js",
+        "apps/web/src/features/platform/Estimates.tsx",
+        "apps/web/src/features/business/TicketWorkTerms.tsx",
+        "tests/platform.test.mjs",
+        "tests/postgres/work-estimates.test.mjs"
+      ]
+    },
+    "EXECUTION": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Назначенные задачи, отказ до старта с причиной, пауза/возобновление, обязательные фото до/после, чек-лист и независимая приемка уже есть. Физический мобильный результат отдельно в MOBILE.",
+      "evidencePaths": [
+        "apps/api/src/domain/ticket-workflow.js",
+        "apps/api/src/domain/ticket-view.js",
+        "apps/web/src/features/business/TicketWorkPhotos.tsx",
+        "apps/web/src/features/tickets/Service.tsx",
+        "apps/api/src/persistence/migrations/014-executor-refusal.sql",
+        "tests/executor-refusal.test.mjs",
+        "tests/business-workflows.test.mjs"
+      ]
+    },
+    "ARCHIVE": {
+      "status": "частично",
+      "scope": "MVP",
+      "finding": "Поиск архива по помещению, периоду, категории, тексту и createdBy есть. createdBy — автор ввода, а не самостоятельный заявитель телефонного обращения; это требует модели/формы.",
+      "evidencePaths": [
+        "apps/api/src/domain/ticket-search.js",
+        "packages/contracts/src/ticket-search.ts",
+        "apps/web/src/features/tickets/ManagerTickets.tsx",
+        "tests/ticket-search.test.mjs"
+      ]
+    },
+    "HISTORY": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "История статуса/исполнителя/срока и решений, комментарии/вложения, связанные ремонты оборудования сохраняются. Следует сделать контекстную историю легко доступной.",
+      "evidencePaths": [
+        "apps/api/src/database/tickets.js",
+        "apps/api/src/domain/ticket-workflow.js",
+        "apps/web/src/features/tickets/ManagerTicketDetail.tsx",
+        "apps/web/src/features/operations/OperationCard.tsx",
+        "tests/ticket-consistency.test.mjs"
+      ]
+    },
+    "SLA": {
+      "status": "частично",
+      "scope": "MVP",
+      "finding": "Сроки/просрочка отображаются в списках/канбане и сводках. Дефолтные SLA заданы константами; согласованные правила эскалации и их редактор не обнаружены.",
+      "evidencePaths": [
+        "apps/api/src/database/constants.js",
+        "packages/contracts/src/domain.js",
+        "apps/web/src/features/tickets/ManagerTickets.tsx",
+        "apps/api/src/services/queries/workspace.js"
+      ]
+    },
+    "PPR": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Планы/регламенты, календарная повторяемость/горизонт/endDate, minute timer, задания без дублей и снимок чек-листа есть. Регламент и выданное задание надо различать в новом интерфейсе.",
+      "evidencePaths": [
+        "apps/api/src/operations.js",
+        "apps/api/src/domain/maintenance.js",
+        "apps/api/src/index.js",
+        "apps/web/src/features/operations/Operations.tsx",
+        "tests/platform.test.mjs",
+        "tests/maintenance-import.test.mjs"
+      ]
+    },
+    "PPR_IMPORT": {
+      "status": "нужен внешний доступ",
+      "scope": "MVP",
+      "finding": "CSV/XLSX, проверка колонок/дат/формул/неоднозначных связей, preview, атомарный импорт и повтор без потери ручных правок реализованы. Нужен фактический график заказчика для приемки.",
+      "evidencePaths": [
+        "apps/api/src/services/maintenance-import.js",
+        "apps/api/src/services/maintenance-sheet.js",
+        "apps/web/src/features/platform/MaintenanceImport.tsx",
+        "tests/maintenance-import.test.mjs",
+        "tests/postgres/maintenance-import.test.mjs"
+      ]
+    },
+    "PPR_PROGRESS": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "План/факт, просрочка, мотивированный перенос одного задания и технические замечания с сохранением исходного плана и истории оборудования.",
+      "evidencePaths": [
+        "apps/api/src/domain/maintenance-progress.js",
+        "apps/web/src/features/business/MaintenanceProgress.tsx",
+        "apps/web/src/features/operations/OperationCard.tsx",
+        "tests/business-workflows.test.mjs"
+      ]
+    },
+    "READINGS": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Права на прибор/ЛС, открытый период, прежнее значение, формат/снижение/дубли/аномалии, собственное фото, решение инженера и статусы реализованы. Владелец справочника и правила периода требуют решений заказчика.",
+      "evidencePaths": [
+        "apps/api/src/domain/readings.js",
+        "apps/web/src/features/business/ReadingsWorkspace.tsx",
+        "packages/contracts/src/business-workflows.ts",
+        "tests/business-workflows.test.mjs",
+        "tests/postgres/business-workflows.test.mjs"
+      ]
+    },
+    "READING_EXCHANGE": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Принятые значения создают source-bound outbox; ApplyMessage адаптера пишет в регистр расширения; ack после применения и дедупликация. Текущую доставку в рабочую 1С этот аудит не запускал.",
+      "evidencePaths": [
+        "apps/api/src/domain/readings.js",
+        "apps/api/src/domain/accounting.js",
+        "integrations/one-c/wirehouse_bridge.py",
+        "integrations/one-c/src/Exchange.bsl",
+        "tests/one_c_bridge_test.py",
+        "tests/one-c-e2e.mjs"
+      ]
+    },
+    "FINANCE": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "ЛС/периоды/услуги/asOf учётного источника, баланс/версии/права договора и ЛС; выписка БП строится из Хозрасчетный. В UI надо различать внутренний billing и витрину 1С.",
+      "evidencePaths": [
+        "apps/api/src/domain/accounting.js",
+        "apps/api/src/domain/financial-access.js",
+        "apps/web/src/features/business/AccountingWorkspace.tsx",
+        "integrations/one-c/src/Master.bsl",
+        "tests/accounting.test.mjs",
+        "tests/history-access.test.mjs",
+        "tests/one-c-full-e2e.mjs"
+      ]
+    },
+    "DOCUMENTS": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Единый реестр файлов/ссылок, связи с объектом/корпусом/помещением/оборудованием/договором/ЛС/заявкой/прибором и проверка прав/истории. Файлы ППР привязаны к конкретной заявке; отдельной связи с самим планом нет.",
+      "evidencePaths": [
+        "apps/api/src/domain/documents.js",
+        "apps/api/src/routes/documents-registry.js",
+        "apps/web/src/features/business/DocumentRegistry.tsx",
+        "packages/contracts/src/business-workflows.ts",
+        "tests/document-building.test.mjs",
+        "tests/history-access.test.mjs"
+      ]
+    },
+    "EXCHANGE": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Inbox/outbox, source/environment/schemaVersion, хеш/версия, rollback, attempts/backoff, claim/ack, ручной повтор, capabilities/heartbeat есть. Серверная 1С и две реальные базы требуют отдельной приемки.",
+      "evidencePaths": [
+        "apps/api/src/domain/accounting.js",
+        "apps/api/src/domain/exchange-worker.js",
+        "apps/api/src/routes/accounting.js",
+        "apps/web/src/features/business/ExchangeJournal.tsx",
+        "integrations/one-c/wirehouse_bridge.py",
+        "tests/accounting.test.mjs",
+        "tests/accounting-bridge.test.mjs",
+        "tests/accounting-catalog.test.mjs",
+        "tests/one_c_bridge_test.py"
+      ]
+    },
+    "NATIVE": {
+      "status": "частично",
+      "scope": "MVP",
+      "finding": "CFE/BSL/агент поддерживают основные группы обмена и документы реализации. Обычного проведения в потоке акта нет: Doc.Write(); demo posting — отдельная ручная операция. Нужны обследование реальных баз, служебная роль, регламент и лицензии.",
+      "evidencePaths": [
+        "integrations/one-c/src/Exchange.bsl",
+        "integrations/one-c/src/Master.bsl",
+        "integrations/one-c/src/Acts.bsl",
+        "integrations/one-c/wirehouse_bridge.py",
+        "docs/ONE_C_0_3_RU.md",
+        "tests/one-c-full-e2e.mjs",
+        "tests/one_c_bridge_test.py"
+      ]
+    },
+    "NOTIFICATIONS": {
+      "status": "частично",
+      "scope": "MVP",
+      "finding": "In-app события, email delivery статусы и сводные сигналы просрочки есть. Workflow-решения/показания/переносы ППР не вызывают полный контур уведомлений; APNs/FCM и реестра устройств нет. WSS не заменяет push закрытого приложения.",
+      "evidencePaths": [
+        "apps/api/src/services/notifications.js",
+        "apps/api/src/services/queries/workspace.js",
+        "apps/api/src/routes/tickets.js",
+        "apps/api/src/routes/business-workflows.js",
+        "apps/api/src/database/notifications.js",
+        "apps/mobile/README.md"
+      ]
+    },
+    "AUDIT": {
+      "status": "реализовано",
+      "scope": "MVP",
+      "finding": "Diff before/after, actor/source/requestId в транзакции; маскирование секретов; heartbeat не засоряет бизнес-аудит. Новые команды должны сохранять этот контракт.",
+      "evidencePaths": [
+        "apps/api/src/persistence/audit.js",
+        "apps/api/src/persistence/database.js",
+        "apps/web/src/features/platform/AuditLog.tsx",
+        "apps/web/src/features/platform/AuditEventDetails.tsx",
+        "tests/platform.test.mjs",
+        "tests/postgres/platform.test.mjs"
+      ]
+    },
+    "PILOT": {
+      "status": "не проверено",
+      "scope": "внедрение",
+      "finding": "Подтверждения текущего пилота на реальных правилах/файлах/пользователях заказчика нет. Помеченная демонстрация 28.10 — историческое свидетельство, не новая приемка.",
+      "evidencePaths": [
+        "docs/ACCEPTANCE_2026-10-28.md",
+        "docs/WORKING_BP_DEMO_2026-10-28.md"
+      ]
+    },
+    "COST": {
+      "status": "частично",
+      "scope": "следующий этап",
+      "finding": "Work logs со ставкой/трудозатратами/materialCost и сметы есть; полноценного расчета себестоимости и распределения зарплаты нет.",
+      "evidencePaths": [
+        "apps/api/src/operations.js",
+        "apps/api/src/domain/estimates.js",
+        "apps/web/src/features/operations/TicketOperations.tsx"
+      ]
+    },
+    "STOCK": {
+      "status": "нет",
+      "scope": "следующий этап",
+      "finding": "Каталог материалов/строки смет не являются складским учетом: нет целевого процесса складов/остатков/партий/движений/резервирования/списаний в 1С.",
+      "evidencePaths": [
+        "apps/api/src/routes/platform.js",
+        "apps/api/src/domain/estimates.js",
+        "apps/api/src/persistence/schema.js"
+      ]
+    },
+    "TELEMETRY": {
+      "status": "нет",
+      "scope": "следующий этап",
+      "finding": "Ручной ввод показаний есть; транспорта/приема телеметрии устройств не обнаружено. Нужны реальные протоколы и правила обработки времени/пропусков/дублей.",
+      "evidencePaths": [
+        "apps/api/src/domain/readings.js",
+        "apps/api/src/routes/operations.js",
+        "apps/api/src/persistence/schema.js"
+      ]
+    },
+    "GEOMETRY": {
+      "status": "частично",
+      "scope": "следующий этап",
+      "finding": "Структура здания/этажей, редактор планов и DXF есть; многослойной истории перепланировок и архива версий геометрии нет.",
+      "evidencePaths": [
+        "apps/api/src/domain/structure.js",
+        "apps/api/src/domain/cad.js",
+        "apps/web/src/features/platform/plans/PlanEditor.tsx",
+        "tests/platform.test.mjs"
+      ]
+    },
+    "BI": {
+      "status": "частично",
+      "scope": "следующий этап",
+      "finding": "Дашборд, суммы задолженности/расходов и прогноз есть; полноценная BI/P&L не определена и не реализована.",
+      "evidencePaths": [
+        "apps/web/src/features/dashboard/ManagerDashboard.tsx",
+        "apps/web/src/features/billing/BillingForecast.tsx",
+        "apps/api/src/agenda.js"
+      ]
+    },
+    "PAYMENTS": {
+      "status": "нет",
+      "scope": "следующий этап",
+      "finding": "Ручная оплата/подтверждения и чтение оплат 1С есть; расширенного эквайринга/банковского платежного контура/ЭДО нет.",
+      "evidencePaths": [
+        "apps/api/src/routes/billing.js",
+        "apps/api/src/database/billing.js",
+        "apps/web/src/features/billing/ManagerBilling.tsx"
+      ]
+    },
+    "HANDOVER": {
+      "status": "нет",
+      "scope": "следующий этап",
+      "finding": "Агрегата передачи помещения, совместного обхода, дефектной ведомости, повторного осмотра, акта передачи и выдачи ключей нет; service_act выполненных работ не заменяет акт передачи.",
+      "evidencePaths": [
+        "apps/api/src/persistence/schema.js",
+        "apps/api/src/routes/leases.js",
+        "apps/api/src/domain/ticket-workflow.js",
+        "apps/web/src/features/leases/ManagerLeases.tsx"
+      ]
+    },
+    "ARTEFACTS": {
+      "status": "реализовано",
+      "scope": "сопровождение",
+      "finding": "Код/контракты/схемы/scripts и инструкции существуют; часть отчетов исторически устарела и должна обновляться вместе с целевой приемкой.",
+      "evidencePaths": [
+        "docs/ARCHITECTURE.md",
+        "docs/API.md",
+        "docs/DEPLOYMENT.md",
+        "docs/DATABASE.md",
+        "integrations/one-c/README.md",
+        "apps/mobile/README.md"
+      ]
+    },
+    "SUMMARY": {
+      "status": "частично",
+      "scope": "MVP",
+      "finding": "Основное ядро/CRM есть; полной приемки MVP нет из-за программных и внешних зависимостей. Число повторяющихся формулировок не является процентом готовности.",
+      "evidencePaths": [
+        "docs/ACCEPTANCE_2026-10-28.md",
+        "apps/api/src/routes/business-workflows.js",
+        "apps/mobile/README.md"
+      ]
+    },
+    "DIAGRAM": {
+      "status": "не проверено",
+      "scope": "схема",
+      "finding": "Три рисунка DOCX являются схемами, не отдельными функциями. Текст/таблицы сверены с кодом; пиксельная трактовка встроенных схем этим проходом не заявляется.",
+      "evidencePaths": [
+        "docs/spec-2026-09.md",
+        "docs/ARCHITECTURE.md"
+      ]
+    }
+  },
+  "items": [
+    {
+      "id": "TZ-P009",
+      "sourceParagraphIndex0": 9,
+      "sourceSection": "1. Назначение и рамки документа",
+      "text": "Ключевая идея1С остается учетным ядром по договорам, лицевым счетам, начислениям и финансовым данным. Операционная работа с заявками, ППР и исполнителями ведется в отдельном CRM/мобильном контуре.",
+      "group": "ARC",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P012",
+      "sourceParagraphIndex0": 12,
+      "sourceSection": "1.1. Зафиксированные вводные",
+      "text": "Два мобильных приложения: собственник/арендатор и исполнитель; обе платформы — iOS и Android.",
+      "group": "MOBILE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P014",
+      "sourceParagraphIndex0": 14,
+      "sourceSection": "1.1. Зафиксированные вводные",
+      "text": "Для диспетчера, инженера, администратора и руководителя требуется внутреннее рабочее место CRM.",
+      "group": "CRM",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P015",
+      "sourceParagraphIndex0": 15,
+      "sourceSection": "1.1. Зафиксированные вводные",
+      "text": "В проекте могут использоваться несколько независимых баз 1С; обмен должен учитывать источник данных.",
+      "group": "IDENTITY",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P016",
+      "sourceParagraphIndex0": 16,
+      "sourceSection": "1.1. Зафиксированные вводные",
+      "text": "Один пользователь может быть связан с несколькими помещениями, договорами и лицевыми счетами.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P017",
+      "sourceParagraphIndex0": 17,
+      "sourceSection": "1.1. Зафиксированные вводные",
+      "text": "Связь пользователя с приложением в базовом сценарии строится по номеру телефона с возможностью ручной корректировки прав.",
+      "group": "OTP",
+      "scope": "MVP",
+      "status": "нужен внешний доступ",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P018",
+      "sourceParagraphIndex0": 18,
+      "sourceSection": "1.1. Зафиксированные вводные",
+      "text": "MVP должен в первую очередь закрыть заявки, исполнителей, ППР, фотоотчеты, роли, базовое отображение лицевых счетов/начислений и передачу показаний.",
+      "group": "SUMMARY",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P020",
+      "sourceParagraphIndex0": 20,
+      "sourceSection": "1.2. Что не должно утяжелять первый релиз",
+      "text": "Полный расчет себестоимости услуг и распределение зарплаты/материалов.",
+      "group": "COST",
+      "scope": "следующий этап",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P021",
+      "sourceParagraphIndex0": 21,
+      "sourceSection": "1.2. Что не должно утяжелять первый релиз",
+      "text": "Полноценный складской учет ТМЦ.",
+      "group": "STOCK",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P022",
+      "sourceParagraphIndex0": 22,
+      "sourceSection": "1.2. Что не должно утяжелять первый релиз",
+      "text": "Автоматическая телеметрия приборов учета.",
+      "group": "TELEMETRY",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P023",
+      "sourceParagraphIndex0": 23,
+      "sourceSection": "1.2. Что не должно утяжелять первый релиз",
+      "text": "Сложная пространственная графика и история перепланировок.",
+      "group": "GEOMETRY",
+      "scope": "следующий этап",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P024",
+      "sourceParagraphIndex0": 24,
+      "sourceSection": "1.2. Что не должно утяжелять первый релиз",
+      "text": "Расширенная BI-аналитика и сложный платежный контур.",
+      "group": "BI",
+      "scope": "следующий этап",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P027",
+      "sourceParagraphIndex0": 27,
+      "sourceSection": "2. Целевая модель решения",
+      "text": "Решение предлагается разделить на учетный и операционный контуры. Это позволяет запускать клиентский сервис и эксплуатационные процессы без полной перестройки бухгалтерского учета.",
+      "group": "ARC",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P032",
+      "sourceParagraphIndex0": 32,
+      "sourceSection": "2. Целевая модель решения",
+      "text": "Договоры, лицевые счета, начисления, оплаты, контрагенты, помещения, приборы учета и учетные справочники.",
+      "group": "IDENTITY",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P035",
+      "sourceParagraphIndex0": 35,
+      "sourceSection": "2. Целевая модель решения",
+      "text": "Заявки, диспетчеризация, исполнители, ППР, сроки, фотоотчеты, документы, коммуникации.",
+      "group": "CRM",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P038",
+      "sourceParagraphIndex0": 38,
+      "sourceSection": "2. Целевая модель решения",
+      "text": "Объекты и ЛС, заявки, статусы, документы, начисления, показания, уведомления.",
+      "group": "MOBILE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P041",
+      "sourceParagraphIndex0": 41,
+      "sourceSection": "2. Целевая модель решения",
+      "text": "Задания, объект, чек-лист, комментарии, фото, фиксация выполнения.",
+      "group": "MOBILE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P044",
+      "sourceParagraphIndex0": 44,
+      "sourceSection": "2. Целевая модель решения",
+      "text": "Техническая документация, фотографии, акты и вложения, связанные с объектами и заявками.",
+      "group": "DOCUMENTS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P048",
+      "sourceParagraphIndex0": 48,
+      "sourceSection": "2.1. Принципы",
+      "text": "Не дублировать в CRM бухгалтерскую логику, которая уже ведется в 1С.",
+      "group": "ARC",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P049",
+      "sourceParagraphIndex0": 49,
+      "sourceSection": "2.1. Принципы",
+      "text": "Не давать мобильным приложениям прямого доступа к 1С.",
+      "group": "ARC",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P050",
+      "sourceParagraphIndex0": 50,
+      "sourceSection": "2.1. Принципы",
+      "text": "Один объект недвижимости должен одинаково идентифицироваться во всех участвующих системах.",
+      "group": "IDENTITY",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P051",
+      "sourceParagraphIndex0": 51,
+      "sourceSection": "2.1. Принципы",
+      "text": "История заявок, согласований и выполнения работ не должна теряться при смене исполнителя или статуса.",
+      "group": "HISTORY",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P052",
+      "sourceParagraphIndex0": 52,
+      "sourceSection": "2.1. Принципы",
+      "text": "Любой процесс должен допускать поэтапное расширение без переделки уже работающего MVP.",
+      "group": "ARTEFACTS",
+      "scope": "сопровождение",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P057",
+      "sourceParagraphIndex0": 57,
+      "sourceSection": "3. Архитектура решения — концептуально",
+      "text": "Рисунок 1. Концептуальная архитектура решения",
+      "group": "DIAGRAM",
+      "scope": "схема",
+      "status": "не проверено",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P058",
+      "sourceParagraphIndex0": 58,
+      "sourceSection": "3. Архитектура решения — концептуально",
+      "text": "Граница ответственностиCRM отвечает за операционный процесс. 1С остается источником учетных данных. Интеграция между ними должна быть отдельным контролируемым контуром, чтобы изменения в 1С не требовали обновления мобильных приложений.",
+      "group": "ARC",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P062",
+      "sourceParagraphIndex0": 62,
+      "sourceSection": "4. Пользователи и роли",
+      "text": "Ролевая модель строится не только по типу пользователя, но и по конкретному объекту, помещению, договору или лицевому счету. Один и тот же человек может иметь разные роли по разным помещениям.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P066",
+      "sourceParagraphIndex0": 66,
+      "sourceSection": "4. Пользователи и роли",
+      "text": "Видит связанные помещения и ЛС, создает заявки, получает уведомления и документы, передает показания при наличии права.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P068",
+      "sourceParagraphIndex0": 68,
+      "sourceSection": "4. Пользователи и роли",
+      "text": "Работает только в рамках действующего договора и разрешенных ЛС: заявки, показания, документы и начисления по правилам доступа.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P070",
+      "sourceParagraphIndex0": 70,
+      "sourceSection": "4. Пользователи и роли",
+      "text": "Регистрирует и классифицирует обращения, назначает службу/исполнителя, контролирует сроки и коммуникации.",
+      "group": "DISPATCH",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P072",
+      "sourceParagraphIndex0": 72,
+      "sourceSection": "4. Пользователи и роли",
+      "text": "Получает задания, фиксирует начало/результат работ, добавляет комментарии и фото, передает на подтверждение.",
+      "group": "EXECUTION",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P074",
+      "sourceParagraphIndex0": 74,
+      "sourceSection": "4. Пользователи и роли",
+      "text": "Контролирует ППР, сложные заявки, качество выполнения, просрочки, технические данные и отчетность.",
+      "group": "PPR_PROGRESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P076",
+      "sourceParagraphIndex0": 76,
+      "sourceSection": "4. Пользователи и роли",
+      "text": "Настраивает пользователей, права, справочники, маршруты, статусы и ручные связи с объектами/ЛС.",
+      "group": "ADMIN_CONFIG",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P079",
+      "sourceParagraphIndex0": 79,
+      "sourceSection": "4.1. Ключевые правила доступа",
+      "text": "Финансовые данные показываются по конкретному договору/лицевому счету, а не просто по факту связи с помещением.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P080",
+      "sourceParagraphIndex0": 80,
+      "sourceSection": "4.1. Ключевые правила доступа",
+      "text": "Собственник и арендатор одного помещения могут видеть разный состав данных.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P081",
+      "sourceParagraphIndex0": 81,
+      "sourceSection": "4.1. Ключевые правила доступа",
+      "text": "Право передавать показания и право согласовывать платную работу задаются отдельно.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P082",
+      "sourceParagraphIndex0": 82,
+      "sourceSection": "4.1. Ключевые правила доступа",
+      "text": "После окончания договора доступ арендатора к новым операциям прекращается; исторические данные отображаются по согласованной политике.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P083",
+      "sourceParagraphIndex0": 83,
+      "sourceSection": "4.1. Ключевые правила доступа",
+      "text": "Ручные изменения прав и связей должны фиксироваться в журнале действий.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P085",
+      "sourceParagraphIndex0": 85,
+      "sourceSection": "5. Основные объекты и связи",
+      "text": "Для бизнес-логики достаточно зафиксировать связи между площадкой, строением, помещением, контрагентом, договором, лицевым счетом, пользователем, заявкой, оборудованием и ППР. Детальная структура полей определяется на этапе проектирования.",
+      "group": "IDENTITY",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P087",
+      "sourceParagraphIndex0": 87,
+      "sourceSection": "5. Основные объекты и связи",
+      "text": "Рисунок 2. Укрупненная модель связей",
+      "group": "DIAGRAM",
+      "scope": "схема",
+      "status": "не проверено",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P088",
+      "sourceParagraphIndex0": 88,
+      "sourceSection": "5. Основные объекты и связи",
+      "text": "Критичное правило моделиПользователь не должен быть жестко привязан только к одному помещению или одному контрагенту. Нужна отдельная связь «пользователь — роль — объект/договор/ЛС» с периодом действия.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P092",
+      "sourceParagraphIndex0": 92,
+      "sourceSection": "6. Процесс обработки заявки",
+      "text": "Целевой процесс объединяет обращения из мобильного приложения и обращения, которые диспетчер регистрирует по телефону, мессенджеру или e-mail. Любая заявка получает номер, объект, категорию, ответственного, историю статусов и подтверждение результата.",
+      "group": "REGISTRATION",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P094",
+      "sourceParagraphIndex0": 94,
+      "sourceSection": "6. Процесс обработки заявки",
+      "text": "Рисунок 3. Базовый жизненный цикл заявки",
+      "group": "DIAGRAM",
+      "scope": "схема",
+      "status": "не проверено",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P102",
+      "sourceParagraphIndex0": 102,
+      "sourceSection": "6.1. Регистрация и классификация",
+      "text": "Создана заявка с объектом/помещением, описанием проблемы и контактами заявителя.",
+      "group": "REGISTRATION",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P105",
+      "sourceParagraphIndex0": 105,
+      "sourceSection": "6.1. Регистрация и классификация",
+      "text": "Определены категория, приоритет, служба, необходимость платного согласования.",
+      "group": "DISPATCH",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P108",
+      "sourceParagraphIndex0": 108,
+      "sourceSection": "6.1. Регистрация и классификация",
+      "text": "Назначен исполнитель или группа, установлен срок и при необходимости чек-лист.",
+      "group": "DISPATCH",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P111",
+      "sourceParagraphIndex0": 111,
+      "sourceSection": "6.1. Регистрация и классификация",
+      "text": "Зафиксированы действия, комментарии, фото и фактическое завершение работы.",
+      "group": "WORKFLOW",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P114",
+      "sourceParagraphIndex0": 114,
+      "sourceSection": "6.1. Регистрация и классификация",
+      "text": "Результат принят, заявка закрыта либо возвращена в работу.",
+      "group": "WORKFLOW",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P117",
+      "sourceParagraphIndex0": 117,
+      "sourceSection": "6.2. Платная заявка",
+      "text": "Если работа относится к платной услуге, после классификации заявка переводится на согласование. До назначения в работу фиксируется согласование стоимости или другого коммерческого условия уполномоченным лицом. Сам расчет стоимости может оставаться во внешнем/учетном контуре на первом этапе; CRM должна хранить факт согласования и результат.",
+      "group": "APPROVAL",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P119",
+      "sourceParagraphIndex0": 119,
+      "sourceSection": "6.3. Контроль качества и история",
+      "text": "Фото до/после и комментарии исполнителя сохраняются в карточке заявки.",
+      "group": "HISTORY",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P120",
+      "sourceParagraphIndex0": 120,
+      "sourceSection": "6.3. Контроль качества и история",
+      "text": "Все изменения статуса, исполнителя и срока сохраняются в истории.",
+      "group": "HISTORY",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P121",
+      "sourceParagraphIndex0": 121,
+      "sourceSection": "6.3. Контроль качества и история",
+      "text": "Просрочка должна быть видна диспетчеру и руководителю.",
+      "group": "SLA",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P122",
+      "sourceParagraphIndex0": 122,
+      "sourceSection": "6.3. Контроль качества и история",
+      "text": "Закрытая заявка остается доступной для поиска по помещению, заявителю, категории и периоду.",
+      "group": "ARCHIVE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P123",
+      "sourceParagraphIndex0": 123,
+      "sourceSection": "6.3. Контроль качества и история",
+      "text": "Повторные обращения по одному объекту/оборудованию должны быть видны в истории.",
+      "group": "HISTORY",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P125",
+      "sourceParagraphIndex0": 125,
+      "sourceSection": "7. Процесс работы исполнителя",
+      "text": "Мобильное приложение исполнителя заменяет передачу задач по телефону/мессенджерам и бумажное подтверждение выполнения. Исполнитель получает только назначенные ему задачи и необходимую информацию по объекту.",
+      "group": "MOBILE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P126",
+      "sourceParagraphIndex0": 126,
+      "sourceSection": "7. Процесс работы исполнителя",
+      "text": "Получить список назначенных задач с приоритетом и сроком.",
+      "group": "EXECUTION",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P127",
+      "sourceParagraphIndex0": 127,
+      "sourceSection": "7. Процесс работы исполнителя",
+      "text": "Открыть карточку объекта, описание заявки, контакты и доступную техническую документацию.",
+      "group": "EXECUTION",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P128",
+      "sourceParagraphIndex0": 128,
+      "sourceSection": "7. Процесс работы исполнителя",
+      "text": "Принять задачу в работу либо зафиксировать причину невозможности выполнения.",
+      "group": "EXECUTION",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P129",
+      "sourceParagraphIndex0": 129,
+      "sourceSection": "7. Процесс работы исполнителя",
+      "text": "Добавлять рабочие комментарии и фотографии по ходу выполнения.",
+      "group": "EXECUTION",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P130",
+      "sourceParagraphIndex0": 130,
+      "sourceSection": "7. Процесс работы исполнителя",
+      "text": "Отметить выполнение, приложить обязательные фото/результаты чек-листа.",
+      "group": "EXECUTION",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P131",
+      "sourceParagraphIndex0": 131,
+      "sourceSection": "7. Процесс работы исполнителя",
+      "text": "Передать результат на подтверждение диспетчеру, инженеру или заявителю — в зависимости от типа заявки.",
+      "group": "EXECUTION",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P132",
+      "sourceParagraphIndex0": 132,
+      "sourceSection": "7. Процесс работы исполнителя",
+      "text": "Минимум для первого релизаСписок задач, карточка задания, статусы, комментарии, фото, дата/время выполнения и передача результата на подтверждение. Учет рабочего времени и зарплаты — отдельный этап.",
+      "group": "MOBILE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P135",
+      "sourceParagraphIndex0": 135,
+      "sourceSection": "8. ППР и регулярная техническая эксплуатация",
+      "text": "Существующий процесс ППР ведется в табличных графиках по строениям и оборудованию. Целевая система должна перенести его в управляемый процесс, где план автоматически порождает задания исполнителям и позволяет видеть план/факт.",
+      "group": "PPR",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P139",
+      "sourceParagraphIndex0": 139,
+      "sourceSection": "8. ППР и регулярная техническая эксплуатация",
+      "text": "Импорт или ручное создание перечня работ по объектам/оборудованию, периодичности и ответственным.",
+      "group": "PPR",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P141",
+      "sourceParagraphIndex0": 141,
+      "sourceSection": "8. ППР и регулярная техническая эксплуатация",
+      "text": "По календарю создаются конкретные задания ППР с датой, объектом и исполнителем/службой.",
+      "group": "PPR",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P143",
+      "sourceParagraphIndex0": 143,
+      "sourceSection": "8. ППР и регулярная техническая эксплуатация",
+      "text": "Исполнитель проходит чек-лист, добавляет комментарии и при необходимости фото.",
+      "group": "EXECUTION",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P145",
+      "sourceParagraphIndex0": 145,
+      "sourceSection": "8. ППР и регулярная техническая эксплуатация",
+      "text": "Инженер видит выполненные, просроченные и перенесенные задания, а также причины отклонений.",
+      "group": "PPR_PROGRESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P147",
+      "sourceParagraphIndex0": 147,
+      "sourceSection": "8. ППР и регулярная техническая эксплуатация",
+      "text": "По оборудованию и объекту сохраняется история проведенных работ и выявленных замечаний.",
+      "group": "HISTORY",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P150",
+      "sourceParagraphIndex0": 150,
+      "sourceSection": "8.1. Требования к импорту существующего графика",
+      "text": "Поддержать загрузку текущего Excel/CSV-графика как исходного источника ППР.",
+      "group": "PPR_IMPORT",
+      "scope": "MVP",
+      "status": "нужен внешний доступ",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P151",
+      "sourceParagraphIndex0": 151,
+      "sourceSection": "8.1. Требования к импорту существующего графика",
+      "text": "Перед загрузкой показывать ошибки и неоднозначные соответствия объектов/оборудования.",
+      "group": "PPR_IMPORT",
+      "scope": "MVP",
+      "status": "нужен внешний доступ",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P152",
+      "sourceParagraphIndex0": 152,
+      "sourceSection": "8.1. Требования к импорту существующего графика",
+      "text": "После импорта пользователь должен иметь возможность скорректировать план в CRM без повторной загрузки файла.",
+      "group": "PPR",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P153",
+      "sourceParagraphIndex0": 153,
+      "sourceSection": "8.1. Требования к импорту существующего графика",
+      "text": "Изменение плана не должно удалять историю уже выполненных заданий.",
+      "group": "PPR",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P155",
+      "sourceParagraphIndex0": 155,
+      "sourceSection": "9. Показания приборов учета и коммунальные данные",
+      "text": "В текущем процессе объемы потребления рассчитываются технической службой и передаются в бухгалтерию; часть расчетов ведется в таблицах. В целевой схеме приложение предоставляет удобный канал ввода показаний, а учет и расчет начислений остаются в 1С.",
+      "group": "ARC",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P156",
+      "sourceParagraphIndex0": 156,
+      "sourceSection": "9. Показания приборов учета и коммунальные данные",
+      "text": "Пользователь видит доступные ему приборы учета по помещению/лицевому счету.",
+      "group": "READINGS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P157",
+      "sourceParagraphIndex0": 157,
+      "sourceSection": "9. Показания приборов учета и коммунальные данные",
+      "text": "В открытом периоде вводит текущее показание и при необходимости прикладывает фотографию прибора.",
+      "group": "READINGS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P158",
+      "sourceParagraphIndex0": 158,
+      "sourceSection": "9. Показания приборов учета и коммунальные данные",
+      "text": "Система выполняет базовые проверки: формат, сравнение с предыдущим показанием, явная аномалия.",
+      "group": "READINGS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P159",
+      "sourceParagraphIndex0": 159,
+      "sourceSection": "9. Показания приборов учета и коммунальные данные",
+      "text": "Сомнительные значения направляются на проверку инженеру.",
+      "group": "READINGS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P160",
+      "sourceParagraphIndex0": 160,
+      "sourceSection": "9. Показания приборов учета и коммунальные данные",
+      "text": "Принятое показание передается в 1С или иной согласованный учетный источник.",
+      "group": "READING_EXCHANGE",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P161",
+      "sourceParagraphIndex0": 161,
+      "sourceSection": "9. Показания приборов учета и коммунальные данные",
+      "text": "Статус обработки виден пользователю: принято, на проверке, отклонено.",
+      "group": "READINGS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P166",
+      "sourceParagraphIndex0": 166,
+      "sourceSection": "10.1. Что отображается пользователю",
+      "text": "Связанные помещения и действующие договоры.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P167",
+      "sourceParagraphIndex0": 167,
+      "sourceSection": "10.1. Что отображается пользователю",
+      "text": "Отдельные лицевые счета по согласованной логике договоров.",
+      "group": "FINANCE",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P168",
+      "sourceParagraphIndex0": 168,
+      "sourceSection": "10.1. Что отображается пользователю",
+      "text": "Начисления по периодам и услугам в детализации, которую предоставляет 1С.",
+      "group": "FINANCE",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P169",
+      "sourceParagraphIndex0": 169,
+      "sourceSection": "10.1. Что отображается пользователю",
+      "text": "Статус оплаты/задолженности — если данные доступны в учетном контуре.",
+      "group": "FINANCE",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P170",
+      "sourceParagraphIndex0": 170,
+      "sourceSection": "10.1. Что отображается пользователю",
+      "text": "Документы и вложения, разрешенные соответствующей роли.",
+      "group": "DOCUMENTS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P172",
+      "sourceParagraphIndex0": 172,
+      "sourceSection": "10.2. Документы и техническая документация",
+      "text": "Технические файлы должны храниться централизованно и быть связаны с объектом, помещением, оборудованием, договором или заявкой. CRM может хранить сам файл либо ссылку на корпоративное хранилище; для пользователя это должно выглядеть как единая карточка документов.",
+      "group": "DOCUMENTS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P176",
+      "sourceParagraphIndex0": 176,
+      "sourceSection": "10.2. Документы и техническая документация",
+      "text": "Проектная документация, технические паспорта, схемы, инструкции.",
+      "group": "DOCUMENTS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P178",
+      "sourceParagraphIndex0": 178,
+      "sourceSection": "10.2. Документы и техническая документация",
+      "text": "Договоры, приложения, акты, документы по начислениям — в пределах прав.",
+      "group": "DOCUMENTS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P180",
+      "sourceParagraphIndex0": 180,
+      "sourceSection": "10.2. Документы и техническая документация",
+      "text": "Паспорта, инструкции, регламенты обслуживания.",
+      "group": "DOCUMENTS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P182",
+      "sourceParagraphIndex0": 182,
+      "sourceSection": "10.2. Документы и техническая документация",
+      "text": "Фото, акты выполнения, чек-листы, подтверждающие документы.",
+      "group": "DOCUMENTS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P185",
+      "sourceParagraphIndex0": 185,
+      "sourceSection": "11. Интеграция с 1С — на уровне процессов",
+      "text": "Технические детали обмена должны быть описаны разработчиком после обследования конкретных баз 1С. На уровне ТЗ фиксируется только, какие группы данных должны участвовать в обмене и в каком направлении.",
+      "group": "NATIVE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P191",
+      "sourceParagraphIndex0": 191,
+      "sourceSection": "11. Интеграция с 1С — на уровне процессов",
+      "text": "Привязка пользователей, заявок, приборов, договоров и ППР к объектам.",
+      "group": "IDENTITY",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P194",
+      "sourceParagraphIndex0": 194,
+      "sourceSection": "11. Интеграция с 1С — на уровне процессов",
+      "text": "Идентификация собственника/арендатора и базовые контакты.",
+      "group": "NATIVE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P197",
+      "sourceParagraphIndex0": 197,
+      "sourceSection": "11. Интеграция с 1С — на уровне процессов",
+      "text": "Определение прав и отображение финансового кабинета.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P200",
+      "sourceParagraphIndex0": 200,
+      "sourceSection": "11. Интеграция с 1С — на уровне процессов",
+      "text": "Отображение расчетов и задолженности без пересчета в CRM.",
+      "group": "ARC",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P203",
+      "sourceParagraphIndex0": 203,
+      "sourceSection": "11. Интеграция с 1С — на уровне процессов",
+      "text": "Показ пользователю доступных счетчиков/ресурсов.",
+      "group": "NATIVE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P206",
+      "sourceParagraphIndex0": 206,
+      "sourceSection": "11. Интеграция с 1С — на уровне процессов",
+      "text": "Передача принятых показаний после проверки.",
+      "group": "READING_EXCHANGE",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P209",
+      "sourceParagraphIndex0": 209,
+      "sourceSection": "11. Интеграция с 1С — на уровне процессов",
+      "text": "При необходимости в 1С передаются только данные, нужные для учета/списаний/аналитики.",
+      "group": "NATIVE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P212",
+      "sourceParagraphIndex0": 212,
+      "sourceSection": "11. Интеграция с 1С — на уровне процессов",
+      "text": "Связь фактических материалов с заявками и бухгалтерским учетом.",
+      "group": "STOCK",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P215",
+      "sourceParagraphIndex0": 215,
+      "sourceSection": "11.1. Обязательные принципы обмена",
+      "text": "Поддерживать несколько баз 1С без смешения данных.",
+      "group": "IDENTITY",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P216",
+      "sourceParagraphIndex0": 216,
+      "sourceSection": "11.1. Обязательные принципы обмена",
+      "text": "Не требовать прямого подключения мобильных приложений к 1С.",
+      "group": "ARC",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P217",
+      "sourceParagraphIndex0": 217,
+      "sourceSection": "11.1. Обязательные принципы обмена",
+      "text": "Иметь механизм контроля ошибок и повторной передачи данных.",
+      "group": "EXCHANGE",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P218",
+      "sourceParagraphIndex0": 218,
+      "sourceSection": "11.1. Обязательные принципы обмена",
+      "text": "Не создавать дубли при повторном обмене.",
+      "group": "EXCHANGE",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P219",
+      "sourceParagraphIndex0": 219,
+      "sourceSection": "11.1. Обязательные принципы обмена",
+      "text": "Разделять тестовый и промышленный контур.",
+      "group": "EXCHANGE",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P220",
+      "sourceParagraphIndex0": 220,
+      "sourceSection": "11.1. Обязательные принципы обмена",
+      "text": "Изменения 1С по возможности выполнять через расширения, чтобы не затруднять обновление типовой конфигурации.",
+      "group": "NATIVE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P222",
+      "sourceParagraphIndex0": 222,
+      "sourceSection": "12. Передача помещения и дефектные ведомости — следующий этап",
+      "text": "В проектных материалах описан отдельный процесс передачи помещения арендатору: совместный обход, фиксация дефектов, устранение замечаний, подписание договора и акта приема-передачи, передача ключей и контактов диспетчерской. Этот процесс логично реализовать поверх уже созданного контура заявок и документов.",
+      "group": "HANDOVER",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P226",
+      "sourceParagraphIndex0": 226,
+      "sourceSection": "12. Передача помещения и дефектные ведомости — следующий этап",
+      "text": "Назначение даты, участники, мобильный чек-лист помещения.",
+      "group": "HANDOVER",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P228",
+      "sourceParagraphIndex0": 228,
+      "sourceSection": "12. Передача помещения и дефектные ведомости — следующий этап",
+      "text": "Замечание с категорией, фото, ответственным и сроком устранения.",
+      "group": "HANDOVER",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P230",
+      "sourceParagraphIndex0": 230,
+      "sourceSection": "12. Передача помещения и дефектные ведомости — следующий этап",
+      "text": "Дефект при необходимости превращается во внутреннюю заявку/задачу.",
+      "group": "HANDOVER",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P232",
+      "sourceParagraphIndex0": 232,
+      "sourceSection": "12. Передача помещения и дефектные ведомости — следующий этап",
+      "text": "Проверка устранения и фиксация результата.",
+      "group": "HANDOVER",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P234",
+      "sourceParagraphIndex0": 234,
+      "sourceSection": "12. Передача помещения и дефектные ведомости — следующий этап",
+      "text": "Хранение акта/договора, фиксация даты передачи и выдачи ключей.",
+      "group": "HANDOVER",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P239",
+      "sourceParagraphIndex0": 239,
+      "sourceSection": "13. Состав MVP",
+      "text": "Приложение собственника/арендатора iOS + Android",
+      "group": "MOBILE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P240",
+      "sourceParagraphIndex0": 240,
+      "sourceSection": "13. Состав MVP",
+      "text": "Полный расчет себестоимости услуг",
+      "group": "COST",
+      "scope": "следующий этап",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P241",
+      "sourceParagraphIndex0": 241,
+      "sourceSection": "13. Состав MVP",
+      "text": "Приложение исполнителя iOS + Android",
+      "group": "MOBILE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P242",
+      "sourceParagraphIndex0": 242,
+      "sourceSection": "13. Состав MVP",
+      "text": "Распределение зарплаты и трудозатрат",
+      "group": "COST",
+      "scope": "следующий этап",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P243",
+      "sourceParagraphIndex0": 243,
+      "sourceSection": "13. Состав MVP",
+      "text": "Внутренняя CRM диспетчера/инженера",
+      "group": "CRM",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P244",
+      "sourceParagraphIndex0": 244,
+      "sourceSection": "13. Состав MVP",
+      "text": "Полноценный склад ТМЦ и автоматические списания",
+      "group": "STOCK",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P245",
+      "sourceParagraphIndex0": 245,
+      "sourceSection": "13. Состав MVP",
+      "text": "Заявки, статусы, сроки, ответственные, фотоотчеты",
+      "group": "SUMMARY",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P246",
+      "sourceParagraphIndex0": 246,
+      "sourceSection": "13. Состав MVP",
+      "text": "Автоматическая телеметрия приборов",
+      "group": "TELEMETRY",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P247",
+      "sourceParagraphIndex0": 247,
+      "sourceSection": "13. Состав MVP",
+      "text": "ППР и задания исполнителям",
+      "group": "PPR",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P248",
+      "sourceParagraphIndex0": 248,
+      "sourceSection": "13. Состав MVP",
+      "text": "Многослойные планировки и история геометрии",
+      "group": "GEOMETRY",
+      "scope": "следующий этап",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P249",
+      "sourceParagraphIndex0": 249,
+      "sourceSection": "13. Состав MVP",
+      "text": "Роли собственник/арендатор/УК и права на объекты/ЛС",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P250",
+      "sourceParagraphIndex0": 250,
+      "sourceSection": "13. Состав MVP",
+      "text": "Расширенная BI-витрина и P&L",
+      "group": "BI",
+      "scope": "следующий этап",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P251",
+      "sourceParagraphIndex0": 251,
+      "sourceSection": "13. Состав MVP",
+      "text": "Базовое отображение ЛС/начислений из 1С",
+      "group": "FINANCE",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P252",
+      "sourceParagraphIndex0": 252,
+      "sourceSection": "13. Состав MVP",
+      "text": "Расширенный платежный/эквайринговый контур",
+      "group": "PAYMENTS",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P253",
+      "sourceParagraphIndex0": 253,
+      "sourceSection": "13. Состав MVP",
+      "text": "Ручная передача показаний с проверкой",
+      "group": "READINGS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P254",
+      "sourceParagraphIndex0": 254,
+      "sourceSection": "13. Состав MVP",
+      "text": "Глубокая автоматизация платных калькуляций",
+      "group": "COST",
+      "scope": "следующий этап",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P255",
+      "sourceParagraphIndex0": 255,
+      "sourceSection": "13. Состав MVP",
+      "text": "Документы, уведомления и история действий",
+      "group": "SUMMARY",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P256",
+      "sourceParagraphIndex0": 256,
+      "sourceSection": "13. Состав MVP",
+      "text": "Полный электронный процесс передачи помещения",
+      "group": "HANDOVER",
+      "scope": "следующий этап",
+      "status": "нет",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P259",
+      "sourceParagraphIndex0": 259,
+      "sourceSection": "13.1. Рекомендуемая последовательность запуска",
+      "text": "Обследование 1С и согласование матрицы ролей/лицевых счетов.",
+      "group": "NATIVE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P260",
+      "sourceParagraphIndex0": 260,
+      "sourceSection": "13.1. Рекомендуемая последовательность запуска",
+      "text": "Прототип обмена: один объект, один пользователь, один ЛС, одна тестовая заявка.",
+      "group": "EXCHANGE",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P261",
+      "sourceParagraphIndex0": 261,
+      "sourceSection": "13.1. Рекомендуемая последовательность запуска",
+      "text": "Разработка CRM и двух мобильных приложений.",
+      "group": "MOBILE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P262",
+      "sourceParagraphIndex0": 262,
+      "sourceSection": "13.1. Рекомендуемая последовательность запуска",
+      "text": "Подключение заявок, исполнителей, документов и уведомлений.",
+      "group": "SUMMARY",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P263",
+      "sourceParagraphIndex0": 263,
+      "sourceSection": "13.1. Рекомендуемая последовательность запуска",
+      "text": "Импорт ППР и запуск мобильного выполнения работ.",
+      "group": "SUMMARY",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P264",
+      "sourceParagraphIndex0": 264,
+      "sourceSection": "13.1. Рекомендуемая последовательность запуска",
+      "text": "Подключение показаний и финансового отображения из 1С.",
+      "group": "SUMMARY",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P265",
+      "sourceParagraphIndex0": 265,
+      "sourceSection": "13.1. Рекомендуемая последовательность запуска",
+      "text": "Пилот на ограниченной группе строений и пользователей.",
+      "group": "PILOT",
+      "scope": "внедрение",
+      "status": "не проверено",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P266",
+      "sourceParagraphIndex0": 266,
+      "sourceSection": "13.1. Рекомендуемая последовательность запуска",
+      "text": "Тиражирование после исправления проблем данных и регламентов.",
+      "group": "PILOT",
+      "scope": "внедрение",
+      "status": "не проверено",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P272",
+      "sourceParagraphIndex0": 272,
+      "sourceSection": "14. Критерии приемки первого релиза",
+      "text": "Пользователь входит по согласованному механизму и видит только разрешенные помещения/ЛС.",
+      "group": "OTP",
+      "scope": "MVP",
+      "status": "нужен внешний доступ",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P274",
+      "sourceParagraphIndex0": 274,
+      "sourceSection": "14. Критерии приемки первого релиза",
+      "text": "Один пользователь корректно работает с несколькими помещениями и договорами.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P276",
+      "sourceParagraphIndex0": 276,
+      "sourceSection": "14. Критерии приемки первого релиза",
+      "text": "Для одного помещения роли получают разные данные и действия в соответствии с матрицей прав.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P278",
+      "sourceParagraphIndex0": 278,
+      "sourceSection": "14. Критерии приемки первого релиза",
+      "text": "Создание → классификация → назначение → выполнение с фото → подтверждение → закрытие.",
+      "group": "WORKFLOW",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P280",
+      "sourceParagraphIndex0": 280,
+      "sourceSection": "14. Критерии приемки первого релиза",
+      "text": "Есть отдельный этап согласования до выполнения и сохранена история решения.",
+      "group": "APPROVAL",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P282",
+      "sourceParagraphIndex0": 282,
+      "sourceSection": "14. Критерии приемки первого релиза",
+      "text": "Получает задачу в мобильном приложении, фиксирует результат и фото.",
+      "group": "MOBILE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P284",
+      "sourceParagraphIndex0": 284,
+      "sourceSection": "14. Критерии приемки первого релиза",
+      "text": "План создает задания; выполненные и просроченные работы видны инженеру.",
+      "group": "PPR",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P286",
+      "sourceParagraphIndex0": 286,
+      "sourceSection": "14. Критерии приемки первого релиза",
+      "text": "Пользователь передает значение, инженер проверяет, результат передается в учетный контур.",
+      "group": "SUMMARY",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P288",
+      "sourceParagraphIndex0": 288,
+      "sourceSection": "14. Критерии приемки первого релиза",
+      "text": "Данные синхронизируются без дублей; ошибки видны ответственному и могут быть обработаны повторно.",
+      "group": "EXCHANGE",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P290",
+      "sourceParagraphIndex0": 290,
+      "sourceSection": "14. Критерии приемки первого релиза",
+      "text": "Документы и фото доступны только тем ролям, которым разрешен соответствующий объект/процесс.",
+      "group": "DOCUMENTS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P292",
+      "sourceParagraphIndex0": 292,
+      "sourceSection": "14. Критерии приемки первого релиза",
+      "text": "Сохраняется история ключевых действий, статусов, исполнителей и ручных изменений прав.",
+      "group": "AUDIT",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P305",
+      "sourceParagraphIndex0": 305,
+      "sourceSection": "15.1. Что ожидается от стороннего разработчика",
+      "text": "Уточненная схема архитектуры без изменения согласованных границ ответственности.",
+      "group": "ARTEFACTS",
+      "scope": "сопровождение",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P306",
+      "sourceParagraphIndex0": 306,
+      "sourceSection": "15.1. Что ожидается от стороннего разработчика",
+      "text": "Описание интеграции с конкретными базами 1С после технического обследования.",
+      "group": "NATIVE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P307",
+      "sourceParagraphIndex0": 307,
+      "sourceSection": "15.1. Что ожидается от стороннего разработчика",
+      "text": "Прототип ключевых пользовательских сценариев и матрица ролей.",
+      "group": "ACCESS",
+      "scope": "MVP",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P308",
+      "sourceParagraphIndex0": 308,
+      "sourceSection": "15.1. Что ожидается от стороннего разработчика",
+      "text": "Оценка этапов MVP и перечень зависимостей/рисков.",
+      "group": "ARTEFACTS",
+      "scope": "сопровождение",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P309",
+      "sourceParagraphIndex0": 309,
+      "sourceSection": "15.1. Что ожидается от стороннего разработчика",
+      "text": "Рабочие сборки мобильных приложений и CRM, инструкции по развертыванию и администрированию.",
+      "group": "MOBILE",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P310",
+      "sourceParagraphIndex0": 310,
+      "sourceSection": "15.1. Что ожидается от стороннего разработчика",
+      "text": "Документация по обмену, резервному копированию и восстановлению.",
+      "group": "ARTEFACTS",
+      "scope": "сопровождение",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P311",
+      "sourceParagraphIndex0": 311,
+      "sourceSection": "15.1. Что ожидается от стороннего разработчика",
+      "text": "Набор приемочных сценариев и результаты тестирования.",
+      "group": "ARTEFACTS",
+      "scope": "сопровождение",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P312",
+      "sourceParagraphIndex0": 312,
+      "sourceSection": "15.1. Что ожидается от стороннего разработчика",
+      "text": "Исходный код и все необходимые артефакты для дальнейшего сопровождения проекта.",
+      "group": "ARTEFACTS",
+      "scope": "сопровождение",
+      "status": "реализовано",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TZ-P313",
+      "sourceParagraphIndex0": 313,
+      "sourceSection": "15.1. Что ожидается от стороннего разработчика",
+      "text": "Итоговый ориентирПервый релиз должен дать работающий операционный процесс: пользователь создает обращение, диспетчер управляет им, исполнитель выполняет работу в мобильном приложении, инженер контролирует ППР, а 1С предоставляет учетный контекст — объекты, договоры, ЛС, начисления и приборы учета.",
+      "group": "SUMMARY",
+      "scope": "MVP",
+      "status": "частично",
+      "verification": "static-code-and-existing-test-source",
+      "runtimeAcceptance": "not-run-in-this-audit"
+    }
+  ],
+  "openBusinessQuestions": [
+    {
+      "id": "TZ-P295",
+      "text": "Какие типы договоров существуют и какие из них должны создавать отдельный лицевой счет.",
+      "status": "требует решения заказчика"
+    },
+    {
+      "id": "TZ-P296",
+      "text": "Кто видит начисления и показания, если у помещения одновременно есть собственник и арендатор.",
+      "status": "требует решения заказчика"
+    },
+    {
+      "id": "TZ-P297",
+      "text": "Какая база 1С является источником данных для каждого юридического лица/площадки.",
+      "status": "требует решения заказчика"
+    },
+    {
+      "id": "TZ-P298",
+      "text": "Какие данные по начислениям и оплатам реально доступны в используемой конфигурации 1С.",
+      "status": "требует решения заказчика"
+    },
+    {
+      "id": "TZ-P299",
+      "text": "Где ведется мастер-справочник приборов учета и кто подтверждает показания.",
+      "status": "требует решения заказчика"
+    },
+    {
+      "id": "TZ-P300",
+      "text": "Какие типы заявок являются платными и кто имеет право согласовывать работу.",
+      "status": "требует решения заказчика"
+    },
+    {
+      "id": "TZ-P301",
+      "text": "Какие статусы, SLA и правила эскалации нужны диспетчерской.",
+      "status": "требует решения заказчика"
+    },
+    {
+      "id": "TZ-P302",
+      "text": "Какой объем существующего ППР и технической документации требуется загрузить на старте.",
+      "status": "требует решения заказчика"
+    },
+    {
+      "id": "TZ-P303",
+      "text": "Нужна ли в первом релизе интеграция с платежами/ЭДО/другими внешними сервисами.",
+      "status": "требует решения заказчика"
+    }
+  ],
+  "normalizedRequirements": [
+    {
+      "id": "ARC-01",
+      "title": "Учет и эксплуатация",
+      "status": "реализовано",
+      "groups": [
+        "ARC"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "INT-01",
+      "title": "Независимые источники",
+      "status": "реализовано",
+      "groups": [
+        "IDENTITY"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "INT-02",
+      "title": "Надёжный обмен",
+      "status": "реализовано",
+      "groups": [
+        "EXCHANGE"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "INT-03",
+      "title": "Среда обмена",
+      "status": "реализовано",
+      "groups": [
+        "EXCHANGE"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "ACC-01",
+      "title": "Несколько связей человека",
+      "status": "реализовано",
+      "groups": [
+        "ACCESS"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "ACC-02",
+      "title": "Финансы договора/ЛС",
+      "status": "реализовано",
+      "groups": [
+        "ACCESS",
+        "FINANCE"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "ACC-03",
+      "title": "Независимые действия",
+      "status": "реализовано",
+      "groups": [
+        "ACCESS"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "ACC-04",
+      "title": "Срок/отзыв/история",
+      "status": "реализовано",
+      "groups": [
+        "ACCESS"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "MOB-01",
+      "title": "Два мобильных продукта",
+      "status": "частично",
+      "groups": [
+        "MOBILE"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TKT-01",
+      "title": "Цикл заявки",
+      "status": "реализовано",
+      "groups": [
+        "WORKFLOW"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TKT-02",
+      "title": "Платное согласование",
+      "status": "реализовано",
+      "groups": [
+        "APPROVAL"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TKT-03",
+      "title": "Исполнение/приёмка/отказ",
+      "status": "реализовано",
+      "groups": [
+        "EXECUTION"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "TKT-04",
+      "title": "Диспетчеризация/архив",
+      "status": "частично",
+      "groups": [
+        "DISPATCH",
+        "ARCHIVE",
+        "SLA",
+        "REGISTRATION"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "PPR-01",
+      "title": "Регламенты/генерация",
+      "status": "реализовано",
+      "groups": [
+        "PPR"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "PPR-02",
+      "title": "Фактический Excel/CSV",
+      "status": "нужен внешний доступ",
+      "groups": [
+        "PPR_IMPORT"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "PPR-03",
+      "title": "План-факт/перенос/замечание",
+      "status": "реализовано",
+      "groups": [
+        "PPR_PROGRESS"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "MTR-01",
+      "title": "Подача/проверка показания",
+      "status": "реализовано",
+      "groups": [
+        "READINGS"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "MTR-02",
+      "title": "Передача принятого показания",
+      "status": "реализовано",
+      "groups": [
+        "READING_EXCHANGE"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "FIN-01",
+      "title": "Учётная витрина",
+      "status": "реализовано",
+      "groups": [
+        "FINANCE"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "DOC-01",
+      "title": "Реестр документов",
+      "status": "реализовано",
+      "groups": [
+        "DOCUMENTS"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "NTF-01",
+      "title": "Уведомления",
+      "status": "частично",
+      "groups": [
+        "NOTIFICATIONS"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "AUD-01",
+      "title": "Аудит",
+      "status": "реализовано",
+      "groups": [
+        "AUDIT"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    },
+    {
+      "id": "OPS-01",
+      "title": "Миграции/backup/приёмка",
+      "status": "не проверено",
+      "groups": [
+        "PILOT",
+        "ARTEFACTS"
+      ],
+      "runtimeAcceptance": "not-run-in-this-audit"
+    }
+  ]
+}

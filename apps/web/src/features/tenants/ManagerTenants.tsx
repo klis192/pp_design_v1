@@ -1,3 +1,5 @@
+import { ActionIcon } from "../business/ActionIcon";
+import { IconButton } from "../../ui";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { riskLevelOptions } from "../../projectData";
 import { ResponsiveTable } from "../../ResponsiveTable";
@@ -146,17 +148,16 @@ export function ManagerTenants() {
                   <td>{formatDate(tenant.nextExpiry, locale)}</td>
                   <td>{tenant.openTicketCount}</td>
                   <td>
-                    <Button
-                      variant="secondary"
-                      className="secondary-button secondary-button--compact"
+                    <IconButton
+                      label={adminEditLabel}
                       onClick={(event) => {
                         event.stopPropagation();
                         openManagerTenantEdit(tenant);
                       }}
                       type="button"
                     >
-                      {adminEditLabel}
-                    </Button>
+                      <ActionIcon name="edit" />
+                    </IconButton>
                     {canDeletePortfolioItems ? (
                       <Button
                         variant="text"

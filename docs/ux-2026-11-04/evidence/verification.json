@@ -1,0 +1,91 @@
+{
+  "date": "2026-11-04",
+  "codeBaseline": "85f8e146869ae71f129d67b5dbf31a7eb512f9ef",
+  "scope": "Common UI and navigation stage; not complete specification acceptance",
+  "environment": "Built React + isolated real API and PostgreSQL relational-v3; synthetic data",
+  "typecheck": "PASS",
+  "build": "PASS",
+  "unit": {
+    "passed": 20,
+    "failed": 0
+  },
+  "routeBrowserGroups": 10,
+  "dashboardBrowser": "PASS controlled HTTP/WS fixtures",
+  "realApiUi": {
+    "passed": true,
+    "checks": [
+      "Real UI comment POST, persisted GET after reload, source return with search",
+      "Real UI create ticket persists in isolated PostgreSQL through API and reload",
+      "14 sections at 5 widths; icon names, tooltip, SVG, target dimensions"
+    ],
+    "sectionViewportChecks": 70,
+    "javascriptErrors": [],
+    "failures": []
+  },
+  "roleUi": {
+    "passed": true,
+    "participants": 5,
+    "views": 14,
+    "errors": []
+  },
+  "agenda": {
+    "passed": true,
+    "checks": [
+      {
+        "width": 1440,
+        "events": 13,
+        "loading": false,
+        "error": false
+      },
+      {
+        "width": 390,
+        "events": 13,
+        "loading": false,
+        "error": false
+      }
+    ],
+    "icsBytes": 4028,
+    "export": true
+  },
+  "backlog": {
+    "sourceRows": 155,
+    "uniqueMappings": 155,
+    "packages": 39,
+    "criteria": 117,
+    "dependencyCycles": 0,
+    "matrixHashMatches": true,
+    "sourceTextAndStatusUnchanged": true
+  },
+  "independentReview": "ship, all material findings resolved after batch and recapture",
+  "distIndexSha256": "55eadc31e9f59bb3015e35cbdc83075e40acb523438d43ff9f5472b2540c4051",
+  "frames": [
+    {
+      "file": "agenda-390.png",
+      "sha256": "cdeb999d0829a6891e5ef10d301983235bb4f179c49420379a9844b3019c12bf"
+    },
+    {
+      "file": "billing-390.png",
+      "sha256": "578bf8fa67ae11b9faeee948f09917af92d83efe9b0569b522a086b43942313e"
+    },
+    {
+      "file": "dashboard-1440.png",
+      "sha256": "124c52ad57b407c34e9a001a510ce85195c8ab0cfacce908aee3ca1543ccdfdf"
+    },
+    {
+      "file": "dashboard-390.png",
+      "sha256": "008da5a13a6ad2f6397b3a3b11ea67795cb620ea4d40a0c6d26adc6f8feb03b1"
+    },
+    {
+      "file": "operations-1440.png",
+      "sha256": "9c1977880dd91ca1c99829487ef98923369c59f00a289417b285720d01c1244d"
+    },
+    {
+      "file": "tickets-1440.png",
+      "sha256": "f2d631563427c09f7b2a47e70c4128cbd82fe79d532db184ffd4a8afa31c07f6"
+    }
+  ],
+  "excludedEvidence": [
+    "Initial pictures with abort banner and incomplete Agenda loading are retained privately, not final evidence",
+    "No production data writes, new 1C acceptance, physical mobile acceptance, real push/OTP or full-spec completion claimed"
+  ]
+}

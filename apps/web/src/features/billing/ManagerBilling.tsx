@@ -599,7 +599,7 @@ export function ManagerBilling() {
                   Сумма оплаты
                   <Input
                     required
-                    min="1"
+                    min="0.01"
                     step="0.01"
                     inputMode="decimal"
                     name="amount"

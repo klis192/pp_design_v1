@@ -588,7 +588,7 @@ export function useWorkspaceView(state: WorkspaceState) {
     }
 
     if (isWorker && activeWorkspaceSection === "service") {
-      return locale === "ru" ? "Мои заявки" : "My jobs";
+      return locale === "ru" ? "Мои задания" : "My jobs";
     }
 
     if (isTenant) {

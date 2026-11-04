@@ -303,13 +303,6 @@ export function Operations(props: Props) {
                   </IconButton>
                 )}
             </div>
-            {tab === "users" && (
-              <p className="field-hint">
-                Роль задает доступные действия. Контекстные назначения
-                определяют объекты, помещения, договоры и ЛС, к которым эти
-                действия применимы. Блокировка отзывает доступ немедленно.
-              </p>
-            )}
             <Register
               title={tabs[tab] ?? "Записи"}
               rows={rows}

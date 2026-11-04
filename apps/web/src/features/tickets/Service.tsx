@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
 import { BotLinkPanel } from "../../MessengerButtons";
@@ -17,6 +17,7 @@ import { ActionIcon } from "../business/ActionIcon";
 import { TicketRecord } from "./ManagerTicketDetail";
 import { TicketCreateFields } from "./TicketCreateFields";
 import "./workspace.css";
+import "./mobile-service.css";
 
 type ServiceView =
   "list" | "create" | "readings" | "messengers" | "notifications";
@@ -42,6 +43,7 @@ export function Service() {
     openTicketDetail,
   } = useWorkspace();
   const key = `wirehouse.service.view.v2:${session.user.id}`;
+  const listScroll = useRef(0);
   const [view, setView] = useState<ServiceView>(() => {
     try {
       return (sessionStorage.getItem(key) as ServiceView) || "list";
@@ -55,20 +57,17 @@ export function Service() {
   const items = [
     {
       id: "list",
-      label: isWorker ? "Мои задания" : "Мои заявки",
+      label: isWorker ? "Задания" : "Мои заявки",
       count: filteredTickets.length,
     },
     ...(canCreate ? [{ id: "create", label: "Создать заявку" }] : []),
     ...(canReadings ? [{ id: "readings", label: "Показания" }] : []),
-    ...(isWorker
-      ? [{ id: "messengers", label: "Мессенджеры" }]
-      : [
-          {
-            id: "notifications",
-            label: "Уведомления",
-            count: overview.notifications.filter((item) => item.unread).length,
-          },
-        ]),
+    {
+      id: "notifications",
+      label: "Уведомления",
+      count: overview.notifications.filter((item) => item.unread).length,
+    },
+    ...(isWorker ? [{ id: "messengers", label: "Связь" }] : []),
   ];
   const activeView = items.some((item) => item.id === view) ? view : "list";
   useEffect(() => {
@@ -86,7 +85,9 @@ export function Service() {
   const backToList = () => {
     setServiceRecordId("");
     setView("list");
-    window.scrollTo({ top: 0, behavior: "instant" });
+    requestAnimationFrame(() =>
+      window.scrollTo({ top: listScroll.current, behavior: "instant" }),
+    );
   };
   const prefix = `service-${session.user.id}`;
   const panel = (id: ServiceView) => ({
@@ -97,7 +98,9 @@ export function Service() {
     tabIndex: 0,
   });
   return (
-    <section className="mvp-page service-workspace">
+    <section
+      className={`mvp-page service-workspace${isWorker ? " service-workspace--worker" : ""}`}
+    >
       <div hidden={Boolean(serviceRecordId)}>
         <WorkspaceTabs
           idPrefix={prefix}
@@ -120,35 +123,39 @@ export function Service() {
               `${ticket.number} ${ticket.title} ${ticket.propertyName ?? ""} ${ticket.unitNumber ?? ""}`
             }
             selectedId={selectedTicketId}
-            onSelect={(ticket) => openTicketDetail(ticket.id)}
+            onSelect={(ticket) => {
+              listScroll.current = window.scrollY;
+              openTicketDetail(ticket.id);
+              window.scrollTo({ top: 0, behavior: "instant" });
+            }}
             empty={t.hints.ticketEmpty}
-            action={
-              <div className="service-list-actions">
-                <Select
-                  aria-label="Статус заявки"
-                  value={ticketFilter}
-                  onChange={(event) =>
-                    setTicketFilter(event.target.value as TicketFilter)
-                  }
-                >
-                  <option value="all">
-                    {locale === "ru" ? "Все статусы" : "All"}
+            filters={
+              <Select
+                aria-label="Статус заявки"
+                value={ticketFilter}
+                onChange={(event) =>
+                  setTicketFilter(event.target.value as TicketFilter)
+                }
+              >
+                <option value="all">
+                  {locale === "ru" ? "Все статусы" : "All"}
+                </option>
+                {ticketStatusOptions.map((status) => (
+                  <option key={status} value={status}>
+                    {t.ticketStatuses[status]}
                   </option>
-                  {ticketStatusOptions.map((status) => (
-                    <option key={status} value={status}>
-                      {t.ticketStatuses[status]}
-                    </option>
-                  ))}
-                </Select>
-                {canCreate && (
-                  <IconButton
-                    label="Создать заявку"
-                    onClick={() => setView("create")}
-                  >
-                    <ActionIcon name="plus" />
-                  </IconButton>
-                )}
-              </div>
+                ))}
+              </Select>
+            }
+            action={
+              canCreate ? (
+                <IconButton
+                  label="Создать заявку"
+                  onClick={() => setView("create")}
+                >
+                  <ActionIcon name="plus" />
+                </IconButton>
+              ) : undefined
             }
             columns={[
               {
@@ -158,6 +165,26 @@ export function Service() {
                   <div className="service-ticket-title">
                     <small>{ticket.number}</small>
                     <strong>{ticket.title}</strong>
+                    <div className="service-ticket-mobile-summary">
+                      <span>
+                        {ticket.unitNumber
+                          ? `Помещение ${ticket.unitNumber}`
+                          : "Помещение не указано"}
+                        {ticket.propertyName ? ` · ${ticket.propertyName}` : ""}
+                      </span>
+                      <div className="service-ticket-mobile-status">
+                        <span
+                          className={`status-pill status-pill--${ticket.status}`}
+                        >
+                          {getTicketStatusLabel(ticket.status, locale)}
+                        </span>
+                        <span
+                          className={`status-pill status-pill--${getSlaState(ticket, locale).tone}`}
+                        >
+                          {getSlaState(ticket, locale).label}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 ),
               },
@@ -217,7 +244,7 @@ export function Service() {
             <BotLinkPanel token={session.token} />
           </section>
         )}
-        {!isWorker && (
+        {
           <section
             {...panel("notifications")}
             className="workspace-surface service-notifications"
@@ -249,7 +276,7 @@ export function Service() {
               )}
             </div>
           </section>
-        )}
+        }
       </div>
       {serviceRecordId &&
         (record ? (

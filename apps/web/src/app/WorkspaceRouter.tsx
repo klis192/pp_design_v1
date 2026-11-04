@@ -3,8 +3,10 @@ import { mobileProduct } from "../mobile-product";
 import { DocumentPanel } from "../features/leases/DocumentPanel";
 import { ManagerShell } from "../features/shell/ManagerShell";
 import { Section } from "../features/shell/Section";
-import { Button } from "../ui";
+import { Button, IconButton } from "../ui";
+import { NavigationIcon } from "../features/shell/NavigationIcon";
 import { useWorkspaceContext } from "./WorkspaceContext";
+import "./personal-shell.css";
 export function WorkspaceRouter() {
   const {
     bootstrapping,
@@ -26,6 +28,7 @@ export function WorkspaceRouter() {
     sectionTitle,
     error,
     notice,
+    locale,
   } = useWorkspaceContext();
   if (bootstrapping) {
     return <main className="loading-shell">{t.loading}</main>;
@@ -44,29 +47,51 @@ export function WorkspaceRouter() {
   if (isManagerShell) {
     return <ManagerShell />;
   }
+  const sectionIcons = {
+    overview: "dashboard",
+    portfolio: "objects",
+    leases: "leases",
+    service: "tickets",
+    chat: "chat",
+    admin: "staff",
+  } as const;
+  const sectionLabel = (section: (typeof visibleSections)[number]) =>
+    locale !== "ru"
+      ? t.nav[section]
+      : section === "service"
+        ? isTenant
+          ? "Заявки"
+          : "Задания"
+        : section === "leases"
+          ? "Аренда"
+          : t.nav[section];
+  const initials = session.user.fullName
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toLocaleUpperCase();
+  const hasPersonalNav = visibleSections.length > 1;
   return (
-    <main className="workspace-shell">
+    <main
+      className="workspace-shell personal-shell"
+      data-workspace-role={session.user.role}
+      data-workspace-section={activeWorkspaceSection}
+      data-personal-nav={hasPersonalNav || undefined}
+    >
       <header className="mobile-app-bar">
-        <strong>{productBrand.name}</strong>
-        <Button
-          variant="secondary"
-          type="button"
+        <h1>{sectionTitle}</h1>
+        <IconButton
+          label={mobileNavOpen ? "Закрыть меню" : "Меню"}
           ref={mobileMenuButton}
-          className="secondary-button"
+          className="mobile-menu-button"
           aria-controls="workspace-navigation"
           aria-expanded={mobileNavOpen}
           onClick={() => setMobileNavOpen(!mobileNavOpen)}
         >
-          <span
-            className={`burger-icon ${mobileNavOpen ? "burger-icon--open" : ""}`}
-            aria-hidden="true"
-          >
-            <i />
-            <i />
-            <i />
-          </span>
-          <span>{mobileNavOpen ? "Закрыть" : "Меню"}</span>
-        </Button>
+          <NavigationIcon name={mobileNavOpen ? "close" : "menu"} />
+        </IconButton>
       </header>
       {mobileNavOpen && (
         <Button
@@ -86,7 +111,7 @@ export function WorkspaceRouter() {
           <span>{productBrand.subtitle}</span>
         </div>
 
-        <nav className="sidebar-nav">
+        <nav className="sidebar-nav" aria-label="Разделы приложения">
           {visibleSections.map((section) => (
             <Button
               variant="plain"
@@ -96,13 +121,17 @@ export function WorkspaceRouter() {
                   : "nav-button"
               }
               key={section}
+              aria-current={
+                activeWorkspaceSection === section ? "page" : undefined
+              }
               onClick={() => {
                 setSelectedSection(section);
                 setMobileNavOpen(false);
               }}
               type="button"
             >
-              <span>{t.nav[section]}</span>
+              <NavigationIcon name={sectionIcons[section]} />
+              <span>{sectionLabel(section)}</span>
               {section === "service" ? <small>{openTicketCount}</small> : null}
               {section === "leases" ? (
                 <small>
@@ -115,24 +144,24 @@ export function WorkspaceRouter() {
           ))}
         </nav>
 
-        <div className="sidebar-footer">
-          <span>{session.user.fullName}</span>
-          <small>
-            {t.roles[session.user.role]} ·{" "}
-            {selectedProperty?.name ?? productBrand.name}
-          </small>
-          <Button
-            variant="secondary"
-            className="secondary-button secondary-button--sidebar"
-            onClick={handleLogout}
-            type="button"
-          >
-            {t.topbar.logout}
-          </Button>
+        <div className="sidebar-footer personal-account">
+          <span className="personal-account__avatar" aria-hidden="true">
+            {initials}
+          </span>
+          <div className="personal-account__identity">
+            <strong>{session.user.fullName}</strong>
+            <small>
+              {t.roles[session.user.role]} ·{" "}
+              {selectedProperty?.name ?? productBrand.name}
+            </small>
+          </div>
+          <IconButton label={t.topbar.logout} onClick={handleLogout}>
+            <NavigationIcon name="logout" />
+          </IconButton>
         </div>
       </aside>
 
-      <section className="workspace-main">
+      <section className="workspace-main" inert={mobileNavOpen || undefined}>
         {activeWorkspaceSection !== "service" && (
           <header className="ui-page-header">
             <h1>{sectionTitle}</h1>
@@ -153,6 +182,36 @@ export function WorkspaceRouter() {
 
         {<Section />}
       </section>
+      {hasPersonalNav && (
+        <nav
+          className="mobile-primary-nav personal-primary-nav"
+          aria-label="Быстрые переходы"
+          inert={mobileNavOpen || undefined}
+        >
+          {visibleSections.map((section) => (
+            <Button
+              key={section}
+              variant="plain"
+              type="button"
+              aria-current={
+                activeWorkspaceSection === section ? "page" : undefined
+              }
+              onClick={() => {
+                setSelectedSection(section);
+                setMobileNavOpen(false);
+              }}
+            >
+              <span className="personal-primary-nav__icon">
+                <NavigationIcon name={sectionIcons[section]} />
+                {section === "service" && openTicketCount > 0 && (
+                  <small>{openTicketCount}</small>
+                )}
+              </span>
+              <span>{sectionLabel(section)}</span>
+            </Button>
+          ))}
+        </nav>
+      )}
     </main>
   );
 }

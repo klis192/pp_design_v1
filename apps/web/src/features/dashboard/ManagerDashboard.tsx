@@ -14,6 +14,7 @@ import { Button, IconButton, Select } from "../../ui";
 import { ActionIcon } from "../business/ActionIcon";
 import { ActiveFilters, FilterBar, FilterSearch } from "../business/FilterBar";
 import { WorkspaceHeaderActions } from "../../ui/WorkspaceHeaderActions";
+import "../administration/management-mobile.css";
 
 type DashboardFilters = {
   query: string;
@@ -108,6 +109,8 @@ export function ManagerDashboard() {
       (filters.deadline === "all" || slaState(ticket).state === "overdue"),
   );
   const urgent = tickets.filter(isCriticalTicket).length;
+  const showPropertyFilter =
+    overview.properties.length > 1 || Boolean(filters.propertyId);
   return (
     <section className="mvp-page dashboard-page dashboard-workspace">
       <div className="mvp-page-header">
@@ -142,69 +145,68 @@ export function ManagerDashboard() {
       </div>
       <article className="mvp-card dashboard-tickets">
         <div className="dashboard-list-heading">
-          <h3>Открытые заявки</h3>
-          <IconButton
-            label="Все заявки"
-            onClick={() => setManagerScreen("tickets")}
-          >
-            <ActionIcon name="next" />
-          </IconButton>
+          <div className="dashboard-list-title">
+            <h3>Открытые заявки</h3>
+            <span
+              className="dashboard-filter-result"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              Найдено: <strong>{tickets.length}</strong> из {openTickets.length}
+              {urgent > 0 && (
+                <span className="dashboard-urgent-count">
+                  {" "}
+                  · Срочных: {urgent}
+                </span>
+              )}
+            </span>
+          </div>
+          <div className="ui-actions dashboard-list-actions">
+            <ActiveFilters
+              items={[]}
+              onReset={hasFilters ? resetFilters : undefined}
+            />
+            <IconButton
+              label="Все заявки"
+              onClick={() => setManagerScreen("tickets")}
+            >
+              <ActionIcon name="next" />
+            </IconButton>
+          </div>
         </div>
-        <FilterBar
-          className="dashboard-filter-bar"
-          summary={
-            <>
-              <span
-                className="dashboard-filter-result"
-                role="status"
-                aria-live="polite"
-                aria-atomic="true"
-              >
-                Найдено: <strong>{tickets.length}</strong> из{" "}
-                {openTickets.length}
-                {urgent > 0 && (
-                  <span className="dashboard-urgent-count">
-                    {" "}
-                    · Срочных: {urgent}
-                  </span>
-                )}
-              </span>
-              <ActiveFilters
-                items={[]}
-                onReset={hasFilters ? resetFilters : undefined}
-              />
-            </>
-          }
-        >
+        <FilterBar className="dashboard-filter-bar">
           <FilterSearch
             label="Поиск"
-            placeholder="Номер, текст, помещение, исполнитель"
+            placeholder="Поиск заявок"
             value={filters.query}
             onChange={(query) => changeFilters({ query })}
             maxLength={300}
           />
-          <label className="dashboard-filter-property">
-            <span>Объект</span>
-            <Select
-              aria-label="Объект"
-              value={filters.propertyId}
-              onChange={(event) =>
-                changeFilters({ propertyId: event.target.value })
-              }
-            >
-              <option value="">Все доступные объекты</option>
-              {!propertyAvailable && (
-                <option value={filters.propertyId} disabled>
-                  Объект недоступен
-                </option>
-              )}
-              {overview.properties.map((property) => (
-                <option key={property.id} value={property.id}>
-                  {property.name}
-                </option>
-              ))}
-            </Select>
-          </label>
+          {showPropertyFilter && (
+            <label className="dashboard-filter-property">
+              <span>Объект</span>
+              <Select
+                aria-label="Объект"
+                value={filters.propertyId}
+                onChange={(event) =>
+                  changeFilters({ propertyId: event.target.value })
+                }
+              >
+                <option value="">Все доступные объекты</option>
+                {!propertyAvailable && (
+                  <option value={filters.propertyId} disabled>
+                    Объект недоступен
+                  </option>
+                )}
+                {overview.properties.map((property) => (
+                  <option key={property.id} value={property.id}>
+                    {property.name}
+                  </option>
+                ))}
+              </Select>
+            </label>
+          )}
           <label className="dashboard-filter-status">
             <span>Статус</span>
             <Select

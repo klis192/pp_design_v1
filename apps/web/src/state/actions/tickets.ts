@@ -478,17 +478,18 @@ export function useTicketsActions(
     }
   };
 
-  const handleChatSubmit = async (event: FormEvent) => {
+  const handleChatSubmit = async (event: FormEvent): Promise<boolean> => {
     event.preventDefault();
     if (!session || !selectedChatTargetTicket || !chatDraft.content.trim()) {
       if (!selectedChatTargetTicket) {
         setError(managerUi.noThreadTarget);
       }
-      return;
+      return false;
     }
 
     setBusyAction("chat-submit");
     setError("");
+    let accepted = false;
 
     try {
       const result = await apiRequest<{
@@ -501,6 +502,7 @@ export function useTicketsActions(
           content: chatDraft.content.trim(),
         },
       });
+      accepted = true;
       setChatDraft({
         content: "",
       });
@@ -508,10 +510,12 @@ export function useTicketsActions(
         formatDeliveryNotice(t.messages.commentAdded, result.delivery, locale),
       );
       await refreshWorkspace(selectedChatTargetTicket.id);
+      return true;
     } catch (caughtError) {
       setError(
         caughtError instanceof Error ? caughtError.message : "Chat send failed",
       );
+      return accepted;
     } finally {
       setBusyAction("");
     }

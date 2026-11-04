@@ -80,16 +80,22 @@ export function TicketWorkPhotos({
                 ["in_progress", "paused"].includes(w.state));
           return (
             <section key={phase}>
-              <h4>
-                {phase === "before" ? "До начала работ" : "Результат работ"}
-              </h4>
-              {items.length ? (
-                files(items)
-              ) : (
-                <p className="field-hint">Фотографий пока нет.</p>
-              )}
-              {upload && (
-                <div className="work-proof-upload">
+              <div className="work-proof-heading">
+                <div>
+                  <h4>
+                    {phase === "before" ? "До начала работ" : "Результат работ"}
+                  </h4>
+                  <small>
+                    {(
+                      phase === "before"
+                        ? w.requireBeforePhoto
+                        : w.requireAfterPhoto
+                    )
+                      ? "Обязательно"
+                      : "По желанию"}
+                  </small>
+                </div>
+                {upload && (
                   <IconButton
                     label={
                       phase === "before"
@@ -99,25 +105,32 @@ export function TicketWorkPhotos({
                     disabled={busy}
                     onClick={() => fileInputs.current[phase]?.click()}
                   >
-                    <ActionIcon name="upload" />
+                    <ActionIcon name="plus" />
                   </IconButton>
-                  <Input
-                    type="file"
-                    hidden
-                    className="ticket-hidden-file"
-                    ref={(element) => {
-                      fileInputs.current[phase] = element;
-                    }}
-                    accept="image/jpeg,image/png,image/webp"
-                    capture="environment"
-                    disabled={busy}
-                    onChange={(e) => {
-                      const file = e.currentTarget.files?.[0];
-                      if (file) onUpload(file, phase);
-                      e.currentTarget.value = "";
-                    }}
-                  />
-                </div>
+                )}
+              </div>
+              {items.length ? (
+                files(items)
+              ) : (
+                <p className="field-hint">Фотографий пока нет.</p>
+              )}
+              {upload && (
+                <Input
+                  type="file"
+                  hidden
+                  className="ticket-hidden-file"
+                  ref={(element) => {
+                    fileInputs.current[phase] = element;
+                  }}
+                  accept="image/jpeg,image/png,image/webp"
+                  capture="environment"
+                  disabled={busy}
+                  onChange={(e) => {
+                    const file = e.currentTarget.files?.[0];
+                    if (file) onUpload(file, phase);
+                    e.currentTarget.value = "";
+                  }}
+                />
               )}
             </section>
           );

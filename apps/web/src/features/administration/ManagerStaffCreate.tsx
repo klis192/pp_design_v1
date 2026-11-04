@@ -1,6 +1,7 @@
 import { ActionIcon } from "../business/ActionIcon";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { Button, IconButton, Input, Select } from "../../ui";
+import "./management-mobile.css";
 export function ManagerStaffCreate() {
   const {
     setManagerScreen,
@@ -16,7 +17,7 @@ export function ManagerStaffCreate() {
     busyAction,
   } = useWorkspace();
   return (
-    <section className="mvp-page">
+    <section className="mvp-page manager-staff-create-page">
       <div className="mvp-detail-head">
         <IconButton
           label={managerUi.back}
@@ -35,9 +36,11 @@ export function ManagerStaffCreate() {
       <article className="mvp-card">
         <form className="form-grid" onSubmit={handleCreateStaff}>
           <label>
-            <span>{t.fields.name}</span>
+            <span>{locale === "ru" ? "Имя сотрудника" : "Full name"}</span>
             <Input
               name="fullName"
+              autoComplete="name"
+              required
               onChange={handleFieldChange(setStaffCreateForm)}
               value={staffCreateForm.fullName}
             />
@@ -46,6 +49,8 @@ export function ManagerStaffCreate() {
             <span>{t.fields.email}</span>
             <Input
               name="email"
+              type="email"
+              autoComplete="email"
               onChange={handleFieldChange(setStaffCreateForm)}
               value={staffCreateForm.email}
             />
@@ -54,6 +59,8 @@ export function ManagerStaffCreate() {
             <span>{managerUi.phoneOptional}</span>
             <Input
               name="phone"
+              type="tel"
+              autoComplete="tel"
               onChange={handleFieldChange(setStaffCreateForm)}
               value={staffCreateForm.phone}
             />
@@ -66,6 +73,7 @@ export function ManagerStaffCreate() {
               name="password"
               onChange={handleFieldChange(setStaffCreateForm)}
               type="password"
+              autoComplete="new-password"
               value={staffCreateForm.password}
             />
           </label>
@@ -107,14 +115,16 @@ export function ManagerStaffCreate() {
               ))}
             </Select>
           </label>
-          <Button
-            variant="primary"
-            className="primary-button"
-            disabled={busyAction === "staff-create"}
-            type="submit"
-          >
-            {managerUi.createStaff}
-          </Button>
+          <div className="manager-staff-create-actions">
+            <Button
+              variant="primary"
+              className="primary-button"
+              disabled={busyAction === "staff-create"}
+              type="submit"
+            >
+              {managerUi.createStaff}
+            </Button>
+          </div>
         </form>
       </article>
     </section>

@@ -1,4 +1,3 @@
-import { Disclosure } from "../../ui/Disclosure";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { BotLinkPanel } from "../../MessengerButtons";
 import { Button, Input } from "../../ui";
@@ -8,6 +7,7 @@ import {
   permissionLabels,
   Permission,
 } from "../../../../../packages/contracts/src/permissions";
+import "./management-mobile.css";
 export function ManagerProfile() {
   const {
     managerUi,
@@ -26,10 +26,10 @@ export function ManagerProfile() {
   const [view, setView] = useWorkspaceViewState(
     `wirehouse.profile.view:${session.user.id}`,
     "profile",
-    ["profile", "security", "messengers"] as const,
+    ["profile", "access", "security", "messengers"] as const,
   );
   return (
-    <section className="mvp-page">
+    <section className="mvp-page manager-profile-page">
       <div className="mvp-page-header">
         <div>
           <h2>{managerUi.titles.profile}</h2>
@@ -42,11 +42,14 @@ export function ManagerProfile() {
         value={view}
         onChange={(next) =>
           setView(
-            next === "security" || next === "messengers" ? next : "profile",
+            next === "security" || next === "messengers" || next === "access"
+              ? next
+              : "profile",
           )
         }
         items={[
-          { id: "profile", label: "Профиль и доступ" },
+          { id: "profile", label: "Профиль" },
+          { id: "access", label: "Доступ" },
           { id: "security", label: "Безопасность" },
           { id: "messengers", label: "Мессенджеры" },
         ]}
@@ -98,13 +101,6 @@ export function ManagerProfile() {
             </strong>
           </div>
         </div>
-        <Disclosure title="Мои права доступа">
-          <ul>
-            {session.user.permissions.map((p) => (
-              <li key={p}>{permissionLabels[p as Permission]}</li>
-            ))}
-          </ul>
-        </Disclosure>
         <Button
           variant="secondary"
           className="secondary-button profile-logout"
@@ -113,6 +109,23 @@ export function ManagerProfile() {
         >
           {t.topbar.logout}
         </Button>
+      </article>
+
+      <article
+        className="mvp-card"
+        hidden={view !== "access"}
+        role="tabpanel"
+        id="profile-views-panel-access"
+        aria-labelledby="profile-views-tab-access"
+      >
+        <h3>Доступные действия · {session.user.permissions.length}</h3>
+        <ul className="profile-permissions-list">
+          {session.user.permissions.map((permission) => (
+            <li key={permission}>
+              {permissionLabels[permission as Permission]}
+            </li>
+          ))}
+        </ul>
       </article>
 
       <article
@@ -155,6 +168,7 @@ export function ManagerProfile() {
               <span>{t.auth.mfaCode}</span>
               <Input
                 inputMode="numeric"
+                autoComplete="one-time-code"
                 name="code"
                 onChange={(event) =>
                   setTotpSetup((current) =>
@@ -193,6 +207,7 @@ export function ManagerProfile() {
                   }))
                 }
                 type="password"
+                autoComplete="current-password"
                 value={totpSetup?.password ?? ""}
               />
             </label>
@@ -200,6 +215,7 @@ export function ManagerProfile() {
               <span>{t.auth.mfaCode}</span>
               <Input
                 inputMode="numeric"
+                autoComplete="one-time-code"
                 name="code"
                 onChange={(event) =>
                   setTotpSetup((current) => ({

@@ -1,0 +1,302 @@
+.personal-rental {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+.personal-rental-panel {
+  min-width: 0;
+}
+.personal-rental-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+.personal-rental .stack-list .list-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px 20px;
+  align-items: start;
+  padding: 16px 0;
+  border: 0;
+  border-bottom: 1px solid var(--ui-border);
+  border-radius: 0;
+  background: transparent;
+}
+.personal-rental .stack-list .list-row p {
+  margin: 6px 0 12px;
+  overflow-wrap: anywhere;
+}
+.personal-rental .list-aside {
+  align-items: flex-end;
+  gap: 8px;
+}
+.personal-services {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.personal-services h3,
+.personal-chat h2 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 24px;
+}
+.personal-service-list {
+  display: grid;
+  gap: 0;
+}
+.personal-service-list > article {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--ui-border);
+  overflow-wrap: anywhere;
+}
+.personal-service-list > article:first-child {
+  padding-top: 0;
+}
+.personal-service-list h4 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  line-height: 22px;
+}
+.personal-service-list p {
+  margin: 0 0 8px;
+  color: var(--ui-muted);
+}
+.personal-news-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.personal-news-list .notification-card {
+  margin: 0;
+}
+.personal-news-list .notification-card h4 {
+  margin: 0;
+}
+.personal-empty {
+  margin: 0;
+  color: var(--ui-muted);
+  font-size: 14px;
+  line-height: 22px;
+}
+.personal-payment-proof fieldset {
+  display: grid;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 16px;
+  grid-column: 1 / -1;
+}
+.personal-proof-contract,
+.personal-proof-reference,
+.personal-proof-category,
+.personal-payment-proof .document-upload,
+.personal-payment-proof .file-picked-summary {
+  grid-column: 1 / -1;
+}
+.personal-payment-proof label {
+  min-width: 0;
+}
+.personal-payment-proof .file-picked-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 44px;
+  gap: 8px;
+  padding: 12px;
+}
+.personal-payment-proof .file-picked-summary strong {
+  min-width: 0;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+  line-height: 22px;
+}
+.personal-chat {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.6fr);
+  min-width: 0;
+  height: min(720px, calc(100dvh - 100px));
+  gap: 20px;
+}
+.personal-chat-list,
+.personal-chat-thread {
+  min-width: 0;
+  min-height: 0;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  padding: 20px;
+}
+.personal-chat-list {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.personal-chat-list .stack-list {
+  display: grid;
+  gap: 0;
+  overflow: auto;
+  min-height: 0;
+}
+.personal-chat-list .list-row {
+  display: grid;
+  gap: 8px;
+  padding: 16px 8px;
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid var(--ui-border);
+  text-align: left;
+}
+.personal-chat-list .list-row > div,
+.personal-chat-list .list-row strong {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.personal-chat-list .list-row strong {
+  font-size: 16px;
+  line-height: 22px;
+}
+.personal-chat-list .list-row p {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 19px;
+}
+.personal-chat-list .list-aside {
+  align-items: flex-start;
+}
+.personal-chat-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.personal-chat-heading {
+  display: flex;
+  align-items: flex-start;
+  flex: 0 0 auto;
+  gap: 12px;
+  min-width: 0;
+}
+.personal-chat-heading > div {
+  min-width: 0;
+}
+.personal-chat-heading h2 {
+  margin: 4px 0;
+  overflow-wrap: anywhere;
+}
+.personal-chat-heading small {
+  display: block;
+  margin-top: 6px;
+  color: var(--ui-muted);
+  overflow-wrap: anywhere;
+}
+.personal-chat-back {
+  display: none;
+}
+.personal-chat .mvp-chat-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  margin: 0;
+}
+.personal-chat .mvp-chat-message {
+  max-width: 94%;
+  overflow-wrap: anywhere;
+}
+.personal-chat .mvp-chat-form {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: end;
+  gap: 8px;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--ui-border);
+}
+.personal-chat .mvp-chat-form textarea {
+  resize: vertical;
+  min-height: 64px;
+  max-height: 120px;
+}
+@media (max-width: 1080px) {
+  .personal-chat {
+    display: block;
+    height: calc(100dvh - 156px - env(safe-area-inset-bottom));
+    min-height: 200px;
+  }
+  .personal-chat-list,
+  .personal-chat-thread {
+    height: 100%;
+    padding: 16px;
+  }
+  .personal-chat[data-chat-view="thread"] > .personal-chat-list,
+  .personal-chat[data-chat-view="list"] > .personal-chat-thread {
+    display: none;
+  }
+  .personal-chat-back {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+}
+@media (max-width: 760px) {
+  .personal-rental {
+    gap: 16px;
+  }
+  .personal-rental > .ui-workspace-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 12px;
+  }
+  .personal-rental > .ui-workspace-tabs .ui-workspace-tab {
+    min-width: 0;
+  }
+  .personal-rental .filter-bar-controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .personal-rental .filter-bar-controls > .filter-search {
+    grid-column: 1 / -1;
+    min-width: 0;
+    width: auto;
+  }
+  .personal-rental .filter-bar-controls > label {
+    min-width: 0;
+    width: auto;
+  }
+  .personal-rental .filter-bar-main {
+    align-items: end;
+  }
+  .personal-rental .filter-bar-controls > label:only-child {
+    grid-column: 1 / -1;
+  }
+  .personal-rental .stack-list .list-row {
+    gap: 12px;
+  }
+  .personal-rental .list-aside small {
+    font-size: 12px;
+  }
+}
+@media (max-width: 1080px) and (max-height: 500px) {
+  .personal-chat-heading .record-number,
+  .personal-chat-heading small {
+    display: none;
+  }
+  .personal-chat-heading h2 {
+    font-size: 16px;
+    line-height: 22px;
+  }
+  .personal-chat-thread {
+    padding: 12px;
+    gap: 8px;
+  }
+  .personal-chat .mvp-chat-form {
+    padding-top: 8px;
+  }
+  .personal-chat .mvp-chat-form textarea {
+    min-height: 44px;
+    height: 44px;
+  }
+}

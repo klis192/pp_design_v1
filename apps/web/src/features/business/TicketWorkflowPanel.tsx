@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type {
   TicketWorkflow,
   TicketDecision,
@@ -156,9 +156,11 @@ export function TicketWorkflowPanel({
 export function TicketWorkflowView({
   model,
   section,
+  workFooter,
 }: {
   model: WorkflowModel;
   section: TicketWorkflowSection;
+  workFooter?: ReactNode;
 }) {
   const {
     ticketId,
@@ -434,6 +436,7 @@ export function TicketWorkflowView({
                 )}
             </>
           )}
+          {shows("work") && workFooter}
           {shows("work") && (
             <>
               {worker && ticket?.maintenancePlanId && (

@@ -1,0 +1,122 @@
+.personal-shell .sidebar-nav .nav-button {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border: 0;
+  border-radius: var(--ui-radius);
+}
+.personal-shell .sidebar-nav .nav-button > span {
+  text-align: left;
+}
+.personal-account {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 0;
+}
+.personal-account__avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary-50);
+  color: var(--ui-accent-hover);
+  font-size: 12px;
+  font-weight: 600;
+}
+.personal-account__identity {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.personal-account__identity strong {
+  font-size: 14px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+.personal-account__identity small {
+  font-size: 12px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+.personal-primary-nav__icon {
+  position: relative;
+  display: flex;
+}
+.personal-primary-nav__icon small {
+  position: absolute;
+  top: -6px;
+  left: 16px;
+  min-width: 18px;
+  padding-inline: 4px;
+  border-radius: 4px;
+  color: var(--ui-accent-hover);
+  background: var(--primary-100);
+  font-size: 11px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 1080px) {
+  .personal-shell > .workspace-main {
+    padding: 16px 16px 24px;
+    gap: 16px;
+  }
+  .personal-shell[data-personal-nav] > .workspace-main {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+  .personal-shell > .mobile-app-bar {
+    gap: 12px;
+  }
+  .personal-shell > .mobile-app-bar h1 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .personal-shell > .mobile-app-bar .mobile-menu-button {
+    flex: 0 0 44px;
+  }
+  .personal-shell > .workspace-main > .ui-page-header {
+    display: none;
+  }
+  .personal-shell > .sidebar {
+    padding: 16px;
+    gap: 16px;
+  }
+  .personal-shell .sidebar-nav {
+    gap: 4px;
+  }
+  .personal-shell .sidebar-nav .nav-button {
+    min-height: 44px;
+    padding: 10px 12px;
+  }
+  .personal-shell .personal-account {
+    padding: 16px 0 0;
+  }
+  .personal-primary-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 359px) {
+  .personal-shell > .workspace-main {
+    padding-inline: 12px;
+  }
+  .personal-shell > .mobile-app-bar {
+    padding-inline: 12px;
+  }
+}
+@media (max-height: 500px) and (max-width: 1080px) {
+  .personal-primary-nav {
+    padding-block: 2px;
+  }
+  .personal-primary-nav .ui-button {
+    min-height: 44px;
+    grid-template-columns: 22px auto;
+    gap: 8px;
+  }
+  .personal-shell[data-personal-nav] > .workspace-main {
+    padding-bottom: calc(68px + env(safe-area-inset-bottom));
+  }
+}

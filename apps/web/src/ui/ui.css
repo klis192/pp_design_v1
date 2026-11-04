@@ -32,6 +32,7 @@
 body {
   font-size: 15px;
   caret-color: var(--ui-accent);
+  -webkit-tap-highlight-color: transparent;
 }
 ::selection {
   color: var(--primary-900);
@@ -85,6 +86,12 @@ body {
 .ui-button--secondary:active:not(:disabled),
 .ui-button--text:active:not(:disabled) {
   background: var(--neutral-200);
+}
+@media (hover: none) {
+  .ui-button--plain:active:not(:disabled) {
+    color: var(--ui-accent-hover);
+    background: var(--primary-50);
+  }
 }
 .ui-button--danger {
   background: #fee8e7;

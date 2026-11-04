@@ -2,7 +2,8 @@ import { ActionIcon } from "./ActionIcon";
 import { SidePanel } from "../../ui/SidePanel";
 import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
 import { useSurfaceView } from "../operations/useSurfaceView";
-import { Fragment, useEffect, useState, type FormEvent } from "react";
+import { Fragment, useEffect, useRef, useState, type FormEvent } from "react";
+import "./readings-photo.css";
 import type {
   ReadingPeriod,
   ReadingSubmission,
@@ -53,6 +54,58 @@ type Data = {
     sourceName: string;
   }[];
 };
+function ReadingPhotoField({ required }: { required: boolean }) {
+  const input = useRef<HTMLInputElement>(null);
+  const [name, setName] = useState("");
+  useEffect(() => {
+    const form = input.current?.form;
+    const reset = () => setName("");
+    form?.addEventListener("reset", reset);
+    return () => form?.removeEventListener("reset", reset);
+  }, []);
+  return (
+    <div className="reading-photo-picker">
+      <span>Фотография прибора {required && <small>Обязательно</small>}</span>
+      <div className="reading-photo-picker__control">
+        <label className="reading-photo-trigger">
+          <span className="reading-photo-trigger__icon" aria-hidden="true">
+            <ActionIcon name="upload" />
+          </span>
+          <span>{name || "Прикрепить фотографию"}</span>
+          <Input
+            ref={input}
+            className="reading-photo-native"
+            aria-label="Фотография прибора"
+            name="photo"
+            type="file"
+            required={required}
+            accept="image/jpeg,image/png,image/webp"
+            capture="environment"
+            onChange={(event) =>
+              setName(event.currentTarget.files?.[0]?.name ?? "")
+            }
+          />
+        </label>
+        {name && (
+          <IconButton
+            label="Убрать фотографию прибора"
+            onClick={() => {
+              if (input.current) {
+                input.current.value = "";
+                input.current.dispatchEvent(
+                  new Event("change", { bubbles: true }),
+                );
+              }
+              setName("");
+            }}
+          >
+            <ActionIcon name="close" />
+          </IconButton>
+        )}
+      </div>
+    </div>
+  );
+}
 export function ReadingsWorkspace({
   workerId,
   initialMeterId = "",
@@ -619,16 +672,7 @@ export function ReadingsWorkspace({
                     step="any"
                   />
                 </label>
-                <label className="business-file">
-                  Фотография прибора
-                  <Input
-                    name="photo"
-                    type="file"
-                    required={period?.photoRequired}
-                    accept="image/jpeg,image/png,image/webp"
-                    capture="environment"
-                  />
-                </label>
+                <ReadingPhotoField required={Boolean(period?.photoRequired)} />
               </Fragment>
             )}
             <Button

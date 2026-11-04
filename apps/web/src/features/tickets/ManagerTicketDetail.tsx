@@ -14,6 +14,7 @@ import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
 import { TicketAttachmentBlock } from "./TicketAttachmentBlock";
 import { TicketOperationsBlock } from "./TicketOperationsBlock";
 import "./workspace.css";
+import "./mobile-service.css";
 
 const views = [
   { id: "work", label: "Работа" },
@@ -130,31 +131,43 @@ export function TicketRecord({
           views[7],
         ]
       : views;
-  const items = orderedViews.map((item) => ({
-    ...item,
-    ...(item.id === "discussion" ? { count: ticketComments.length } : {}),
-    ...(item.id === "files"
-      ? {
-          count:
-            ticketAttachments.length +
-            model.docs.data.items.filter(
-              (d) =>
-                d.category === "photo" &&
-                d.links.some(
-                  (link) =>
-                    link.entityType === "tickets" &&
-                    link.entityId === ticket.id &&
-                    ["before", "after"].includes(link.phase ?? ""),
-                ),
-            ).length,
-        }
-      : {}),
-    ...(item.id === "history"
-      ? { count: ticketHistory.length + model.resource.data.decisions.length }
-      : {}),
-  }));
+  const items = orderedViews
+    .map((item) => ({
+      ...item,
+      ...(!isManagerShell && item.id === "discussion" ? { label: "Чат" } : {}),
+      ...(!isManagerShell && item.id === "files" ? { label: "Фото" } : {}),
+      ...(item.id === "discussion" && ticketComments.length
+        ? { count: ticketComments.length }
+        : {}),
+      ...(item.id === "files"
+        ? {
+            count:
+              ticketAttachments.length +
+              model.docs.data.items.filter(
+                (d) =>
+                  d.category === "photo" &&
+                  d.links.some(
+                    (link) =>
+                      link.entityType === "tickets" &&
+                      link.entityId === ticket.id &&
+                      ["before", "after"].includes(link.phase ?? ""),
+                  ),
+              ).length,
+          }
+        : {}),
+      ...(item.id === "history"
+        ? { count: ticketHistory.length + model.resource.data.decisions.length }
+        : {}),
+    }))
+    .map((item) =>
+      !isManagerShell && item.count === 0
+        ? { ...item, count: undefined }
+        : item,
+    );
   return (
-    <section className="mvp-page ticket-record">
+    <section
+      className={`mvp-page ticket-record${!isManagerShell ? " ticket-record--personal" : ""}${isWorker ? " ticket-record--worker" : ""}`}
+    >
       <header className="workspace-record-header ticket-record-header">
         <div className="ticket-record-heading">
           <IconButton
@@ -171,6 +184,14 @@ export function TicketRecord({
               </span>
             </div>
             <h2 title={ticket.title}>{ticket.title}</h2>
+            {!isManagerShell && (
+              <p className="ticket-record-location">
+                {ticket.unitNumber
+                  ? `Помещение ${ticket.unitNumber}`
+                  : "Помещение не указано"}
+                {ticket.propertyName ? ` · ${ticket.propertyName}` : ""}
+              </p>
+            )}
           </div>
         </div>
         <WorkspaceTabs
@@ -191,7 +212,21 @@ export function TicketRecord({
             {ticket.description && (
               <p className="ticket-description">{ticket.description}</p>
             )}
-            <TicketWorkflowView model={model} section="work" />
+            <TicketWorkflowView
+              model={model}
+              section="work"
+              workFooter={
+                isWorker ? (
+                  <section className="ticket-work-checklist">
+                    <h3>Срок и чек-лист</h3>
+                    <TicketOperationsBlock
+                      ticket={ticket}
+                      includeContext={false}
+                    />
+                  </section>
+                ) : undefined
+              }
+            />
             {isTenant &&
               ["new", "accepted", "waiting_tenant"].includes(ticket.status) && (
                 <Button
@@ -260,8 +295,12 @@ export function TicketRecord({
                 </Select>
               </label>
             )}
-            <h3>Срок и чек-лист</h3>
-            <TicketOperationsBlock ticket={ticket} includeContext={false} />
+            {!isWorker && (
+              <>
+                <h3>Срок и чек-лист</h3>
+                <TicketOperationsBlock ticket={ticket} includeContext={false} />
+              </>
+            )}
           </aside>
         </div>
       </section>

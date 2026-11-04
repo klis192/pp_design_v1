@@ -1,0 +1,68 @@
+.dashboard-list-title {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.dashboard-workspace .dashboard-list-actions {
+  flex-shrink: 0;
+}
+
+.manager-profile-page .profile-permissions-list {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.manager-profile-page .profile-permissions-list li {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ui-border);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.manager-profile-page .profile-permissions-list li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.manager-staff-create-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .dashboard-workspace .dashboard-list-heading {
+    flex-wrap: nowrap;
+    align-items: start;
+    gap: 12px;
+  }
+
+  .dashboard-workspace .dashboard-filter-bar {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .manager-profile-page .mvp-info-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+
+  .manager-profile-page .mvp-info-row > strong {
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+
+  .manager-profile-page .profile-logout {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .manager-staff-create-actions > .ui-button {
+    width: 100%;
+  }
+}

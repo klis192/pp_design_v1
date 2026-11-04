@@ -1,0 +1,197 @@
+.service-ticket-mobile-summary {
+  display: none;
+}
+.ticket-record-location {
+  margin: 6px 0 0;
+  color: var(--ui-muted);
+  font-size: 13px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+.ticket-record .ticket-work-checklist {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ui-border);
+}
+.ticket-record .work-proof-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  margin-bottom: 12px;
+}
+.ticket-record .work-proof-heading > div {
+  min-width: 0;
+}
+.ticket-record .work-proof-heading h4 {
+  margin: 0;
+}
+.ticket-record .work-proof-heading small {
+  color: var(--ui-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+.ticket-record .work-proof-heading .ui-icon-button {
+  flex-shrink: 0;
+}
+@media (max-width: 760px) {
+  .service-workspace--worker > div > .ui-workspace-tabs {
+    gap: 0 4px;
+  }
+  .service-workspace--worker > div > .ui-workspace-tabs > .ui-workspace-tab {
+    padding-inline: 6px;
+    font-size: 13px;
+  }
+  .service-workspace--worker .service-list-panel .register-heading {
+    display: contents;
+  }
+  .service-workspace--worker .service-list-panel .register-heading h3 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+  .service-list-panel .register-heading {
+    margin-bottom: 12px;
+  }
+  .service-list-panel .filter-bar-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    width: 100%;
+  }
+  .service-list-panel .filter-bar-controls > .ui-select {
+    width: 100%;
+  }
+  .service-list-panel .register-table tbody tr {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .service-list-panel .register-table tbody td:not(:first-child) {
+    display: none;
+  }
+  .service-list-panel .register-table tbody td:first-child {
+    padding: 0;
+  }
+  .service-list-panel .service-ticket-title {
+    gap: 6px;
+  }
+  .service-list-panel .service-ticket-title strong {
+    font-size: 16px;
+    line-height: 22px;
+  }
+  .service-ticket-mobile-summary {
+    display: grid;
+    gap: 12px;
+    margin-top: 2px;
+  }
+  .service-ticket-mobile-summary > span {
+    color: var(--ui-muted);
+    font-size: 13px;
+    line-height: 20px;
+    overflow-wrap: anywhere;
+  }
+  .service-ticket-mobile-status {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+  .ticket-record--personal .ticket-record-heading {
+    align-items: flex-start;
+    padding-bottom: 12px;
+  }
+  .ticket-record--personal .ticket-record-heading > .ui-icon-button {
+    flex-shrink: 0;
+  }
+  .ticket-record--personal .ticket-record-meta {
+    flex-wrap: wrap;
+    gap: 4px 8px;
+  }
+  .ticket-record--personal .ticket-record-header .ui-workspace-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    width: 100%;
+  }
+  .ticket-record--personal .ticket-record-header .ui-workspace-tab {
+    justify-content: center;
+    min-width: 0;
+    min-height: 44px;
+    padding: 4px 2px;
+    gap: 4px;
+    font-size: 12px;
+    line-height: 16px;
+    white-space: nowrap;
+  }
+  .ticket-record--personal .ticket-record-header .ui-workspace-tab__count {
+    font-size: 10px;
+    min-width: 14px;
+    padding: 0 2px;
+  }
+}
+@media (max-width: 360px) {
+  .service-workspace--worker > div > .ui-workspace-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1080px) {
+  .ticket-record--personal .ticket-workflow {
+    display: flex;
+    flex-direction: column;
+  }
+  .ticket-record--personal .ticket-workflow > * {
+    order: 3;
+  }
+  .ticket-record--personal .ticket-workflow > .register-heading {
+    order: 0;
+  }
+  .ticket-record--personal .ticket-workflow > [role="alert"],
+  .ticket-record--personal .ticket-workflow > [role="status"] {
+    order: -1;
+  }
+  .ticket-record--personal .ticket-workflow > .mvp-actions {
+    order: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    margin-block: 12px 16px;
+  }
+  .ticket-record--personal .ticket-workflow > .form-grid {
+    order: 2;
+  }
+  .ticket-record--personal .ticket-workflow > .mvp-actions:empty {
+    display: none;
+    margin: 0;
+  }
+  .ticket-record--personal .ticket-workflow .business-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block: 12px;
+    gap: 12px 16px;
+  }
+}
+@media (max-width: 760px) {
+  .ticket-record--personal .ticket-work-context .ticket-context-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .ticket-record--personal .ticket-work-context .ticket-context-facts > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .ticket-record--personal .ticket-workflow > p {
+    margin-block: 4px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 1080px) and (max-height: 500px) {
+  .ticket-record--personal .ticket-record-header {
+    position: static;
+  }
+}

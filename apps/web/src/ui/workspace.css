@@ -16,6 +16,7 @@
   justify-content: center;
   gap: 6px;
   min-height: 44px;
+  min-width: 44px;
   max-width: 100%;
   position: relative;
   padding: 10px 0 12px;

@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "verifiedAt": "2026-11-04T15:33:43.067Z",
+  "origin": "https://sklad-kontur.92.118.115.96.nip.io",
+  "revision": "65a34d794a95254ec2e225596da70654aa2785ed",
+  "distIndexSha256": "88abd411083ff0bb2a01af379e757b9f7d989d028de437dea091d717cb12115b",
+  "checks": [
+    {
+      "width": 1440,
+      "loginVisible": true,
+      "authTabs": true,
+      "noDocumentOverflow": true
+    },
+    {
+      "width": 768,
+      "loginVisible": true,
+      "authTabs": true,
+      "noDocumentOverflow": true
+    },
+    {
+      "width": 390,
+      "loginVisible": true,
+      "authTabs": true,
+      "noDocumentOverflow": true
+    },
+    {
+      "width": 320,
+      "loginVisible": true,
+      "authTabs": true,
+      "noDocumentOverflow": true
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "boundary": "Public TLS GET/HEAD and unauthenticated browser only; no login POST, production writes or 1C. Authenticated flows tested on isolated API/PostgreSQL before publication."
+}

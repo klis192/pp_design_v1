@@ -35,9 +35,156 @@
   font-size: 22px;
   font-weight: 600;
   line-height: 1.35;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+.ticket-filter-bar {
+  margin-block: 0;
+}
+.ticket-filter-bar .filter-bar-controls > .filter-search {
+  max-width: 560px;
+  flex-basis: 360px;
+}
+.ticket-filter-bar .filter-bar-controls > .ticket-status-filter {
+  flex: 0 1 220px;
+}
+.ticket-filter-bar .filter-bar-summary {
+  min-height: var(--ui-control-height);
+}
+.ticket-filter-result {
+  color: var(--ui-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.ticket-filter-result strong {
+  color: var(--ui-text);
+}
+.ticket-table {
+  min-width: 0;
+}
+.ticket-register-table th:first-child {
+  width: 120px;
+}
+.ticket-register-table th:nth-child(2) {
+  width: 38%;
+}
+.ticket-register-table .register-cell--primary strong {
+  font-weight: 600;
+}
+.ticket-filter-action {
+  position: relative;
+  display: inline-flex;
+}
+.ticket-filter-action[data-filter-count]::after {
+  content: attr(data-filter-count);
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 16px;
+  height: 16px;
+  padding-inline: 3px;
+  border-radius: 8px;
+  color: var(--ui-surface);
+  background: var(--ui-accent);
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  pointer-events: none;
+}
+.ticket-advanced-filters > .ui-checkbox {
+  grid-column: 1 / -1;
+}
+.ticket-list-page .kanban-board {
+  align-items: start;
+  gap: 16px;
+}
+.ticket-list-page .kanban-column {
+  min-height: 0;
+  padding: 12px;
+  border-color: var(--ui-border);
+  background: var(--ui-bg);
+}
+.ticket-list-page .kanban-column h3 {
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.ticket-list-page .kanban-column h3 small {
+  color: var(--ui-muted);
+  font-size: 13px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.ticket-list-page .kanban-empty {
+  margin: 0;
+  padding-block: 12px;
+  color: var(--ui-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.ticket-list-page .kanban-ticket {
+  min-width: 0;
+  gap: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+}
+.ticket-list-page .kanban-ticket:last-child {
+  margin-bottom: 0;
+}
+.ticket-list-page .kanban-ticket-open {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 6px;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ui-text);
+  text-align: left;
+  white-space: normal;
+}
+.ticket-list-page .kanban-ticket-open:hover:not(:disabled) {
+  background: transparent;
+}
+.ticket-list-page .kanban-ticket-open:hover strong {
+  color: var(--ui-accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.ticket-list-page .kanban-ticket-open .record-number {
+  color: var(--ui-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+.ticket-list-page .kanban-ticket-open strong {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.ticket-list-page .kanban-ticket-location,
+.ticket-list-page .kanban-ticket-assignee {
+  color: var(--ui-muted);
+  font-size: 12px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.ticket-list-page .kanban-ticket .status-pill {
+  justify-self: start;
+  max-width: 100%;
+}
+.ticket-list-page .kanban-ticket .ui-select {
+  margin-top: 2px;
+  font-size: 13px;
 }
 .ticket-record [hidden] {
   display: none !important;
@@ -319,6 +466,35 @@
   }
 }
 @media (max-width: 760px) {
+  .ticket-table .register-table td.ticket-cell-number {
+    display: block;
+    padding: 0 0 6px;
+    color: var(--ui-muted);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ticket-table .register-table td.ticket-cell-number::before {
+    display: none;
+  }
+  .ticket-filter-bar .filter-bar-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 12px;
+  }
+  .ticket-filter-bar .filter-bar-controls {
+    display: contents;
+  }
+  .ticket-filter-bar .filter-bar-controls > .filter-search {
+    grid-column: 1 / -1;
+    max-width: none;
+  }
+  .ticket-filter-bar .filter-bar-actions {
+    margin: 0;
+  }
+  .ticket-filter-bar .filter-bar-controls > .ticket-status-filter {
+    min-width: 0;
+  }
   .ticket-record-header {
     top: 60px;
   }

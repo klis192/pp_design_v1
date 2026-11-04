@@ -1,23 +1,22 @@
 import { useWorkspace } from "../../app/WorkspaceContext";
-import { formatCompactMoney } from "../../shared/format";
-import { currency } from "../operations/shared";
+import { formatBillingMoney } from "./format";
 export function BillingForecast() {
   const { overview, locale } = useWorkspace();
   return (
     <div className="billing-forecast-view">
-      <dl className="billing-summary">
+      <dl className="billing-summary billing-summary--three">
         <div>
           <dt>Доля операционных расходов</dt>
           <dd>{overview.finance.opexRatio}%</dd>
         </div>
         <div>
           <dt>Чистый операционный доход</dt>
-          <dd>{formatCompactMoney(overview.finance.noi, locale)}</dd>
+          <dd>{formatBillingMoney(overview.finance.noi, locale)}</dd>
         </div>
         <div>
           <dt>Плановый остаток за 3 месяца</dt>
           <dd>
-            {formatCompactMoney(overview.finance.forecastQuarter, locale)}
+            {formatBillingMoney(overview.finance.forecastQuarter, locale)}
           </dd>
         </div>
       </dl>
@@ -28,29 +27,34 @@ export function BillingForecast() {
             <dl className="billing-month-totals">
               <div>
                 <dt>Выставленные счета</dt>
-                <dd>{currency(month.invoiceAmount)}</dd>
+                <dd>{formatBillingMoney(month.invoiceAmount, locale)}</dd>
               </div>
               <div>
                 <dt>Остальные договоры</dt>
-                <dd>{currency(month.contractAmount)}</dd>
+                <dd>{formatBillingMoney(month.contractAmount, locale)}</dd>
               </div>
               <div>
                 <dt>Ожидаемые начисления</dt>
-                <dd>{currency(month.billed)}</dd>
+                <dd>{formatBillingMoney(month.billed, locale)}</dd>
               </div>
               <div>
                 <dt>Внесённые расходы</dt>
-                <dd>− {currency(month.expenses)}</dd>
+                <dd>
+                  {formatBillingMoney(
+                    month.expenses ? -month.expenses : 0,
+                    locale,
+                  )}
+                </dd>
               </div>
-              <div>
+              <div className="billing-month-result">
                 <dt>Расчётный остаток</dt>
                 <dd>
-                  <strong>{currency(month.forecast)}</strong>
+                  <strong>{formatBillingMoney(month.forecast, locale)}</strong>
                 </dd>
               </div>
               <div>
                 <dt>Оплачено по счетам</dt>
-                <dd>{currency(month.collected)}</dd>
+                <dd>{formatBillingMoney(month.collected, locale)}</dd>
               </div>
             </dl>
             <h4>Начисления по договорам</h4>
@@ -67,7 +71,7 @@ export function BillingForecast() {
                           : `По ставке договора за ${row.days} дн.`}
                       </small>
                     </div>
-                    <span>{currency(row.amount)}</span>
+                    <span>{formatBillingMoney(row.amount, locale)}</span>
                   </li>
                 ))}
               </ul>

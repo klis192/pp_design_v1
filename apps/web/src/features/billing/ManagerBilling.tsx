@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
 import type { BillingInvoice } from "../../shared/types";
 import {
@@ -9,14 +9,13 @@ import { ActionIcon, Feedback, Register } from "../business/shared";
 import { BillingForecast } from "./BillingForecast";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import {
-  formatCompactMoney,
   formatDate,
   formatDateTime,
-  formatMoney,
   reconciliationLabel,
 } from "../../shared/format";
-import { Button, IconButton, Input, Select } from "../../ui";
+import { Badge, Button, IconButton, Input, Select } from "../../ui";
 import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
+import { WorkspaceHeaderActions } from "../../ui/WorkspaceHeaderActions";
 import { SidePanel } from "../../ui/SidePanel";
 import {
   billingViews,
@@ -26,6 +25,7 @@ import {
   type BillingView,
 } from "./billing-view";
 import "./workspace.css";
+import { formatBillingMoney, paymentTone } from "./format";
 
 export function ManagerBilling() {
   const {
@@ -61,6 +61,7 @@ export function ManagerBilling() {
     readBillingView(session.user.id),
   );
   const [invoiceState, setInvoiceState] = useState("");
+  const paymentFormId = useId();
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [paymentDirty, setPaymentDirty] = useState(false);
   const [paymentAttempted, setPaymentAttempted] = useState(false);
@@ -189,7 +190,7 @@ export function ManagerBilling() {
     <section className="mvp-page billing-page billing-workspace">
       <div className="mvp-page-header">
         <h2>{managerUi.titles.billing}</h2>
-        <div className="mvp-actions">
+        <WorkspaceHeaderActions>
           <IconButton
             label={
               locale === "ru"
@@ -208,7 +209,7 @@ export function ManagerBilling() {
           >
             <ActionIcon name="document" />
           </IconButton>
-        </div>
+        </WorkspaceHeaderActions>
       </div>
       <WorkspaceTabs
         idPrefix="billing-views"
@@ -238,7 +239,7 @@ export function ManagerBilling() {
                 <div>
                   <dt>Остаток</dt>
                   <dd>
-                    {formatCompactMoney(
+                    {formatBillingMoney(
                       billingReconciliation.summary.outstanding,
                       locale,
                     )}
@@ -247,7 +248,7 @@ export function ManagerBilling() {
                 <div>
                   <dt>Переплата</dt>
                   <dd>
-                    {formatCompactMoney(
+                    {formatBillingMoney(
                       billingReconciliation.summary.overpaid,
                       locale,
                     )}
@@ -299,8 +300,9 @@ export function ManagerBilling() {
                   {
                     key: "amount",
                     label: "Сумма",
+                    align: "end",
                     render: (row) =>
-                      formatMoney(
+                      formatBillingMoney(
                         row.outstandingAmount || row.overpaidAmount,
                         locale,
                       ),
@@ -397,15 +399,23 @@ export function ManagerBilling() {
             <dl className="billing-summary">
               <div>
                 <dt>{locale === "ru" ? "Начислено" : "Billed"}</dt>
-                <dd>{formatCompactMoney(billingTotals.billed, locale)}</dd>
+                <dd>{formatBillingMoney(billingTotals.billed, locale)}</dd>
               </div>
               <div>
                 <dt>{locale === "ru" ? "Оплачено" : "Paid"}</dt>
-                <dd>{formatCompactMoney(billingTotals.paid, locale)}</dd>
+                <dd>{formatBillingMoney(billingTotals.paid, locale)}</dd>
               </div>
               <div>
                 <dt>{ui.arrears}</dt>
-                <dd>{formatCompactMoney(billingTotals.overdue, locale)}</dd>
+                <dd
+                  className={
+                    billingTotals.overdue > 0
+                      ? "billing-value--overdue"
+                      : undefined
+                  }
+                >
+                  {formatBillingMoney(billingTotals.overdue, locale)}
+                </dd>
               </div>
               <div>
                 <dt>На проверке</dt>
@@ -427,12 +437,12 @@ export function ManagerBilling() {
                 `${i.period} ${i.tenantName} ${i.contractNumber}`
               }
               columns={[
-                { key: "period", label: "Период", render: (i) => i.period },
                 {
                   key: "tenant",
                   label: "Арендатор",
                   render: (i) => <strong>{i.tenantName ?? "—"}</strong>,
                 },
+                { key: "period", label: "Период", render: (i) => i.period },
                 {
                   key: "lease",
                   label: "Договор",
@@ -442,12 +452,14 @@ export function ManagerBilling() {
                 {
                   key: "amount",
                   label: "Сумма",
-                  render: (i) => formatMoney(i.totalAmount, locale),
+                  align: "end",
+                  render: (i) => formatBillingMoney(i.totalAmount, locale),
                 },
                 {
                   key: "paid",
                   label: "Оплачено",
-                  render: (i) => formatMoney(i.paidAmount, locale),
+                  align: "end",
+                  render: (i) => formatBillingMoney(i.paidAmount, locale),
                   optional: true,
                 },
                 {
@@ -459,8 +471,15 @@ export function ManagerBilling() {
                 {
                   key: "status",
                   label: "Статус",
-                  render: (i) =>
-                    ui.paymentStatus[i.status as keyof typeof ui.paymentStatus],
+                  render: (i) => (
+                    <Badge tone={paymentTone(i.status)}>
+                      {
+                        ui.paymentStatus[
+                          i.status as keyof typeof ui.paymentStatus
+                        ]
+                      }
+                    </Badge>
+                  ),
                 },
               ]}
               filters={
@@ -489,8 +508,26 @@ export function ManagerBilling() {
           onClose={closeInvoice}
           busy={busyAction === "billing-payment"}
           dirty={paymentDirty}
+          footer={
+            canPay ? (
+              <Button
+                variant="primary"
+                type="submit"
+                form={paymentFormId}
+                busy={busyAction === "billing-payment"}
+                disabled={remaining <= 0}
+              >
+                {remaining > 0 ? "Провести оплату" : "Счёт оплачен"}
+              </Button>
+            ) : undefined
+          }
         >
           <Feedback error={workspaceError} />
+          <div className="billing-record-status">
+            <Badge tone={paymentTone(selectedBillingInvoice.status)}>
+              {ui.paymentStatus[selectedBillingInvoice.status]}
+            </Badge>
+          </div>
           <dl className="billing-invoice-summary">
             <div>
               <dt>Договор</dt>
@@ -498,11 +535,15 @@ export function ManagerBilling() {
             </div>
             <div>
               <dt>Начислено</dt>
-              <dd>{formatMoney(selectedBillingInvoice.totalAmount, locale)}</dd>
+              <dd>
+                {formatBillingMoney(selectedBillingInvoice.totalAmount, locale)}
+              </dd>
             </div>
             <div>
               <dt>Остаток</dt>
-              <dd>{formatMoney(remaining, locale)}</dd>
+              <dd className="billing-invoice-balance">
+                {formatBillingMoney(remaining, locale)}
+              </dd>
             </div>
             <div>
               <dt>Срок оплаты</dt>
@@ -542,6 +583,7 @@ export function ManagerBilling() {
           {canPay && (
             <form
               className="form-grid form-grid--single billing-payment-form"
+              id={paymentFormId}
               onSubmit={(event) => {
                 setPaymentAttempted(true);
                 void handleBillingPaymentSubmit(event);
@@ -555,6 +597,8 @@ export function ManagerBilling() {
                   <Input
                     required
                     min="1"
+                    step="0.01"
+                    inputMode="decimal"
                     name="amount"
                     type="number"
                     value={billingPaymentForm.amount}
@@ -572,34 +616,28 @@ export function ManagerBilling() {
                   />
                 </label>
               </div>
-              <label>
-                Способ
-                <Select
-                  name="method"
-                  value={billingPaymentForm.method}
-                  onChange={handleFieldChange(setBillingPaymentForm)}
-                >
-                  <option value="bank_transfer">Безналичный перевод</option>
-                  <option value="cash">Наличные</option>
-                  <option value="offset">Взаимозачёт</option>
-                </Select>
-              </label>
-              <label>
-                Назначение / референс
-                <Input
-                  name="reference"
-                  value={billingPaymentForm.reference}
-                  onChange={handleFieldChange(setBillingPaymentForm)}
-                />
-              </label>
-              <Button
-                variant="primary"
-                type="submit"
-                busy={busyAction === "billing-payment"}
-                disabled={remaining <= 0}
-              >
-                {remaining > 0 ? "Провести оплату" : "Счёт оплачен"}
-              </Button>
+              <div className="billing-form-row">
+                <label>
+                  Способ
+                  <Select
+                    name="method"
+                    value={billingPaymentForm.method}
+                    onChange={handleFieldChange(setBillingPaymentForm)}
+                  >
+                    <option value="bank_transfer">Безналичный перевод</option>
+                    <option value="cash">Наличные</option>
+                    <option value="offset">Взаимозачёт</option>
+                  </Select>
+                </label>
+                <label>
+                  Назначение / референс
+                  <Input
+                    name="reference"
+                    value={billingPaymentForm.reference}
+                    onChange={handleFieldChange(setBillingPaymentForm)}
+                  />
+                </label>
+              </div>
             </form>
           )}
         </SidePanel>

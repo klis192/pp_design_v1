@@ -13,8 +13,7 @@
   padding: 12px 16px;
 }
 
-.dashboard-workspace .dashboard-list-heading,
-.dashboard-workspace .dashboard-filter-result {
+.dashboard-workspace .dashboard-list-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,17 +27,20 @@
   line-height: 1.35;
 }
 
-.dashboard-workspace .dashboard-filters {
+.dashboard-workspace .dashboard-filter-bar {
+  margin-top: 16px;
+}
+
+.dashboard-workspace .dashboard-filter-bar .filter-bar-controls {
   display: grid;
   grid-template-columns:
     minmax(220px, 2fr) minmax(160px, 1.4fr) minmax(160px, 1.2fr)
     minmax(130px, 1fr);
   align-items: end;
   gap: 12px;
-  margin-top: 8px;
 }
 
-.dashboard-workspace .dashboard-filters label {
+.dashboard-workspace .dashboard-filter-bar label {
   display: grid;
   gap: 4px;
   min-width: 0;
@@ -48,14 +50,13 @@
   line-height: 1.35;
 }
 
-.dashboard-workspace .dashboard-filters .ui-control {
+.dashboard-workspace .dashboard-filter-bar .ui-control {
   min-width: 0;
   width: 100%;
 }
 
 .dashboard-workspace .dashboard-filter-result {
-  min-height: var(--ui-control-height);
-  margin-top: 4px;
+  display: block;
   color: var(--ink-soft);
   font-size: 13px;
   font-variant-numeric: tabular-nums;
@@ -65,9 +66,9 @@
   color: var(--ink);
 }
 
-.dashboard-workspace .dashboard-filter-result > .ui-button {
-  padding-inline: 0;
-  font-size: 13px;
+.dashboard-workspace .dashboard-filter-bar .filter-bar-summary {
+  min-height: var(--ui-control-height);
+  justify-content: space-between;
 }
 
 .dashboard-workspace .dashboard-urgent-count,
@@ -145,8 +146,12 @@
 }
 
 @media (max-width: 1100px) {
-  .dashboard-workspace .dashboard-filters {
+  .dashboard-workspace .dashboard-filter-bar .filter-bar-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dashboard-workspace .dashboard-filter-bar .filter-search {
+    grid-column: 1 / -1;
+    max-width: none;
   }
 
   .dashboard-workspace .dashboard-ticket-list > button {
@@ -180,12 +185,12 @@
     padding: 12px;
   }
 
-  .dashboard-workspace .dashboard-filter-search {
+  .dashboard-workspace .dashboard-filter-property {
     grid-column: 1 / -1;
   }
 
-  .dashboard-workspace .dashboard-filters {
-    gap: 8px;
+  .dashboard-workspace .dashboard-filter-bar .filter-bar-controls {
+    gap: 12px;
   }
 
   .dashboard-workspace .dashboard-ticket-list > button {

@@ -8,13 +8,14 @@
   --ui-accent: #008060;
   --ui-accent-hover: #006a50;
   --ui-danger: #d70c17;
-  --ui-radius: 8px;
-  --ui-field-radius: 2px;
+  --ui-radius: 6px;
+  --ui-field-radius: 4px;
   --ui-control-height: 36px;
   --ui-space-1: 4px;
   --ui-space-2: 8px;
   --ui-space-3: 12px;
   --ui-space-4: 16px;
+  --ui-space-5: 20px;
   --ui-space-6: 24px;
   --bg: var(--ui-bg);
   --surface: var(--ui-surface);
@@ -30,6 +31,11 @@
 }
 body {
   font-size: 15px;
+  caret-color: var(--ui-accent);
+}
+::selection {
+  color: var(--primary-900);
+  background: var(--primary-100);
 }
 .ui-button {
   font: inherit;
@@ -71,7 +77,7 @@ body {
 .ui-button--secondary {
   background: white;
   color: var(--ui-text);
-  border-color: var(--ui-border) !important;
+  border-color: var(--ui-border-strong) !important;
 }
 .ui-button--secondary:hover:not(:disabled) {
   background: #f0f0f0;

@@ -14,7 +14,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   min-height: 44px;
   max-width: 100%;
   position: relative;
@@ -52,9 +52,22 @@
   opacity: 0.5;
 }
 .ui-workspace-tab__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 18px;
+  padding-inline: 4px;
+  border-radius: 4px;
+  background: var(--neutral-100);
   font-size: 12px;
+  line-height: 18px;
   font-variant-numeric: tabular-nums;
   color: var(--ui-muted);
+}
+.ui-workspace-tab[aria-selected="true"] .ui-workspace-tab__count {
+  background: var(--primary-50);
+  color: var(--ui-accent-hover);
 }
 .ui-side-panel-layer {
   position: fixed;
@@ -107,6 +120,11 @@
 .ui-side-panel__footer {
   padding: 16px 24px;
   border-top: 1px solid var(--ui-border);
+  background: var(--ui-surface);
+  flex-shrink: 0;
+}
+.ui-side-panel__footer > :is(.ui-actions, .mvp-actions) {
+  justify-content: flex-end;
 }
 .ui-side-panel__confirm {
   padding: 16px 24px;
@@ -160,7 +178,10 @@
 }
 @media (max-width: 760px) {
   .ui-workspace-tabs {
-    column-gap: 16px;
+    column-gap: 12px;
+  }
+  .ui-workspace-tab {
+    gap: 4px;
   }
   .ui-side-panel {
     width: 100%;
@@ -268,20 +289,6 @@
 }
 .mvp-chat-form > .ui-icon-button {
   justify-self: end;
-}
-.mvp-sidebar .workspace-extra-nav {
-  margin-top: 8px;
-}
-.mvp-sidebar .workspace-extra-groups {
-  display: grid;
-  gap: 12px;
-}
-.mvp-sidebar .navigation-group-label {
-  padding: 0 12px;
-  margin: 8px 0;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ui-muted);
 }
 .register-toolbar {
   justify-content: flex-start;

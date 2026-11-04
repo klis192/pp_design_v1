@@ -5,6 +5,8 @@ import { leaseStageOptions } from "../../projectData";
 import { ResponsiveTable } from "../../ResponsiveTable";
 import { daysUntil, formatDate, formatMoney } from "../../shared/format";
 import { Button, Select } from "../../ui";
+import { FilterBar } from "../business/FilterBar";
+import { WorkspaceHeaderActions } from "../../ui/WorkspaceHeaderActions";
 export function ManagerLeases() {
   const {
     managerUi,
@@ -30,7 +32,24 @@ export function ManagerLeases() {
         <div>
           <h2>{managerUi.titles.leases}</h2>
         </div>
-        <div className="mvp-actions">
+        <WorkspaceHeaderActions>
+          <IconButton
+            label="Добавить договор"
+            variant="primary"
+            onClick={() => {
+              cancelAdminEdit("lease");
+              setAdminPanel("lease");
+              setManagerScreen("lease-add");
+            }}
+            type="button"
+          >
+            <ActionIcon name="plus" />
+          </IconButton>
+        </WorkspaceHeaderActions>
+      </div>
+      <FilterBar>
+        <label>
+          Стадия
           <Select
             className="filter-select"
             onChange={(event) => setLeaseStageFilter(event.target.value)}
@@ -47,6 +66,9 @@ export function ManagerLeases() {
               </option>
             ))}
           </Select>
+        </label>
+        <label>
+          Срок окончания
           <Select
             className="filter-select"
             onChange={(event) => setLeaseTermFilter(event.target.value)}
@@ -73,20 +95,8 @@ export function ManagerLeases() {
                 : "Expired"}
             </option>
           </Select>
-          <IconButton
-            label="Добавить договор"
-            variant="primary"
-            onClick={() => {
-              cancelAdminEdit("lease");
-              setAdminPanel("lease");
-              setManagerScreen("lease-add");
-            }}
-            type="button"
-          >
-            <ActionIcon name="plus" />
-          </IconButton>
-        </div>
-      </div>
+        </label>
+      </FilterBar>
 
       <article className="mvp-card">
         <div className="mvp-table-wrap">

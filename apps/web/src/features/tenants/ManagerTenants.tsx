@@ -3,13 +3,15 @@ import { IconButton } from "../../ui";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { riskLevelOptions } from "../../projectData";
 import { ResponsiveTable } from "../../ResponsiveTable";
+import { FilterBar, FilterSearch } from "../business/FilterBar";
+import { WorkspaceHeaderActions } from "../../ui/WorkspaceHeaderActions";
 import {
   countLabel,
   formatArea,
   formatCompactMoney,
   formatDate,
 } from "../../shared/format";
-import { Button, Input, Select } from "../../ui";
+import { Button, Select } from "../../ui";
 export function ManagerTenants() {
   const {
     managerUi,
@@ -46,31 +48,7 @@ export function ManagerTenants() {
             ])}
           </p>
         </div>
-        <div className="mvp-actions">
-          <Input
-            className="filter-select"
-            onChange={(event) => setTenantSearch(event.target.value)}
-            placeholder={
-              locale === "ru" ? "\u041f\u043e\u0438\u0441\u043a" : "Search"
-            }
-            value={tenantSearch}
-          />
-          <Select
-            className="filter-select"
-            onChange={(event) => setTenantRiskFilter(event.target.value)}
-            value={tenantRiskFilter}
-          >
-            <option value="all">
-              {locale === "ru"
-                ? "\u0412\u0441\u0435 \u0440\u0438\u0441\u043a\u0438"
-                : "All risks"}
-            </option>
-            {riskLevelOptions.map((option) => (
-              <option key={option} value={option}>
-                {t.riskLevels[option]}
-              </option>
-            ))}
-          </Select>
+        <WorkspaceHeaderActions>
           <IconButton
             label={managerUi.import}
             onClick={() => setManagerScreen("import")}
@@ -90,26 +68,49 @@ export function ManagerTenants() {
           >
             <ActionIcon name="plus" />
           </IconButton>
-        </div>
+        </WorkspaceHeaderActions>
       </div>
-
-      <div className="chip-row">
-        {overview.properties.map((property) => (
-          <Button
-            variant="plain"
-            className={
-              selectedPropertyId === property.id
-                ? "chip-button chip-button--active"
-                : "chip-button"
+      <FilterBar>
+        <FilterSearch
+          label="Поиск арендаторов"
+          placeholder={
+            locale === "ru" ? "Название, ИНН, контакт" : "Name, tax ID, contact"
+          }
+          value={tenantSearch}
+          onChange={setTenantSearch}
+        />
+        <label>
+          Объект
+          <Select
+            value={selectedPropertyId}
+            onChange={(event) =>
+              handleManagerPropertySelect(event.target.value, "tenants")
             }
-            key={property.id}
-            onClick={() => handleManagerPropertySelect(property.id, "tenants")}
-            type="button"
           >
-            {property.name}
-          </Button>
-        ))}
-      </div>
+            {overview.properties.map((property) => (
+              <option key={property.id} value={property.id}>
+                {property.name}
+              </option>
+            ))}
+          </Select>
+        </label>
+        <label>
+          Риск
+          <Select
+            onChange={(event) => setTenantRiskFilter(event.target.value)}
+            value={tenantRiskFilter}
+          >
+            <option value="all">
+              {locale === "ru" ? "Все риски" : "All risks"}
+            </option>
+            {riskLevelOptions.map((option) => (
+              <option key={option} value={option}>
+                {t.riskLevels[option]}
+              </option>
+            ))}
+          </Select>
+        </label>
+      </FilterBar>
 
       <article className="mvp-card">
         <div

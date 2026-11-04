@@ -10,8 +10,10 @@ import { useWorkspace } from "../../app/WorkspaceContext";
 import { ticketStatusOptions } from "../../projectData";
 import { getSlaState, getTicketStatusLabel } from "../../shared/format";
 import { NavigationIcon } from "../shell/NavigationIcon";
-import { Button, IconButton, Input, Select } from "../../ui";
+import { Button, IconButton, Select } from "../../ui";
 import { ActionIcon } from "../business/ActionIcon";
+import { ActiveFilters, FilterBar, FilterSearch } from "../business/FilterBar";
+import { WorkspaceHeaderActions } from "../../ui/WorkspaceHeaderActions";
 
 type DashboardFilters = {
   query: string;
@@ -110,7 +112,7 @@ export function ManagerDashboard() {
     <section className="mvp-page dashboard-page dashboard-workspace">
       <div className="mvp-page-header">
         <h2>{managerUi.titles.dashboard}</h2>
-        <div className="mvp-actions">
+        <WorkspaceHeaderActions>
           <IconButton
             label="Сроки и работы"
             title={
@@ -136,7 +138,7 @@ export function ManagerDashboard() {
               <ActionIcon name="plus" />
             </IconButton>
           )}
-        </div>
+        </WorkspaceHeaderActions>
       </div>
       <article className="mvp-card dashboard-tickets">
         <div className="dashboard-list-heading">
@@ -148,23 +150,40 @@ export function ManagerDashboard() {
             <ActionIcon name="next" />
           </IconButton>
         </div>
-        <div
-          className="dashboard-filters"
-          role="search"
-          aria-label="Фильтры открытых заявок"
+        <FilterBar
+          className="dashboard-filter-bar"
+          summary={
+            <>
+              <span
+                className="dashboard-filter-result"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                Найдено: <strong>{tickets.length}</strong> из{" "}
+                {openTickets.length}
+                {urgent > 0 && (
+                  <span className="dashboard-urgent-count">
+                    {" "}
+                    · Срочных: {urgent}
+                  </span>
+                )}
+              </span>
+              <ActiveFilters
+                items={[]}
+                onReset={hasFilters ? resetFilters : undefined}
+              />
+            </>
+          }
         >
-          <label className="dashboard-filter-search">
-            <span>Поиск</span>
-            <Input
-              type="search"
-              aria-label="Поиск"
-              placeholder="Номер, текст, помещение, исполнитель"
-              value={filters.query}
-              maxLength={300}
-              onChange={(event) => changeFilters({ query: event.target.value })}
-            />
-          </label>
-          <label>
+          <FilterSearch
+            label="Поиск"
+            placeholder="Номер, текст, помещение, исполнитель"
+            value={filters.query}
+            onChange={(query) => changeFilters({ query })}
+            maxLength={300}
+          />
+          <label className="dashboard-filter-property">
             <span>Объект</span>
             <Select
               aria-label="Объект"
@@ -186,8 +205,8 @@ export function ManagerDashboard() {
               ))}
             </Select>
           </label>
-          <label>
-            <span>Статус или назначение</span>
+          <label className="dashboard-filter-status">
+            <span>Статус</span>
             <Select
               aria-label="Статус или назначение"
               value={filters.status}
@@ -204,7 +223,7 @@ export function ManagerDashboard() {
               ))}
             </Select>
           </label>
-          <label>
+          <label className="dashboard-filter-deadline">
             <span>Срок</span>
             <Select
               aria-label="Срок"
@@ -220,21 +239,7 @@ export function ManagerDashboard() {
               <option value="overdue">Просрочены</option>
             </Select>
           </label>
-        </div>
-        <div className="dashboard-filter-result">
-          <span role="status" aria-live="polite" aria-atomic="true">
-            Найдено: <strong>{tickets.length}</strong> из {openTickets.length}
-            {urgent > 0 && (
-              <span className="dashboard-urgent-count">
-                {" "}
-                · Срочных: {urgent}
-              </span>
-            )}
-          </span>
-          <Button variant="text" disabled={!hasFilters} onClick={resetFilters}>
-            Сбросить фильтры
-          </Button>
-        </div>
+        </FilterBar>
         {tickets.length ? (
           <div className="dashboard-ticket-list">
             {tickets.map((ticket) => (

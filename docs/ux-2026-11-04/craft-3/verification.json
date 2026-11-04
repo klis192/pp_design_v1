@@ -1,0 +1,2896 @@
+{
+  "stage": "workspace-visual-craft-3",
+  "verifiedAtUtc": "2026-11-04T15:31:06.009550+00:00",
+  "userDate": "2026-11-04",
+  "userTimezone": "Asia/Yekaterinburg",
+  "origin": "http://wirehouse.localhost:5186",
+  "distIndexSha256": "88abd411083ff0bb2a01af379e757b9f7d989d028de437dea091d717cb12115b",
+  "distFiles": {
+    "assets/AccountingWorkspace-CQPnjwlT.js": {
+      "bytes": 16288,
+      "sha256": "e2e906135fa42a2115074dfcbd280e90d87f0c6db96a818e1e2a1f27d49a797f"
+    },
+    "assets/Admin-BQPITt3T.js": {
+      "bytes": 5130,
+      "sha256": "ffd869510dbcae5b2d74f9457383bb7271c5aa90c6e3617c04cb1c6a44a5b0a2"
+    },
+    "assets/DocumentRegistry-DrmU3BdL.js": {
+      "bytes": 5251,
+      "sha256": "78ff1e65f3961bdef6d7fa704462a007713628ff5d2601340aa80bc581b53be4"
+    },
+    "assets/FilterBar-SkV3jiW7.js": {
+      "bytes": 2002,
+      "sha256": "255a6f543664b492ea7464ceb309c6e3c72a9a4a7a556b43b235fe3db50fa27a"
+    },
+    "assets/index-BLuIzvu9.css": {
+      "bytes": 104072,
+      "sha256": "e2bce9726c21afba840a45b07346be4d58a2b893553c8aabe71f8fc725e9d30f"
+    },
+    "assets/index-rxzxUx-P.js": {
+      "bytes": 237963,
+      "sha256": "fa00a2a7df2989421182ee677e03d28c757783f7f0ff8f043a3f6edadc89047f"
+    },
+    "assets/iso-CyLnQ4BE.js": {
+      "bytes": 85134,
+      "sha256": "e2a102a2c55dc00520d5406f3b044e5c1898c0dec56b922d8e3df2429c06f870"
+    },
+    "assets/Leases-3XdyFzmU.js": {
+      "bytes": 7900,
+      "sha256": "ee2326cfda20e165b7840122e5754ee5b50ba34dfdb65d55a2add9b8cfda79f2"
+    },
+    "assets/ManagerBilling-6VZtdMON.js": {
+      "bytes": 13533,
+      "sha256": "a78ff356b02a0e2c401a85640ff159011c173b54e2710574f2dcdcf3a75106bd"
+    },
+    "assets/ManagerBilling-D4hDHtKW.css": {
+      "bytes": 3342,
+      "sha256": "a61c9da882b4167d562f050232388a6f9f0aaf69446dba3fb83a135bc3b47e7a"
+    },
+    "assets/ManagerChat-BYXj-dAK.js": {
+      "bytes": 3190,
+      "sha256": "a9b9fde53bdee9057d9d94f265794eb644c9441b2952b4a29a96e03efe5b8508"
+    },
+    "assets/ManagerDashboard-oJh31s6C.js": {
+      "bytes": 6050,
+      "sha256": "4cff1abde8eabe975bb135baf41f6730d339e045fd8d2c6cc5f363e6d4859a02"
+    },
+    "assets/ManagerImport-C1yAy9Cr.js": {
+      "bytes": 10358,
+      "sha256": "43774dc06df35a7e103839377763df8ffd4aece5c00e529fc2542ed804d0b44d"
+    },
+    "assets/ManagerLeases-BVY3YwkU.js": {
+      "bytes": 3435,
+      "sha256": "b859989511bc7c50aa808b9ea7c6d9ece506a8331f097f1a7ba5c61afd59a83e"
+    },
+    "assets/ManagerNotifications-DRvnNwsF.js": {
+      "bytes": 1374,
+      "sha256": "b8926bf2a9a3061cfc67fc9ad21ec0d5c22a03263bf30f7e20f45dba0ca89f95"
+    },
+    "assets/ManagerObjectLaunch-UDLFmLul.js": {
+      "bytes": 5823,
+      "sha256": "5f50f59190c9cbc99d9f52a6308bb8f8810fc2e3a090f5b5e90759a095b54e9c"
+    },
+    "assets/ManagerObjects-IKF5WRoL.js": {
+      "bytes": 4556,
+      "sha256": "70d10483131b8d4afec8125b5fc00c3fffc88cdebc826f495261af2904921de6"
+    },
+    "assets/ManagerProfile-NlvNcOTR.js": {
+      "bytes": 4491,
+      "sha256": "e65fcf583738edb23900c2b9bc293fad8b9fb750ff044a48cef14a40fde4b151"
+    },
+    "assets/ManagerStaff-CoZAsmcG.js": {
+      "bytes": 427,
+      "sha256": "52651a3fed826570069143f7fd2810d88012fd49ea9b703c05be8556834eaf13"
+    },
+    "assets/ManagerStaffCreate-CJ8IjlBC.js": {
+      "bytes": 2285,
+      "sha256": "c317fbe02863abfd1098c562f981d36c1b22429b065053209d0ecbb1583246a8"
+    },
+    "assets/ManagerTenantDetail-DYHdXiiL.js": {
+      "bytes": 13294,
+      "sha256": "8e723e9e15bd82e6b323312a437a4f51b67645b61644013db36e9dc9c0d2fd0e"
+    },
+    "assets/ManagerTenants-BpsRV44S.js": {
+      "bytes": 3292,
+      "sha256": "ea6c793c25eb2943648c72e253bbac5698c53b6cd713ddaa84f25c9783a9dfa4"
+    },
+    "assets/ManagerTicketCreate-D7fjCRi3.js": {
+      "bytes": 1970,
+      "sha256": "3609121155420aae7bf8f31c9f4ba521e92bf278900b814713811d76e34a8b08"
+    },
+    "assets/ManagerTicketDetail-QijpBIj8.js": {
+      "bytes": 31902,
+      "sha256": "e7915ad2c80dd7e41796c41b6ac75c35fb2ce3411c4483aff42c54b4e1b40cf3"
+    },
+    "assets/ManagerTickets-BxapuBVG.js": {
+      "bytes": 13110,
+      "sha256": "62864c17089c8a37ce645f472668d8fc75bba0248ded645899fccf5d48aad995"
+    },
+    "assets/ManagerUnitDetail-BdOZMhf7.js": {
+      "bytes": 7125,
+      "sha256": "0831760e30066b0713f466224eb356296cdddd6c570086199615744a9831957e"
+    },
+    "assets/ManagerUnits-l1sJLYCH.js": {
+      "bytes": 4973,
+      "sha256": "5c3da7aaa59265a12572199fb67492075888b99210dc5ea685dd30933903ac3b"
+    },
+    "assets/Operations-DEoTNTXn.css": {
+      "bytes": 716,
+      "sha256": "f1cee03438f3d0f198964b0b5deda71c375a62cf652ce3152db3abc8d55ee7ac"
+    },
+    "assets/Operations-ED1o-HFY.js": {
+      "bytes": 72417,
+      "sha256": "b78215b6545e12b37f81e4c19fd61c3ce3c97c6fceb254029aa9b81c045b36f8"
+    },
+    "assets/Overview-BjAC67CA.js": {
+      "bytes": 12749,
+      "sha256": "023db3865acf48cb669ef21d1faa5fb92921891e1fda185eee588d6ae604ca19"
+    },
+    "assets/permissions-BLscaukU.js": {
+      "bytes": 2192,
+      "sha256": "c5e3d0d4266106d8bdfb78545befed2e9c1c34f16db29d66f2825cfb3d6b980e"
+    },
+    "assets/Portfolio-CYlhduB7.js": {
+      "bytes": 7235,
+      "sha256": "614823ae54914f5c699515c0812563d0e5cfd46fad082b97d8822f010179bba5"
+    },
+    "assets/ReadingsWorkspace-CD0uZPZ8.js": {
+      "bytes": 11365,
+      "sha256": "92d3976af18265987f205a71f962c957846098d8274ee7705fd13bf5564b1105"
+    },
+    "assets/ResponsiveTable-BurWpdAy.js": {
+      "bytes": 1128,
+      "sha256": "1fe97b0a038b797fc0e5e0db2ab5a5507d9acd46167d52a56c3aef12888f0e3c"
+    },
+    "assets/Service-DIOBY0PZ.js": {
+      "bytes": 6625,
+      "sha256": "fbc26b551dbe0b80fc00500a42448b62978da0fbb1cea12c1370e2983a0a0b6c"
+    },
+    "assets/shared-AWqnUlyX.js": {
+      "bytes": 6682,
+      "sha256": "ca0bd458f3c5ee8b0bc5ab7cce8a79adcc5de2003adb0295202e3f4e6eebf6d2"
+    },
+    "assets/shared-DX5_wdx7.js": {
+      "bytes": 1817,
+      "sha256": "07827f1907f3ccbfc214f86eb5ea93b05c821debc94ad503d5a83f3ab891b647"
+    },
+    "assets/StructureWorkspace-C_lK3sn7.css": {
+      "bytes": 546,
+      "sha256": "27285452645bcf9bdd07a750c32cefdc91ed02278a259198a2fa5f8386cbce21"
+    },
+    "assets/StructureWorkspace-CV5CUdtz.js": {
+      "bytes": 19775,
+      "sha256": "bae114254e4468685723dea645c55b5c07b3e542ab3d8ed6d562b95ed80cf078"
+    },
+    "assets/TenantChat--XrXpiZG.js": {
+      "bytes": 2627,
+      "sha256": "2b10a83f9020a23b50b391fb545e1f1b3dd231a462b35e42795a968001910eee"
+    },
+    "assets/TenantServices-DNotFYp4.js": {
+      "bytes": 1197,
+      "sha256": "ace8ddb2caf926549730145e4429503bdd19b840f4e460592a26da44698f8ce4"
+    },
+    "assets/ticket-search-LK6TsXg5.js": {
+      "bytes": 696,
+      "sha256": "cad88e3afbab0a629e136ddde804f5cf03c0acc137df5584239d5847ee8efebb"
+    },
+    "assets/usePagedResource-B_xG1RxX.js": {
+      "bytes": 705,
+      "sha256": "ddb59eeffc0b425c12504c9d7e31e1af9f7fd6157e1217447aca2f2d248f2d83"
+    },
+    "assets/useSurfaceView-DOMrjOH_.js": {
+      "bytes": 643,
+      "sha256": "210d22811ae647eaabcecd86b3fb44250245ce46ae83b86476277eeaaeff82de"
+    },
+    "assets/useWorkspaceViewState-DKcgloud.js": {
+      "bytes": 427,
+      "sha256": "79da75c07e3faaccab3c4dfbf21e96f8049fe4e2a21b26a16d4852fa09fc31c6"
+    },
+    "assets/workspace-qBwSKxHh.css": {
+      "bytes": 9242,
+      "sha256": "8e67f70d8e6defabbb63428c85e90791c489d561e5c5207b84a4101d57f57df1"
+    },
+    "assets/WorkspaceContext-1oK_ljOB.js": {
+      "bytes": 110161,
+      "sha256": "cfd9fd16b790337c6ce93c25d84f7e68bbd89835fb3829a3c0e0d903bb1dc8fa"
+    },
+    "assets/WorkspaceContext-BmjzBoLJ.css": {
+      "bytes": 12341,
+      "sha256": "23ba87e9439af1804ef96f0feeb92a08a558a0f30f5dafebc7f7dbd84bf93b43"
+    },
+    "index.html": {
+      "bytes": 584,
+      "sha256": "88abd411083ff0bb2a01af379e757b9f7d989d028de437dea091d717cb12115b"
+    }
+  },
+  "build": {
+    "typecheck": "passed",
+    "webBuild": "passed",
+    "entry": "assets/index-rxzxUx-P.js",
+    "targetedUnits": 20
+  },
+  "builtReadOnlySweep": {
+    "passed": true,
+    "workspaces": 14,
+    "widths": [
+      1440,
+      390,
+      320
+    ],
+    "checkGroups": 351,
+    "errors": [],
+    "writes": [],
+    "details": [
+      {
+        "name": "dashboard-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Заявки 13"
+      },
+      {
+        "name": "tickets-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Службы и маршруты"
+      },
+      {
+        "name": "objects-tab0-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "objects-tab0-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Обзор"
+      },
+      {
+        "name": "objects-tab1-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "objects-tab1-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "objects-tab2-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "objects-tab2-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "objects-tab3-1440",
+        "width": 1440,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "objects-tab3-1440",
+        "width": 1440,
+        "icons": 7,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "units-tab0-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "units-tab0-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Список"
+      },
+      {
+        "name": "units-tab1-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "units-tab1-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "units-tab2-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "units-tab2-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "tenants-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "leases-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Счета 1"
+      },
+      {
+        "name": "billing-tab1-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab1-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Лицевые счета"
+      },
+      {
+        "name": "billing-tab2-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "billing-tab2-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Сверка 1"
+      },
+      {
+        "name": "billing-tab3-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "billing-tab3-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "План доходов"
+      },
+      {
+        "name": "billing-tab4-1440",
+        "width": 1440,
+        "icons": 9,
+        "passed": true
+      },
+      {
+        "name": "billing-tab4-1440",
+        "width": 1440,
+        "icons": 9,
+        "passed": true,
+        "selectedLabel": "Источники"
+      },
+      {
+        "name": "billing-tab5-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab5-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Сопоставления"
+      },
+      {
+        "name": "billing-tab6-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "billing-tab6-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Журнал обмена"
+      },
+      {
+        "name": "chat-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "agenda-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Сметы и акты"
+      },
+      {
+        "name": "operations-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Оборудование"
+      },
+      {
+        "name": "operations-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Графики"
+      },
+      {
+        "name": "operations-tab2-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "План и факт"
+      },
+      {
+        "name": "operations-tab2-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Регламенты"
+      },
+      {
+        "name": "operations-tab2-tab3-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab3-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "ППР"
+      },
+      {
+        "name": "operations-tab3-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Каталог"
+      },
+      {
+        "name": "operations-tab3-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Материалы"
+      },
+      {
+        "name": "operations-tab3-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Услуги"
+      },
+      {
+        "name": "operations-tab4-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Приборы"
+      },
+      {
+        "name": "operations-tab4-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab1-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Переданные"
+      },
+      {
+        "name": "operations-tab4-tab1-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Счётчики"
+      },
+      {
+        "name": "operations-tab5-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab5-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Объявления"
+      },
+      {
+        "name": "operations-tab6-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab6-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Расходы"
+      },
+      {
+        "name": "notifications-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Пользователи"
+      },
+      {
+        "name": "staff-tab1-1440",
+        "width": 1440,
+        "icons": 13,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-1440",
+        "width": 1440,
+        "icons": 13,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-1440",
+        "width": 1440,
+        "icons": 13,
+        "passed": true,
+        "selectedLabel": "Назначения 5"
+      },
+      {
+        "name": "staff-tab1-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Доступ"
+      },
+      {
+        "name": "staff-tab2-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab2-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Аудит"
+      },
+      {
+        "name": "import-tab0-1440",
+        "width": 1440,
+        "icons": 9,
+        "passed": true
+      },
+      {
+        "name": "import-tab0-1440",
+        "width": 1440,
+        "icons": 9,
+        "passed": true,
+        "selectedLabel": "Загрузка"
+      },
+      {
+        "name": "import-tab1-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "import-tab1-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Проверка 0"
+      },
+      {
+        "name": "import-tab2-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "import-tab2-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Согласование 0"
+      },
+      {
+        "name": "import-tab3-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "import-tab3-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "История 0"
+      },
+      {
+        "name": "import-tab4-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "import-tab4-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Экспорт"
+      },
+      {
+        "name": "profile-tab0-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "profile-tab0-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Профиль и доступ"
+      },
+      {
+        "name": "profile-tab1-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "profile-tab1-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Безопасность"
+      },
+      {
+        "name": "profile-tab2-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "profile-tab2-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Мессенджеры"
+      },
+      {
+        "name": "dashboard-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Заявки 13"
+      },
+      {
+        "name": "tickets-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Службы и маршруты"
+      },
+      {
+        "name": "objects-tab0-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "objects-tab0-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Обзор"
+      },
+      {
+        "name": "objects-tab1-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "objects-tab1-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "objects-tab2-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "objects-tab2-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "objects-tab3-390",
+        "width": 390,
+        "icons": 8,
+        "passed": true
+      },
+      {
+        "name": "objects-tab3-390",
+        "width": 390,
+        "icons": 8,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "units-tab0-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "units-tab0-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Список"
+      },
+      {
+        "name": "units-tab1-390",
+        "width": 390,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "units-tab1-390",
+        "width": 390,
+        "icons": 7,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "units-tab2-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "units-tab2-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "tenants-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "leases-390",
+        "width": 390,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Счета 1"
+      },
+      {
+        "name": "billing-tab1-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "billing-tab1-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Лицевые счета"
+      },
+      {
+        "name": "billing-tab2-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab2-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Сверка 1"
+      },
+      {
+        "name": "billing-tab3-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "billing-tab3-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "План доходов"
+      },
+      {
+        "name": "billing-tab4-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "billing-tab4-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Источники"
+      },
+      {
+        "name": "billing-tab5-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "billing-tab5-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Сопоставления"
+      },
+      {
+        "name": "billing-tab6-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab6-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Журнал обмена"
+      },
+      {
+        "name": "chat-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "agenda-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Сметы и акты"
+      },
+      {
+        "name": "operations-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Оборудование"
+      },
+      {
+        "name": "operations-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Графики"
+      },
+      {
+        "name": "operations-tab2-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "План и факт"
+      },
+      {
+        "name": "operations-tab2-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Регламенты"
+      },
+      {
+        "name": "operations-tab2-tab3-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab3-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "ППР"
+      },
+      {
+        "name": "operations-tab3-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Каталог"
+      },
+      {
+        "name": "operations-tab3-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Материалы"
+      },
+      {
+        "name": "operations-tab3-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Услуги"
+      },
+      {
+        "name": "operations-tab4-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Приборы"
+      },
+      {
+        "name": "operations-tab4-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab1-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Переданные"
+      },
+      {
+        "name": "operations-tab4-tab1-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Счётчики"
+      },
+      {
+        "name": "operations-tab5-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab5-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Объявления"
+      },
+      {
+        "name": "operations-tab6-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab6-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Расходы"
+      },
+      {
+        "name": "notifications-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Пользователи"
+      },
+      {
+        "name": "staff-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-390",
+        "width": 390,
+        "icons": 14,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-390",
+        "width": 390,
+        "icons": 14,
+        "passed": true,
+        "selectedLabel": "Назначения 5"
+      },
+      {
+        "name": "staff-tab1-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Доступ"
+      },
+      {
+        "name": "staff-tab2-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "staff-tab2-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Аудит"
+      },
+      {
+        "name": "import-tab0-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "import-tab0-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Загрузка"
+      },
+      {
+        "name": "import-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Проверка 0"
+      },
+      {
+        "name": "import-tab2-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab2-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Согласование 0"
+      },
+      {
+        "name": "import-tab3-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab3-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "История 0"
+      },
+      {
+        "name": "import-tab4-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab4-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Экспорт"
+      },
+      {
+        "name": "profile-tab0-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab0-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Профиль и доступ"
+      },
+      {
+        "name": "profile-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Безопасность"
+      },
+      {
+        "name": "profile-tab2-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab2-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Мессенджеры"
+      },
+      {
+        "name": "dashboard-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Заявки 13"
+      },
+      {
+        "name": "tickets-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Службы и маршруты"
+      },
+      {
+        "name": "objects-tab0-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "objects-tab0-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Обзор"
+      },
+      {
+        "name": "objects-tab1-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "objects-tab1-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "objects-tab2-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "objects-tab2-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "objects-tab3-320",
+        "width": 320,
+        "icons": 8,
+        "passed": true
+      },
+      {
+        "name": "objects-tab3-320",
+        "width": 320,
+        "icons": 8,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "units-tab0-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "units-tab0-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Список"
+      },
+      {
+        "name": "units-tab1-320",
+        "width": 320,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "units-tab1-320",
+        "width": 320,
+        "icons": 7,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "units-tab2-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "units-tab2-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "tenants-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "leases-320",
+        "width": 320,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Счета 1"
+      },
+      {
+        "name": "billing-tab1-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "billing-tab1-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Лицевые счета"
+      },
+      {
+        "name": "billing-tab2-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab2-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Сверка 1"
+      },
+      {
+        "name": "billing-tab3-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "billing-tab3-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "План доходов"
+      },
+      {
+        "name": "billing-tab4-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "billing-tab4-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Источники"
+      },
+      {
+        "name": "billing-tab5-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "billing-tab5-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Сопоставления"
+      },
+      {
+        "name": "billing-tab6-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab6-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Журнал обмена"
+      },
+      {
+        "name": "chat-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "agenda-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Сметы и акты"
+      },
+      {
+        "name": "operations-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Оборудование"
+      },
+      {
+        "name": "operations-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Графики"
+      },
+      {
+        "name": "operations-tab2-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "План и факт"
+      },
+      {
+        "name": "operations-tab2-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Регламенты"
+      },
+      {
+        "name": "operations-tab2-tab3-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab3-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "ППР"
+      },
+      {
+        "name": "operations-tab3-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Каталог"
+      },
+      {
+        "name": "operations-tab3-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Материалы"
+      },
+      {
+        "name": "operations-tab3-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Услуги"
+      },
+      {
+        "name": "operations-tab4-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Приборы"
+      },
+      {
+        "name": "operations-tab4-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab1-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Переданные"
+      },
+      {
+        "name": "operations-tab4-tab1-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Счётчики"
+      },
+      {
+        "name": "operations-tab5-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab5-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Объявления"
+      },
+      {
+        "name": "operations-tab6-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab6-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Расходы"
+      },
+      {
+        "name": "notifications-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Пользователи"
+      },
+      {
+        "name": "staff-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-320",
+        "width": 320,
+        "icons": 14,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-320",
+        "width": 320,
+        "icons": 14,
+        "passed": true,
+        "selectedLabel": "Назначения 5"
+      },
+      {
+        "name": "staff-tab1-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Доступ"
+      },
+      {
+        "name": "staff-tab2-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "staff-tab2-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Аудит"
+      },
+      {
+        "name": "import-tab0-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "import-tab0-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Загрузка"
+      },
+      {
+        "name": "import-tab1-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab1-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Проверка 0"
+      },
+      {
+        "name": "import-tab2-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab2-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Согласование 0"
+      },
+      {
+        "name": "import-tab3-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab3-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "История 0"
+      },
+      {
+        "name": "import-tab4-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab4-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Экспорт"
+      },
+      {
+        "name": "profile-tab0-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab0-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Профиль и доступ"
+      },
+      {
+        "name": "profile-tab1-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab1-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Безопасность"
+      },
+      {
+        "name": "profile-tab2-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab2-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Мессенджеры"
+      },
+      {
+        "name": "ticket-record-tab0-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab0-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Работа"
+      },
+      {
+        "name": "ticket-record-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Условия"
+      },
+      {
+        "name": "ticket-record-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Обсуждение 3"
+      },
+      {
+        "name": "ticket-record-tab3-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab3-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Фото и файлы 0"
+      },
+      {
+        "name": "ticket-record-tab4-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab4-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "ticket-record-tab5-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab5-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "История 1"
+      },
+      {
+        "name": "ticket-record-tab6-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab6-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Связи"
+      },
+      {
+        "name": "ticket-record-tab7-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab7-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Затраты"
+      },
+      {
+        "name": "ticket-title-scroll",
+        "width": 1440,
+        "actualScroll": 0,
+        "headerY": 24,
+        "passed": true
+      },
+      {
+        "name": "ticket-work-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab0-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab0-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Работа"
+      },
+      {
+        "name": "ticket-record-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Условия"
+      },
+      {
+        "name": "ticket-record-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Обсуждение 3"
+      },
+      {
+        "name": "ticket-record-tab3-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab3-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Фото и файлы 0"
+      },
+      {
+        "name": "ticket-record-tab4-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab4-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "ticket-record-tab5-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab5-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "История 1"
+      },
+      {
+        "name": "ticket-record-tab6-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab6-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Связи"
+      },
+      {
+        "name": "ticket-record-tab7-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab7-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Затраты"
+      },
+      {
+        "name": "ticket-title-scroll",
+        "width": 390,
+        "actualScroll": 575,
+        "headerY": 60,
+        "passed": true
+      },
+      {
+        "name": "ticket-work-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab0-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab0-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Работа"
+      },
+      {
+        "name": "ticket-record-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Условия"
+      },
+      {
+        "name": "ticket-record-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Обсуждение 3"
+      },
+      {
+        "name": "ticket-record-tab3-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab3-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Фото и файлы 0"
+      },
+      {
+        "name": "ticket-record-tab4-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab4-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "ticket-record-tab5-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab5-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "История 1"
+      },
+      {
+        "name": "ticket-record-tab6-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab6-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Связи"
+      },
+      {
+        "name": "ticket-record-tab7-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab7-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Затраты"
+      },
+      {
+        "name": "ticket-title-scroll",
+        "width": 320,
+        "actualScroll": 728,
+        "headerY": 60,
+        "passed": true
+      },
+      {
+        "name": "ticket-work-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "role-2-worker-tab0-390",
+        "width": 390,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "role-2-worker-tab0-390",
+        "width": 390,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Мои задания 6"
+      },
+      {
+        "name": "role-2-worker-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "role-2-worker-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Показания"
+      },
+      {
+        "name": "role-2-worker-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true
+      },
+      {
+        "name": "role-2-worker-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true,
+        "selectedLabel": "Мессенджеры"
+      },
+      {
+        "name": "role-3-worker-tab0-390",
+        "width": 390,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "role-3-worker-tab0-390",
+        "width": 390,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Мои задания 1"
+      },
+      {
+        "name": "role-3-worker-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "role-3-worker-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Показания"
+      },
+      {
+        "name": "role-3-worker-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true
+      },
+      {
+        "name": "role-3-worker-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true,
+        "selectedLabel": "Мессенджеры"
+      },
+      {
+        "name": "role-4-tenant-tab0-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "role-4-tenant-tab0-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Мои заявки 7"
+      },
+      {
+        "name": "role-4-tenant-tab1-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true
+      },
+      {
+        "name": "role-4-tenant-tab1-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true,
+        "selectedLabel": "Создать заявку"
+      },
+      {
+        "name": "role-4-tenant-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true
+      },
+      {
+        "name": "role-4-tenant-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true,
+        "selectedLabel": "Уведомления 3"
+      }
+    ]
+  },
+  "builtShell": {
+    "passed": true,
+    "widths": [
+      1440,
+      1024,
+      768,
+      390,
+      320
+    ],
+    "checkGroups": 49,
+    "details": [
+      {
+        "screen": "dashboard",
+        "width": 1440,
+        "noOverflow": true,
+        "singleTitle": false
+      },
+      {
+        "screen": "tickets",
+        "width": 1440,
+        "noOverflow": true,
+        "singleTitle": false
+      },
+      {
+        "screen": "billing",
+        "width": 1440,
+        "noOverflow": true,
+        "singleTitle": false
+      },
+      {
+        "screen": "operations",
+        "width": 1440,
+        "noOverflow": true,
+        "singleTitle": false
+      },
+      {
+        "screen": "objects",
+        "width": 1440,
+        "noOverflow": true,
+        "singleTitle": false
+      },
+      {
+        "screen": "units",
+        "width": 1440,
+        "noOverflow": true,
+        "singleTitle": false
+      },
+      {
+        "screen": "tenants",
+        "width": 1440,
+        "noOverflow": true,
+        "singleTitle": false
+      },
+      {
+        "screen": "leases",
+        "width": 1440,
+        "noOverflow": true,
+        "singleTitle": false
+      },
+      {
+        "screen": "notifications",
+        "width": 1440,
+        "noOverflow": true,
+        "singleTitle": false
+      },
+      {
+        "screen": "dashboard",
+        "width": 1024,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "tickets",
+        "width": 1024,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "billing",
+        "width": 1024,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "operations",
+        "width": 1024,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "objects",
+        "width": 1024,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "units",
+        "width": 1024,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "tenants",
+        "width": 1024,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "leases",
+        "width": 1024,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "notifications",
+        "width": 1024,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "width": 1024,
+        "mobileMenuFocusEscapeNavigation": true
+      },
+      {
+        "screen": "dashboard",
+        "width": 768,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "tickets",
+        "width": 768,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "billing",
+        "width": 768,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "operations",
+        "width": 768,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "objects",
+        "width": 768,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "units",
+        "width": 768,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "tenants",
+        "width": 768,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "leases",
+        "width": 768,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "notifications",
+        "width": 768,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "width": 768,
+        "mobileMenuFocusEscapeNavigation": true
+      },
+      {
+        "screen": "dashboard",
+        "width": 390,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "tickets",
+        "width": 390,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "billing",
+        "width": 390,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "operations",
+        "width": 390,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "objects",
+        "width": 390,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "units",
+        "width": 390,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "tenants",
+        "width": 390,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "leases",
+        "width": 390,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "notifications",
+        "width": 390,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "width": 390,
+        "mobileMenuFocusEscapeNavigation": true
+      },
+      {
+        "screen": "dashboard",
+        "width": 320,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "tickets",
+        "width": 320,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "billing",
+        "width": 320,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "operations",
+        "width": 320,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "objects",
+        "width": 320,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "units",
+        "width": 320,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "tenants",
+        "width": 320,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "leases",
+        "width": 320,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "screen": "notifications",
+        "width": 320,
+        "noOverflow": true,
+        "singleTitle": true
+      },
+      {
+        "width": 320,
+        "mobileMenuFocusEscapeNavigation": true
+      }
+    ],
+    "errors": [],
+    "writes": []
+  },
+  "controlledHttpWsNavigation": {
+    "passed": true,
+    "groups": 10,
+    "boundary": "Built React with controlled local HTTP/WS fixtures, no PostgreSQL"
+  },
+  "agentReadOnlyApiChecks": {
+    "records": {
+      "passed": true,
+      "checkGroups": 4,
+      "errors": 0,
+      "writes": 0,
+      "privateReceiptSha256": "4185f491530ea759688f06246c4f08a30fdc3e40a53bb4b6393ee5cc8304db64"
+    },
+    "registers": {
+      "passed": true,
+      "checkGroups": 24,
+      "errors": 0,
+      "writes": 0,
+      "privateReceiptSha256": "3396f5fce2a7cfb0877acd1cc7d678571da11843ca683e922c3038b794d3f3e3"
+    },
+    "billing": {
+      "passed": true,
+      "checkGroups": 64,
+      "errors": 0,
+      "writes": 0,
+      "privateReceiptSha256": "cc600c83d9dff22a741b2521d7ef458b05d2b0638e0908bfc61eeb6103af2544"
+    },
+    "billingCompactFinal": {
+      "passed": true,
+      "checkGroups": 32,
+      "errors": 0,
+      "writes": 0,
+      "privateReceiptSha256": "43921566abb5fba58d34a17006c742d833d68b05037624439bd921e294a7849b"
+    }
+  },
+  "independentReview": {
+    "passed": true,
+    "openP1P2": 0,
+    "finalEntry": "assets/index-rxzxUx-P.js",
+    "closedFinding": "Removed unsupported all-properties option in tenant filter; valid property, reload and compact portal rechecked",
+    "finalReceiptSha256": "d573f869699211531258a48c78a3dbe103011d41f8e87704dc13440bae103071"
+  },
+  "boundaries": [
+    "Actual API/PostgreSQL reads use an isolated fixture environment",
+    "All browser API mutations blocked; no new persistence run in this stage",
+    "Billing native submit prevented before React/API; HTML form ownership and validity checked",
+    "No production login/POST or new 1C/physical-device/full-specification acceptance"
+  ],
+  "frames": {
+    "dashboard-1440.png": {
+      "bytes": 99311,
+      "sha256": "3f22d9f04748b1535f00ac931776b596b5b1aef57106246a6a7fc2a0ae6f61f8"
+    },
+    "tickets-390.png": {
+      "bytes": 34178,
+      "sha256": "f7b09b304c873fd16dc112203280a33304b826609985b1ab0e10fa97842305dc"
+    },
+    "ticket-390.png": {
+      "bytes": 30683,
+      "sha256": "e0419d855e28041b19f7ee9ad3a67d4344ab46007aa6210118309754392c48e3"
+    },
+    "billing-390.png": {
+      "bytes": 26185,
+      "sha256": "b996c6f17e689be3cf4ba0aaa51e4dd49e0320539420a910202ab8ee71341d40"
+    },
+    "operations-390.png": {
+      "bytes": 26355,
+      "sha256": "ab2be8aa5d0e4d06c6870535035c351a475864557124ce8bf32be2c2562c12c6"
+    },
+    "forecast-1440.png": {
+      "bytes": 69839,
+      "sha256": "1661be5ce0a1ab7825bbe862c8751c3592e37c8d0bc5f097e232f4884f13134e"
+    },
+    "payment-390.png": {
+      "bytes": 23129,
+      "sha256": "23a6649e7e76fa88aa739fce54048d805d1807d817b62d26bb7ddcee82d88d34"
+    }
+  },
+  "privateLogs": {
+    "typecheck.log": {
+      "sha256": "798c870082bb10df8bee8cdd8f92b7cce95372df64f3d92751b79752ab6c285d"
+    },
+    "build.log": {
+      "sha256": "8b6b8576888822497f4c388eadccb356f62799d9fee39a37cdbaa92e3024b3b8"
+    },
+    "unit.log": {
+      "sha256": "5a254052a7fba05e64a3126d22ae7ee544bdb3afb2570e7a21b0eb80a315915e"
+    },
+    "sweep.log": {
+      "sha256": "0250ea7ac2befa4715844b0aa786e8423b715f5111b6c9d9058b1ec6ed0ad3df"
+    },
+    "shell.log": {
+      "sha256": "6d94f5d45a472feb107ab8976e8e5b1c1742c023c1d128e369c9184b5527b404"
+    },
+    "routes-browser.log": {
+      "sha256": "63335eb1e98fd5a6e99f2605b82e68cb37fcc931dc2cc87e26288b92b276eb6b"
+    },
+    "design-layout-final.json": {
+      "sha256": "2708be578e03e792e308e41c26495572a8aa7654cb654bca2c5ccccc7c8ef761"
+    }
+  }
+}

@@ -41,7 +41,9 @@
   gap: 12px;
   padding: 12px;
   margin-bottom: 12px;
-  background: var(--surface-muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
 }
 .register-options label:not(.ui-checkbox) {
   display: grid;
@@ -50,6 +52,9 @@
   flex: 0 1 240px;
 }
 .register-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   flex: 1 0 100%;
   min-width: 0;
   margin: 0;
@@ -59,20 +64,25 @@
 .register-columns legend {
   padding: 0;
   font-size: 14px;
+  margin-bottom: 8px;
 }
 .register-columns > .ui-checkbox {
-  display: grid;
+  display: inline-flex;
 }
 .register-table {
   min-width: 560px;
-  table-layout: fixed;
+  table-layout: auto;
 }
 .register-table tr[tabindex] {
   cursor: pointer;
 }
-.register-table tr[tabindex]:hover,
 .register-table tr[aria-selected="true"] {
-  background: #f0f0f0;
+  background: var(--accent-soft);
+}
+@media (hover: hover) {
+  .register-table tr[tabindex]:hover {
+    background: var(--surface-muted);
+  }
 }
 .register-table tr[tabindex]:focus-visible {
   outline: 2px solid var(--ui-accent);
@@ -147,10 +157,25 @@
 }
 .register-table th,
 .data-register--compact .register-table td {
-  padding: 8px 12px;
+  padding: 12px 14px;
 }
 .data-register--comfortable .register-table td {
-  padding: 16px 12px;
+  padding: 18px 14px;
+}
+.register-table th {
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.register-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.register-table .register-cell--end {
+  text-align: right;
+}
+.register-table .register-cell--primary {
+  font-weight: 500;
 }
 .register-table td {
   overflow-wrap: anywhere;
@@ -160,6 +185,173 @@
   display: block;
   color: var(--ink-soft);
   margin-top: 2px;
+}
+.register-progress {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-inline-start: 8px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: var(--ui-accent);
+  opacity: 0;
+}
+.register-progress[data-pending] {
+  opacity: 1;
+}
+.filter-bar {
+  display: grid;
+  gap: 10px;
+  margin-block: 0 16px;
+  min-width: 0;
+}
+.filter-bar-main {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  min-width: 0;
+}
+.filter-bar-controls {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: minmax(240px, 480px);
+  grid-auto-columns: minmax(160px, 200px);
+  align-items: flex-end;
+  flex: 0 1 auto;
+  gap: 12px 16px;
+  min-width: 0;
+}
+.filter-bar-controls > label:not(.ui-checkbox),
+.filter-bar-controls > .filter-search {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  min-width: 0;
+  flex: 0 1 200px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+.filter-bar-controls:not(:has(> .filter-search)) {
+  grid-template-columns: minmax(160px, 240px);
+  grid-auto-columns: minmax(160px, 240px);
+}
+.filter-bar-controls > .filter-search {
+  width: auto;
+  max-width: 480px;
+}
+.filter-search > label {
+  margin: 0;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+.filter-search-control {
+  position: relative;
+  min-width: 0;
+}
+.filter-search-control > .ui-control {
+  padding-inline: 38px;
+}
+.filter-search-control > .ui-control::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+.filter-search-icon {
+  position: absolute;
+  inset-inline-start: 12px;
+  inset-block: 0;
+  display: flex;
+  align-items: center;
+  color: var(--ink-soft);
+  pointer-events: none;
+}
+.filter-search-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.filter-search-control > .ui-icon-button {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  color: var(--ink-soft);
+}
+.filter-bar-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.filter-bar-actions .ui-icon-button[aria-expanded="true"] {
+  color: var(--ui-accent);
+  background: var(--accent-soft);
+}
+.filter-bar-summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  min-width: 0;
+  min-height: var(--ui-control-height);
+}
+.active-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+.active-filter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 32px;
+  max-width: 100%;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+button.active-filter {
+  cursor: pointer;
+}
+button.active-filter:hover {
+  background: var(--surface-muted);
+}
+.active-filter > span:last-child:has(svg) {
+  display: flex;
+  flex-shrink: 0;
+}
+.active-filter svg {
+  width: 14px;
+  height: 14px;
+}
+@media (max-width: 1100px) {
+  .filter-bar-controls {
+    flex: 1 1 0;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-columns: auto;
+  }
+  .filter-bar-controls > .filter-search {
+    grid-column: 1 / -1;
+    max-width: none;
+  }
+  .filter-bar-controls:not(:has(> .filter-search)) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+button.active-filter:focus-visible {
+  outline: 2px solid var(--ui-accent);
+  outline-offset: 2px;
 }
 .register-pagination {
   display: flex;
@@ -502,7 +694,71 @@
   }
   .data-register--compact .register-table td,
   .data-register--comfortable .register-table td {
-    padding: 6px 0;
+    padding: 5px 0;
+    border-bottom: 0;
+    grid-template-columns: minmax(76px, 0.75fr) minmax(0, 1.25fr);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .data-register .register-table tbody tr:not(.register-details-row) {
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+  }
+  .data-register .register-table tbody tr[aria-selected="true"] {
+    background: var(--accent-soft);
+  }
+  .data-register .register-table td.register-cell--primary {
+    display: block;
+    padding: 0 0 8px;
+    font-size: 15px;
+    line-height: 1.45;
+    font-weight: 600;
+    text-align: left;
+  }
+  .register-table td.register-cell--primary::before {
+    display: none;
+  }
+  .register-table .register-cell--primary small {
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+  .register-table td::before {
+    line-height: 1.5;
+    font-size: 12px;
+    text-align: left;
+  }
+  .filter-bar-main {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .filter-bar-controls {
+    flex: 1 1 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+  .filter-bar-controls:not(:has(> .filter-search)) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .filter-bar-controls > .filter-search {
+    width: 100%;
+    max-width: none;
+  }
+  .filter-bar-controls > label:not(.ui-checkbox) {
+    flex: 1 1 130px;
+  }
+  .filter-bar-actions {
+    align-self: flex-end;
+    margin-inline-start: auto;
+  }
+  .active-filter {
+    min-height: 44px;
+    font-size: 13px;
+  }
+  .filter-search-control > .ui-control {
+    padding-inline-end: 44px;
   }
   .business-tabs .ui-button {
     flex: 1 1 auto;

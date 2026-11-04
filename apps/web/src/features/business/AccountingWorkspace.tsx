@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useId, useState, type FormEvent } from "react";
 import { ExchangeJournal } from "./ExchangeJournal";
 import type {
   AccountingWorkspace as Data,
@@ -7,16 +7,10 @@ import type {
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { apiRequest } from "../../api/client";
-import { Button, IconButton, Input, Select } from "../../ui";
+import { Badge, Button, IconButton, Input, Select } from "../../ui";
 import { SidePanel } from "../../ui/SidePanel";
-import {
-  ActionIcon,
-  Feedback,
-  Register,
-  date,
-  money,
-  useResource,
-} from "./shared";
+import { formatBillingMoney } from "../billing/format";
+import { ActionIcon, Feedback, Register, date, useResource } from "./shared";
 
 export type AccountingView = "accounts" | "sources" | "links" | "exchange";
 const initial: Data = { sources: [], accounts: [], statements: [], links: [] };
@@ -41,7 +35,7 @@ export function AccountingWorkspace({
 }: {
   view?: AccountingView;
 }) {
-  const { session, overview, operations } = useWorkspace();
+  const { session, overview, operations, locale } = useWorkspace();
   const { token, user } = session;
   const resource = useResource(token, "/api/accounting", initial);
   const { data, busy, run } = resource;
@@ -52,6 +46,7 @@ export function AccountingWorkspace({
   const [panel, setPanel] = useState<Panel>(null);
   const [dirty, setDirty] = useState(false);
   const [keySource, setKeySource] = useState("");
+  const formId = useId();
   const canManage = hasPermission(user, "accounting.manage");
   const canJournal =
     canManage &&
@@ -238,7 +233,11 @@ export function AccountingWorkspace({
             {
               key: "status",
               label: "Статус",
-              render: (a) => (a.status === "active" ? "Действует" : "Закрыт"),
+              render: (a) => (
+                <Badge tone={a.status === "active" ? "success" : "neutral"}>
+                  {a.status === "active" ? "Действует" : "Закрыт"}
+                </Badge>
+              ),
             },
             {
               key: "period",
@@ -295,18 +294,32 @@ export function AccountingWorkspace({
             {
               key: "active",
               label: "Состояние",
-              render: (source) => (source.active ? "Включён" : "Отключён"),
+              render: (source) => (
+                <Badge tone={source.active ? "success" : "neutral"}>
+                  {source.active ? "Включён" : "Отключён"}
+                </Badge>
+              ),
             },
             {
               key: "connection",
               label: "Обмен с 1С",
               render: (source) => (
                 <>
-                  {source.lastError
-                    ? "Ошибка обмена"
-                    : source.lastSuccessfulAt
-                      ? "Последний проход успешен"
-                      : "Нет подтверждённых запусков"}
+                  <Badge
+                    tone={
+                      source.lastError
+                        ? "danger"
+                        : source.lastSuccessfulAt
+                          ? "success"
+                          : "neutral"
+                    }
+                  >
+                    {source.lastError
+                      ? "Ошибка обмена"
+                      : source.lastSuccessfulAt
+                        ? "Обмен выполнен"
+                        : "Нет подтверждения"}
+                  </Badge>
                   {source.lastSeenAt && (
                     <small>
                       {new Date(source.lastSeenAt).toLocaleString("ru-RU")}
@@ -432,19 +445,27 @@ export function AccountingWorkspace({
               {
                 key: "opening",
                 label: "Входящий остаток",
-                render: (s) => money(s.opening),
+                align: "end",
+                render: (s) => formatBillingMoney(s.opening, locale),
                 optional: true,
               },
               {
                 key: "charged",
                 label: "Начислено",
-                render: (s) => money(s.charged),
+                align: "end",
+                render: (s) => formatBillingMoney(s.charged, locale),
               },
-              { key: "paid", label: "Оплачено", render: (s) => money(s.paid) },
+              {
+                key: "paid",
+                label: "Оплачено",
+                align: "end",
+                render: (s) => formatBillingMoney(s.paid, locale),
+              },
               {
                 key: "closing",
                 label: "Исходящий остаток",
-                render: (s) => money(s.closing),
+                align: "end",
+                render: (s) => formatBillingMoney(s.closing, locale),
               },
               {
                 key: "date",
@@ -463,10 +484,21 @@ export function AccountingWorkspace({
           onClose={closePanel}
           busy={busy}
           dirty={dirty}
+          footer={
+            <Button
+              variant="primary"
+              type="submit"
+              form={`${formId}-account`}
+              busy={busy}
+            >
+              Добавить ЛС
+            </Button>
+          }
         >
           <Feedback error={resource.error} />
           <form
             className="form-grid"
+            id={`${formId}-account`}
             onSubmit={createAccount}
             onChange={() => setDirty(true)}
           >
@@ -516,14 +548,6 @@ export function AccountingWorkspace({
                 defaultValue={new Date().toISOString().slice(0, 10)}
               />
             </label>
-            <Button
-              className="form-wide"
-              variant="primary"
-              type="submit"
-              busy={busy}
-            >
-              Добавить ЛС
-            </Button>
           </form>
         </SidePanel>
       )}
@@ -533,10 +557,21 @@ export function AccountingWorkspace({
           onClose={closePanel}
           busy={busy}
           dirty={dirty}
+          footer={
+            <Button
+              variant="primary"
+              type="submit"
+              form={`${formId}-source`}
+              busy={busy}
+            >
+              Добавить источник
+            </Button>
+          }
         >
           <Feedback error={resource.error} />
           <form
             className="form-grid"
+            id={`${formId}-source`}
             onSubmit={createSource}
             onChange={() => setDirty(true)}
           >
@@ -551,14 +586,6 @@ export function AccountingWorkspace({
                 <option value="test">Тестовая</option>
               </Select>
             </label>
-            <Button
-              className="form-wide"
-              variant="primary"
-              type="submit"
-              busy={busy}
-            >
-              Добавить источник
-            </Button>
           </form>
         </SidePanel>
       )}
@@ -568,10 +595,21 @@ export function AccountingWorkspace({
           onClose={closePanel}
           busy={busy}
           dirty={dirty}
+          footer={
+            <Button
+              variant="primary"
+              type="submit"
+              form={`${formId}-link`}
+              busy={busy}
+            >
+              Сохранить связь
+            </Button>
+          }
         >
           <Feedback error={resource.error} />
           <form
             className="form-grid"
+            id={`${formId}-link`}
             onSubmit={mapExternal}
             onChange={() => setDirty(true)}
           >
@@ -614,14 +652,6 @@ export function AccountingWorkspace({
                 pattern="[a-zA-Z0-9-]+"
               />
             </label>
-            <Button
-              className="form-wide"
-              variant="primary"
-              type="submit"
-              busy={busy}
-            >
-              Сохранить связь
-            </Button>
           </form>
         </SidePanel>
       )}

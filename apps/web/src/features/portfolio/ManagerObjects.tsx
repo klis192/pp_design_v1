@@ -3,8 +3,9 @@ import { IconButton } from "../../ui";
 import { DocumentRegistry } from "../business/DocumentRegistry";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { formatArea } from "../../shared/format";
-import { Button, Select } from "../../ui";
+import { Select } from "../../ui";
 import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
+import { WorkspaceHeaderActions } from "../../ui/WorkspaceHeaderActions";
 import {
   useSurfaceView,
   useVisitedSurfaceViews,
@@ -53,15 +54,15 @@ export function ManagerObjects() {
           <h2>{managerUi.titles.objects}</h2>
         </div>
         {canManagePortfolio && (
-          <div className="mvp-actions">
-            <Button
+          <WorkspaceHeaderActions>
+            <IconButton
+              label={locale === "ru" ? "Запустить объект" : "Launch property"}
               variant="primary"
-              className="primary-button"
               onClick={() => setManagerScreen("object-launch")}
               type="button"
             >
-              {locale === "ru" ? "Запустить объект" : "Launch"}
-            </Button>
+              <ActionIcon name="power" />
+            </IconButton>
             <IconButton
               label={managerUi.add}
               onClick={() => {
@@ -73,7 +74,7 @@ export function ManagerObjects() {
             >
               <ActionIcon name="plus" />
             </IconButton>
-          </div>
+          </WorkspaceHeaderActions>
         )}
       </div>
 

@@ -5,12 +5,20 @@ import { filterTickets } from "../../../../../packages/contracts/src/ticket-sear
 import { ticketCategoryOptions } from "../../projectData";
 import { ticketStatusOptions } from "../../projectData";
 import { ResponsiveTable } from "../../ResponsiveTable";
-import { getSlaState, getTicketStatusLabel } from "../../shared/format";
+import {
+  formatDate,
+  getSlaState,
+  getTicketStatusLabel,
+} from "../../shared/format";
 import { type TicketFilter } from "../../shared/types";
 import { Button, IconButton, Checkbox, Select, Input } from "../../ui";
 import { ActionIcon } from "../business/ActionIcon";
 import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
 import { useWorkspaceViewState } from "../../ui/useWorkspaceViewState";
+import { SidePanel } from "../../ui/SidePanel";
+import { WorkspaceHeaderActions } from "../../ui/WorkspaceHeaderActions";
+import { ActiveFilters, FilterBar, FilterSearch } from "../business/FilterBar";
+import "./workspace.css";
 export function ManagerTickets() {
   const [query, setQuery] = useState(""),
     [from, setFrom] = useState(""),
@@ -18,7 +26,8 @@ export function ManagerTickets() {
     [category, setCategory] = useState(""),
     [unitId, setUnitId] = useState(""),
     [applicant, setApplicant] = useState(""),
-    [archive, setArchive] = useState(false);
+    [archive, setArchive] = useState(false),
+    [filtersOpen, setFiltersOpen] = useState(false);
   const {
     managerUi,
     setTicketView,
@@ -51,46 +60,82 @@ export function ManagerTickets() {
       archive: String(archive),
     }),
   );
+  const activeFilters = [
+    ...(from
+      ? [
+          {
+            key: "from",
+            label: `Создана с ${formatDate(from, locale)}`,
+            onClear: () => setFrom(""),
+          },
+        ]
+      : []),
+    ...(to
+      ? [
+          {
+            key: "to",
+            label: `Создана по ${formatDate(to, locale)}`,
+            onClear: () => setTo(""),
+          },
+        ]
+      : []),
+    ...(category
+      ? [
+          {
+            key: "category",
+            label:
+              t.ticketCategories[category as keyof typeof t.ticketCategories],
+            onClear: () => setCategory(""),
+          },
+        ]
+      : []),
+    ...(unitId
+      ? [
+          {
+            key: "unit",
+            label: `Помещение ${availableTickets.find((ticket) => ticket.unitId === unitId)?.unitNumber ?? "—"}`,
+            onClear: () => setUnitId(""),
+          },
+        ]
+      : []),
+    ...(applicant
+      ? [
+          {
+            key: "applicant",
+            label:
+              availableTickets.find((ticket) => ticket.createdBy === applicant)
+                ?.createdByName ?? "Заявитель",
+            onClear: () => setApplicant(""),
+          },
+        ]
+      : []),
+    ...(archive
+      ? [
+          {
+            key: "archive",
+            label: "Выполненные и архив",
+            onClear: () => setArchive(false),
+          },
+        ]
+      : []),
+  ];
+  const resetFilters = () => {
+    setQuery("");
+    setTicketFilter("all");
+    setFrom("");
+    setTo("");
+    setCategory("");
+    setUnitId("");
+    setApplicant("");
+    setArchive(false);
+  };
   return (
-    <section className="mvp-page">
+    <section className="mvp-page ticket-list-page">
       <div className="mvp-page-header">
         <div>
           <h2>{managerUi.titles.tickets}</h2>
         </div>
-        <div className="mvp-actions">
-          <div className="view-switch" role="group" aria-label="Вид заявок">
-            <IconButton
-              label="Список"
-              aria-pressed={ticketView === "table"}
-              onClick={() => setTicketView("table")}
-            >
-              <ActionIcon name="list" />
-            </IconButton>
-            <IconButton
-              label="Канбан"
-              aria-pressed={ticketView === "board"}
-              onClick={() => setTicketView("board")}
-            >
-              <ActionIcon name="board" />
-            </IconButton>
-          </div>
-          <Select
-            className="filter-select"
-            aria-label="Статус заявки"
-            onChange={(event) =>
-              setTicketFilter(event.target.value as TicketFilter)
-            }
-            value={ticketFilter}
-          >
-            <option value="all">
-              {locale === "ru" ? "Все статусы" : "All"}
-            </option>
-            {ticketStatusOptions.map((status) => (
-              <option key={status} value={status}>
-                {t.ticketStatuses[status]}
-              </option>
-            ))}
-          </Select>
+        <WorkspaceHeaderActions>
           <IconButton
             label="Создать заявку"
             variant="primary"
@@ -99,7 +144,7 @@ export function ManagerTickets() {
           >
             <ActionIcon name="plus" />
           </IconButton>
-        </div>
+        </WorkspaceHeaderActions>
       </div>
 
       <WorkspaceTabs
@@ -121,103 +166,190 @@ export function ManagerTickets() {
         aria-labelledby="ticket-list-tab-tickets"
         className="workspace-pane"
       >
-        <div
-          className="workspace-filter-grid"
-          role="search"
-          aria-label="Фильтры заявок"
+        <FilterBar
+          className="ticket-filter-bar"
+          actions={
+            <>
+              <span
+                className="ticket-filter-action"
+                data-filter-count={activeFilters.length || undefined}
+              >
+                <IconButton
+                  label="Фильтры заявок"
+                  title={
+                    activeFilters.length
+                      ? `Фильтры заявок · Применено: ${activeFilters.length}`
+                      : "Фильтры заявок"
+                  }
+                  aria-pressed={activeFilters.length > 0}
+                  aria-haspopup="dialog"
+                  onClick={() => setFiltersOpen(true)}
+                >
+                  <ActionIcon name="filter" />
+                </IconButton>
+              </span>
+              <div className="view-switch" role="group" aria-label="Вид заявок">
+                <IconButton
+                  label="Список"
+                  aria-pressed={ticketView === "table"}
+                  onClick={() => setTicketView("table")}
+                >
+                  <ActionIcon name="list" />
+                </IconButton>
+                <IconButton
+                  label="Канбан"
+                  aria-pressed={ticketView === "board"}
+                  onClick={() => setTicketView("board")}
+                >
+                  <ActionIcon name="board" />
+                </IconButton>
+              </div>
+            </>
+          }
+          summary={
+            <>
+              <span
+                className="ticket-filter-result"
+                role="status"
+                aria-live="polite"
+              >
+                Найдено: <strong>{filteredTickets.length}</strong>
+              </span>
+              <ActiveFilters
+                items={activeFilters}
+                onReset={
+                  activeFilters.length || query || ticketFilter !== "all"
+                    ? resetFilters
+                    : undefined
+                }
+              />
+            </>
+          }
         >
-          <label className="workspace-filter-search">
-            Поиск
-            <Input
-              type="search"
-              aria-label="Поиск по номеру, тексту, помещению, заявителю"
-              placeholder="Номер, текст, помещение, заявитель"
-              value={query}
-              maxLength={300}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </label>
-          <label>
-            Создана с
-            <Input
-              type="date"
-              value={from}
-              max={to || undefined}
-              onChange={(e) => setFrom(e.target.value)}
-            />
-          </label>
-          <label>
-            По
-            <Input
-              type="date"
-              value={to}
-              min={from || undefined}
-              onChange={(e) => setTo(e.target.value)}
-            />
-          </label>
-          <label>
-            Категория
+          <FilterSearch
+            label="Поиск"
+            ariaLabel="Поиск по номеру, тексту, помещению, заявителю"
+            placeholder="Номер, текст, помещение, заявитель"
+            value={query}
+            onChange={setQuery}
+            maxLength={300}
+          />
+          <label className="ticket-status-filter">
+            <span>Статус</span>
             <Select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              aria-label="Статус заявки"
+              onChange={(event) =>
+                setTicketFilter(event.target.value as TicketFilter)
+              }
+              value={ticketFilter}
             >
-              <option value="">Все категории</option>
-              {ticketCategoryOptions.map((c) => (
-                <option key={c} value={c}>
-                  {t.ticketCategories[c as keyof typeof t.ticketCategories]}
+              <option value="all">
+                {locale === "ru" ? "Все статусы" : "All"}
+              </option>
+              {ticketStatusOptions.map((status) => (
+                <option key={status} value={status}>
+                  {t.ticketStatuses[status]}
                 </option>
               ))}
             </Select>
           </label>
-          <label>
-            Помещение
-            <Select value={unitId} onChange={(e) => setUnitId(e.target.value)}>
-              <option value="">Все помещения</option>
-              {[
-                ...new Map(
-                  availableTickets.map((t) => [
-                    t.unitId,
-                    {
-                      id: t.unitId,
-                      label: `${t.propertyName ?? ""} · ${t.unitNumber ?? ""}`,
-                    },
-                  ]),
-                ).values(),
-              ].map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.label}
-                </option>
-              ))}
-            </Select>
-          </label>
-          <label>
-            Заявитель
-            <Select
-              value={applicant}
-              onChange={(e) => setApplicant(e.target.value)}
+        </FilterBar>
+        <SidePanel
+          title="Фильтры заявок"
+          open={filtersOpen}
+          onClose={() => setFiltersOpen(false)}
+          footer={
+            <Button variant="primary" onClick={() => setFiltersOpen(false)}>
+              Готово
+            </Button>
+          }
+        >
+          <div className="form-grid ticket-advanced-filters">
+            <label>
+              Создана с
+              <Input
+                type="date"
+                value={from}
+                max={to || undefined}
+                onChange={(e) => setFrom(e.target.value)}
+              />
+            </label>
+            <label>
+              Создана по
+              <Input
+                type="date"
+                value={to}
+                min={from || undefined}
+                onChange={(e) => setTo(e.target.value)}
+              />
+            </label>
+            <label>
+              Категория
+              <Select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="">Все категории</option>
+                {ticketCategoryOptions.map((c) => (
+                  <option key={c} value={c}>
+                    {t.ticketCategories[c as keyof typeof t.ticketCategories]}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            <label>
+              Помещение
+              <Select
+                value={unitId}
+                onChange={(e) => setUnitId(e.target.value)}
+              >
+                <option value="">Все помещения</option>
+                {[
+                  ...new Map(
+                    availableTickets.map((t) => [
+                      t.unitId,
+                      {
+                        id: t.unitId,
+                        label: `${t.propertyName ?? ""} · ${t.unitNumber ?? ""}`,
+                      },
+                    ]),
+                  ).values(),
+                ].map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.label}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            <label>
+              Заявитель
+              <Select
+                value={applicant}
+                onChange={(e) => setApplicant(e.target.value)}
+              >
+                <option value="">Все заявители</option>
+                {[
+                  ...new Map(
+                    availableTickets.map((t) => [
+                      t.createdBy,
+                      { id: t.createdBy, name: t.createdByName ?? t.createdBy },
+                    ]),
+                  ).values(),
+                ].map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.name}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            <Checkbox
+              checked={archive}
+              onChange={(e) => setArchive(e.target.checked)}
             >
-              <option value="">Все заявители</option>
-              {[
-                ...new Map(
-                  availableTickets.map((t) => [
-                    t.createdBy,
-                    { id: t.createdBy, name: t.createdByName ?? t.createdBy },
-                  ]),
-                ).values(),
-              ].map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.name}
-                </option>
-              ))}
-            </Select>
-          </label>
-          <Checkbox
-            checked={archive}
-            onChange={(e) => setArchive(e.target.checked)}
-          >
-            Только выполненные и архив
-          </Checkbox>
-        </div>
+              Только выполненные и архив
+            </Checkbox>
+          </div>
+        </SidePanel>
         {ticketView === "board" ? (
           <div className="kanban-board">
             {[
@@ -266,6 +398,9 @@ export function ManagerTickets() {
                     }
                   </small>
                 </h3>
+                {!filteredTickets.some((ticket) =>
+                  column.statuses.includes(ticket.status),
+                ) && <p className="kanban-empty">Заявок нет</p>}
                 {filteredTickets
                   .filter((t) => column.statuses.includes(t.status))
                   .map((ticket) => (
@@ -278,17 +413,20 @@ export function ManagerTickets() {
                       }
                     >
                       <Button
-                        variant="text"
+                        variant="plain"
                         type="button"
-                        className="text-button"
+                        className="kanban-ticket-open"
                         onClick={() => openTicketDetail(ticket.id)}
                       >
-                        {ticket.number} · {ticket.title}
+                        <span className="record-number">{ticket.number}</span>
+                        <strong>{ticket.title}</strong>
                       </Button>
-                      <p>
+                      <p className="kanban-ticket-location">
                         {ticket.propertyName} · {ticket.unitNumber}
                       </p>
-                      <small>{ticket.assignedToName || "Не назначен"}</small>
+                      <small className="kanban-ticket-assignee">
+                        {ticket.assignedToName || "Исполнитель не назначен"}
+                      </small>
                       <span
                         className={`status-pill status-pill--${getSlaState(ticket, locale).tone}`}
                       >
@@ -314,9 +452,9 @@ export function ManagerTickets() {
             ))}
           </div>
         ) : (
-          <article className="mvp-card">
+          <article className="ticket-table data-register data-register--comfortable">
             <div className="mvp-table-wrap">
-              <ResponsiveTable className="mvp-table">
+              <ResponsiveTable className="mvp-table register-table ticket-register-table">
                 <thead>
                   <tr>
                     <th>№</th>
@@ -333,8 +471,8 @@ export function ManagerTickets() {
                       key={ticket.id}
                       onClick={() => openTicketDetail(ticket.id)}
                     >
-                      <td>{ticket.number}</td>
-                      <td>
+                      <td className="ticket-cell-number">{ticket.number}</td>
+                      <td className="register-cell--primary">
                         <strong>{ticket.title}</strong>
                         <small>
                           {ticket.propertyName ?? "—"} ·{" "}

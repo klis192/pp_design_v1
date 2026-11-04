@@ -8,6 +8,7 @@ import { ResponsiveTable } from "../../ResponsiveTable";
 import { countLabel, formatArea } from "../../shared/format";
 import { Select } from "../../ui";
 import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
+import { WorkspaceHeaderActions } from "../../ui/WorkspaceHeaderActions";
 import {
   useSurfaceView,
   useVisitedSurfaceViews,
@@ -60,7 +61,7 @@ export function ManagerUnits() {
             ])}
           </p>
         </div>
-        <div className="mvp-actions">
+        <WorkspaceHeaderActions>
           <IconButton
             label="Добавить помещение"
             variant="primary"
@@ -73,7 +74,7 @@ export function ManagerUnits() {
           >
             <ActionIcon name="plus" />
           </IconButton>
-        </div>
+        </WorkspaceHeaderActions>
       </div>
 
       <div className="workspace-context-row">

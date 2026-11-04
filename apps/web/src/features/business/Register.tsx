@@ -1,8 +1,9 @@
 import { useEffect, useId, useState, type ReactNode } from "react";
-import { Checkbox, IconButton, Input, Select } from "../../ui";
+import { Checkbox, IconButton, Select } from "../../ui";
 import { ResponsiveTable } from "../../ResponsiveTable";
 import { ActionIcon } from "./ActionIcon";
 import { initialPageSize } from "./register-preferences";
+import { FilterBar, FilterSearch } from "./FilterBar";
 export type ServerPagination = {
   query: string;
   offset: number;
@@ -34,6 +35,7 @@ export function Register<T extends { id: string }>({
     label: string;
     render: (row: T) => ReactNode;
     optional?: boolean;
+    align?: "start" | "end";
   }[];
   loading?: boolean;
   details?: { rowId: string; render: (row: T) => ReactNode };
@@ -49,7 +51,6 @@ export function Register<T extends { id: string }>({
   const [query, setQuery] = useState(""),
     [page, setPage] = useState(1),
     [pageSize, setPageSize] = useState(() => initialPageSize(title)),
-    [filterOpen, setFilterOpen] = useState(false),
     [settingsOpen, setSettingsOpen] = useState(false),
     [density, setDensity] = useState(() => {
       try {
@@ -116,49 +117,38 @@ export function Register<T extends { id: string }>({
     >
       <div className="register-heading">
         <h3 id={id + "-heading"} tabIndex={-1}>
-          {title} <small>{pending ? "…" : total}</small>
+          {title} <small>{total}</small>
+          <span
+            className="register-progress"
+            data-pending={pending || undefined}
+            aria-hidden="true"
+          />
         </h3>
         {action}
       </div>
-      <div className="register-toolbar">
-        <div className="register-search">
-          {" "}
-          <Input
-            aria-label={`Поиск: ${title}`}
-            placeholder="Поиск"
-            value={pagination?.query ?? query}
-            maxLength={200}
-            onChange={(e) => {
-              if (pagination) pagination.setQuery(e.target.value);
-              else setQuery(e.target.value);
-              setPage(1);
-            }}
-          />
-        </div>
-        {filters && (
+      <FilterBar
+        actions={
           <IconButton
-            label="Фильтры"
-            aria-expanded={filterOpen}
-            aria-controls={id + "-filters"}
-            onClick={() => setFilterOpen(!filterOpen)}
+            label={`Вид таблицы: ${title}`}
+            aria-expanded={settingsOpen}
+            aria-controls={id + "-settings"}
+            onClick={() => setSettingsOpen(!settingsOpen)}
           >
-            <ActionIcon name="filter" />
+            <ActionIcon name="settings" />
           </IconButton>
-        )}
-        <IconButton
-          label={`Вид таблицы: ${title}`}
-          aria-expanded={settingsOpen}
-          aria-controls={id + "-settings"}
-          onClick={() => setSettingsOpen(!settingsOpen)}
-        >
-          <ActionIcon name="settings" />
-        </IconButton>
-      </div>
-      {filterOpen && (
-        <div className="register-options" id={id + "-filters"}>
-          {filters}
-        </div>
-      )}
+        }
+      >
+        <FilterSearch
+          label={`Поиск: ${title}`}
+          value={pagination?.query ?? query}
+          onChange={(value) => {
+            if (pagination) pagination.setQuery(value);
+            else setQuery(value);
+            setPage(1);
+          }}
+        />
+        {filters}
+      </FilterBar>
       {settingsOpen && (
         <div className="register-options" id={id + "-settings"}>
           <label>
@@ -212,7 +202,7 @@ export function Register<T extends { id: string }>({
           )}
         </div>
       )}
-      {pending ? (
+      {pending && !pageRows.length ? (
         <div className="register-loading" role="status">
           Загрузка записей…
         </div>
@@ -222,7 +212,15 @@ export function Register<T extends { id: string }>({
             <thead>
               <tr>
                 {cols.map((c) => (
-                  <th key={c.key}>{c.label}</th>
+                  <th
+                    key={c.key}
+                    scope="col"
+                    className={
+                      c.align === "end" ? "register-cell--end" : undefined
+                    }
+                  >
+                    {c.label}
+                  </th>
                 ))}
               </tr>
             </thead>
@@ -247,8 +245,20 @@ export function Register<T extends { id: string }>({
                       : undefined
                   }
                 >
-                  {cols.map((c) => (
-                    <td key={c.key}>{c.render(row)}</td>
+                  {cols.map((c, index) => (
+                    <td
+                      key={c.key}
+                      className={
+                        [
+                          index === 0 ? "register-cell--primary" : "",
+                          c.align === "end" ? "register-cell--end" : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ") || undefined
+                      }
+                    >
+                      {c.render(row)}
+                    </td>
                   ))}
                 </tr>,
                 ...(details?.rowId === row.id
@@ -270,7 +280,7 @@ export function Register<T extends { id: string }>({
       ) : (
         <p className="empty-state">{empty}</p>
       )}
-      {pageCount > 1 && !pending && (
+      {pageCount > 1 && (
         <nav className="register-pagination" aria-label={`Страницы: ${title}`}>
           <span role="status">
             {offset + 1}–{Math.min(offset + size, total)} из {total}

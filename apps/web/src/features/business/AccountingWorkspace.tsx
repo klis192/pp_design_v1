@@ -72,7 +72,7 @@ export function AccountingWorkspace({
       return overview.properties.find((r) => r.id === id)?.name ?? id;
     if (type === "units") {
       const unit = overview.units.find((r) => r.id === id);
-      return unit ? `${unit.propertyName ?? ""} · ${unit.number}` : id;
+      return unit ? `${unit.number} · ${unit.propertyName ?? ""}` : id;
     }
     if (type === "tenants")
       return overview.tenants.find((r) => r.id === id)?.name ?? id;

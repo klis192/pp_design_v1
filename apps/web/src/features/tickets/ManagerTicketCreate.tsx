@@ -1,22 +1,11 @@
 import { ActionIcon } from "../business/ActionIcon";
 import { useWorkspace } from "../../app/WorkspaceContext";
-import {
-  ticketCategoryOptions,
-  ticketPriorityOptions,
-} from "../../projectData";
-import { Button, IconButton, Input, Select, Textarea } from "../../ui";
+import { Button, IconButton } from "../../ui";
+import { TicketCreateFields } from "./TicketCreateFields";
+import "./workspace.css";
 export function ManagerTicketCreate() {
-  const {
-    setManagerScreen,
-    managerUi,
-    handleCreateTicket,
-    t,
-    handleFieldChange,
-    setTicketForm,
-    ticketForm,
-    ticketUnits,
-    busyAction,
-  } = useWorkspace();
+  const { setManagerScreen, managerUi, handleCreateTicket, t, busyAction } =
+    useWorkspace();
   return (
     <section className="mvp-page">
       <div className="mvp-detail-head">
@@ -35,79 +24,18 @@ export function ManagerTicketCreate() {
       </div>
 
       <article className="mvp-card">
-        <form
-          className="form-grid form-grid--single"
-          onSubmit={handleCreateTicket}
-        >
-          <label>
-            <span>{t.fields.unit}</span>
-            <Select
-              name="unitId"
-              onChange={handleFieldChange(setTicketForm)}
-              value={ticketForm.unitId}
+        <form className="ticket-create-form" onSubmit={handleCreateTicket}>
+          <TicketCreateFields />
+          <div className="ui-actions ticket-create-actions">
+            <Button
+              variant="primary"
+              className="primary-button"
+              disabled={busyAction === "ticket-create"}
+              type="submit"
             >
-              {ticketUnits.map((unit) => (
-                <option key={unit.id} value={unit.id}>
-                  {unit.propertyName} · {unit.number}
-                </option>
-              ))}
-            </Select>
-          </label>
-          <div className="split-grid">
-            <label>
-              <span>{t.fields.category}</span>
-              <Select
-                name="category"
-                onChange={handleFieldChange(setTicketForm)}
-                value={ticketForm.category}
-              >
-                {ticketCategoryOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {t.ticketCategories[option]}
-                  </option>
-                ))}
-              </Select>
-            </label>
-            <label>
-              <span>{t.fields.priority}</span>
-              <Select
-                name="priority"
-                onChange={handleFieldChange(setTicketForm)}
-                value={ticketForm.priority}
-              >
-                {ticketPriorityOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {t.ticketPriorities[option]}
-                  </option>
-                ))}
-              </Select>
-            </label>
+              {t.actions.create}
+            </Button>
           </div>
-          <label>
-            <span>{t.fields.title}</span>
-            <Input
-              name="title"
-              onChange={handleFieldChange(setTicketForm)}
-              value={ticketForm.title}
-            />
-          </label>
-          <label>
-            <span>{t.fields.description}</span>
-            <Textarea
-              name="description"
-              onChange={handleFieldChange(setTicketForm)}
-              rows={5}
-              value={ticketForm.description}
-            />
-          </label>
-          <Button
-            variant="primary"
-            className="primary-button"
-            disabled={busyAction === "ticket-create"}
-            type="submit"
-          >
-            {t.actions.create}
-          </Button>
         </form>
       </article>
     </section>

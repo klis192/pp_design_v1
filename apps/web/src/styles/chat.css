@@ -186,7 +186,7 @@
 .chat-back {
   display: none !important;
 }
-@media (max-width: 760px) {
+@media (max-width: 1080px) {
   .mvp-chat-layout .chat-conversation-pane {
     display: none;
   }

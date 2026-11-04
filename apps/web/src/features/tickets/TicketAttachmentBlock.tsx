@@ -78,15 +78,7 @@ export function TicketAttachmentBlock({
               className={`attachment-card attachment-card--${item.mediaType}`}
               key={item.id}
             >
-              <IconButton
-                label={`${locale === "ru" ? "Открыть файл" : "Open file"} ${item.fileName}`}
-                className="attachment-preview"
-                onClick={() => void openTicketAttachment(ticket.id, item)}
-                type="button"
-              >
-                <ActionIcon name="document" />
-              </IconButton>
-              <div>
+              <div className="ticket-file-info">
                 <strong>{item.fileName}</strong>
                 <small>
                   {formatFileSize(item.sizeBytes, locale)} ·{" "}
@@ -94,20 +86,30 @@ export function TicketAttachmentBlock({
                 </small>
                 <small>{item.uploadedByName ?? "—"}</small>
               </div>
-              {session &&
-              (["admin", "manager"].includes(session.user.role) ||
-                item.uploadedBy === session.user.id) ? (
+              <div className="ticket-file-actions">
                 <IconButton
-                  label={`${t.actions.delete}: ${item.fileName}`}
-                  className="text-button text-button--danger"
-                  onClick={() =>
-                    void deleteTicketAttachment(ticket.id, item.id)
-                  }
+                  label={`${locale === "ru" ? "Открыть файл" : "Open file"} ${item.fileName}`}
+                  className="attachment-preview"
+                  onClick={() => void openTicketAttachment(ticket.id, item)}
                   type="button"
                 >
-                  <ActionIcon name="delete" />
+                  <ActionIcon name="document" />
                 </IconButton>
-              ) : null}
+                {session &&
+                (["admin", "manager"].includes(session.user.role) ||
+                  item.uploadedBy === session.user.id) ? (
+                  <IconButton
+                    label={`${t.actions.delete}: ${item.fileName}`}
+                    className="text-button text-button--danger"
+                    onClick={() =>
+                      void deleteTicketAttachment(ticket.id, item.id)
+                    }
+                    type="button"
+                  >
+                    <ActionIcon name="delete" />
+                  </IconButton>
+                ) : null}
+              </div>
             </article>
           ))}
         </div>

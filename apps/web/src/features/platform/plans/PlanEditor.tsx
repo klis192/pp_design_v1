@@ -1,9 +1,13 @@
-import { Button, Checkbox, Input, Select } from "../../../ui";
+import { useRef } from "react";
+import { Button, Checkbox, IconButton, Input, Select } from "../../../ui";
+import { ActionIcon } from "../../business/ActionIcon";
 import { isOpenTicket } from "../../../../../../packages/contracts/src/domain.js";
 import { bounds, download, exportDxf } from "./geometry";
 import { PlanCanvas } from "./PlanCanvas";
 import { usePlanEditor, type PlanEditorProps } from "./usePlanEditor";
+import "./plan-editor.css";
 export function PlanEditor(props: PlanEditorProps) {
+  const importInput = useRef<HTMLInputElement>(null);
   const {
     plans,
     draft,
@@ -36,8 +40,8 @@ export function PlanEditor(props: PlanEditorProps) {
     imageHeight,
   } = usePlanEditor(props);
   return (
-    <div className="platform-section">
-      <div className="mvp-actions">
+    <div className="platform-section plan-editor">
+      <div className="mvp-actions plan-selection-toolbar">
         <Select
           aria-label="Выбор плана"
           value={draft?.id ?? ""}
@@ -57,19 +61,20 @@ export function PlanEditor(props: PlanEditorProps) {
             ))}
         </Select>
         {props.canWrite && (
-          <Button disabled={dirty} onClick={create}>
-            Новый план
-          </Button>
+          <IconButton label="Новый план" disabled={dirty} onClick={create}>
+            <ActionIcon name="plus" />
+          </IconButton>
         )}
         {dirty && (
-          <Button
+          <IconButton
+            label="Отменить изменения"
             onClick={() => {
               setDraft(null);
               setDirty(false);
             }}
           >
-            Отменить изменения
-          </Button>
+            <ActionIcon name="close" />
+          </IconButton>
         )}
       </div>
       {error && (
@@ -126,68 +131,97 @@ export function PlanEditor(props: PlanEditorProps) {
               </Select>
             </label>
           </div>
-          <div className="plan-toolbar">
-            <Button
-              onClick={() =>
-                setView({
-                  ...view,
-                  x: view.x + view.width * 0.1,
-                  y: view.y + view.height * 0.1,
-                  width: view.width * 0.8,
-                  height: view.height * 0.8,
-                })
-              }
-              aria-label="Приблизить"
+          <div className="plan-toolbar" aria-label="Инструменты плана">
+            <div className="plan-tool-group" role="group" aria-label="Масштаб">
+              <IconButton
+                label="Приблизить"
+                onClick={() =>
+                  setView({
+                    ...view,
+                    x: view.x + view.width * 0.1,
+                    y: view.y + view.height * 0.1,
+                    width: view.width * 0.8,
+                    height: view.height * 0.8,
+                  })
+                }
+              >
+                <ActionIcon name="zoomIn" />
+              </IconButton>
+              <IconButton
+                label="Отдалить"
+                onClick={() =>
+                  setView({
+                    ...view,
+                    x: view.x - view.width * 0.125,
+                    y: view.y - view.height * 0.125,
+                    width: view.width * 1.25,
+                    height: view.height * 1.25,
+                  })
+                }
+              >
+                <ActionIcon name="zoomOut" />
+              </IconButton>
+              <IconButton
+                label="Вписать"
+                onClick={() =>
+                  setView(bounds(draft.geometry, draft.image, imageHeight))
+                }
+              >
+                <ActionIcon name="fit" />
+              </IconButton>
+            </div>
+            <div
+              className="plan-tool-group"
+              role="group"
+              aria-label="Режим работы"
             >
-              +
-            </Button>
-            <Button
-              onClick={() =>
-                setView({
-                  ...view,
-                  x: view.x - view.width * 0.125,
-                  y: view.y - view.height * 0.125,
-                  width: view.width * 1.25,
-                  height: view.height * 1.25,
-                })
-              }
-              aria-label="Отдалить"
+              <IconButton
+                label="Перемещение"
+                aria-pressed={tool === "pan"}
+                onClick={() => setTool("pan")}
+              >
+                <ActionIcon name="pan" />
+              </IconButton>
+              {props.canWrite && (
+                <>
+                  <IconButton
+                    label="Нарисовать контур"
+                    aria-pressed={tool === "draw"}
+                    onClick={() => {
+                      setTool("draw");
+                      setPoints([]);
+                    }}
+                  >
+                    <ActionIcon name="polygon" />
+                  </IconButton>
+                  <IconButton
+                    label="Править вершины"
+                    aria-pressed={tool === "edit"}
+                    onClick={() => setTool("edit")}
+                  >
+                    <ActionIcon name="vertices" />
+                  </IconButton>
+                </>
+              )}
+            </div>
+            <div
+              className="plan-tool-group"
+              role="group"
+              aria-label="Файлы плана"
             >
-              −
-            </Button>
-            <Button
-              onClick={() =>
-                setView(bounds(draft.geometry, draft.image, imageHeight))
-              }
-            >
-              Вписать
-            </Button>
-            <Button
-              aria-pressed={tool === "pan"}
-              onClick={() => setTool("pan")}
-            >
-              Перемещение
-            </Button>
-            {props.canWrite && (
-              <>
-                <Button
-                  aria-pressed={tool === "draw"}
-                  onClick={() => {
-                    setTool("draw");
-                    setPoints([]);
-                  }}
-                >
-                  Нарисовать контур
-                </Button>
-                <Button
-                  aria-pressed={tool === "edit"}
-                  onClick={() => setTool("edit")}
-                >
-                  Править вершины
-                </Button>
-                <label className="plan-upload">
-                  Импорт DXF / изображения
+              {props.canWrite && (
+                <>
+                  <IconButton
+                    label="Импорт DXF / изображения"
+                    disabled={busy}
+                    onClick={() => importInput.current?.click()}
+                  >
+                    <ActionIcon name="upload" />
+                  </IconButton>
                   <Input
+                    ref={importInput}
+                    aria-label="Импорт DXF / изображения"
+                    hidden
                     disabled={busy}
                     type="file"
                     accept=".dxf,.png,.jpg,.jpeg,.webp"
@@ -197,17 +231,18 @@ export function PlanEditor(props: PlanEditorProps) {
                       e.target.value = "";
                     }}
                   />
-                </label>
-              </>
-            )}
-            <Button
-              disabled={!draft.geometry.length}
-              onClick={() =>
-                download(`${draft.name}.dxf`, exportDxf(draft.geometry))
-              }
-            >
-              Экспорт DXF
-            </Button>
+                </>
+              )}
+              <IconButton
+                label="Экспорт DXF"
+                disabled={!draft.geometry.length}
+                onClick={() =>
+                  download(`${draft.name}.dxf`, exportDxf(draft.geometry))
+                }
+              >
+                <ActionIcon name="download" />
+              </IconButton>
+            </div>
           </div>
           {tool === "draw" && (
             <div className="mvp-actions">

@@ -26,6 +26,12 @@ export function ActionIcon({
     | "more"
     | "help"
     | "print"
+    | "zoomIn"
+    | "zoomOut"
+    | "fit"
+    | "pan"
+    | "polygon"
+    | "vertices"
     | "calendar";
 }) {
   const paths = {
@@ -46,6 +52,34 @@ export function ActionIcon({
     prev: <path d="m14 6-6 6 6 6" />,
     next: <path d="m10 6 6 6-6 6" />,
     plus: <path d="M12 4v16M4 12h16" />,
+    zoomIn: (
+      <>
+        <circle cx="10" cy="10" r="6" />
+        <path d="m15 15 6 6M7 10h6M10 7v6" />
+      </>
+    ),
+    zoomOut: (
+      <>
+        <circle cx="10" cy="10" r="6" />
+        <path d="m15 15 6 6M7 10h6" />
+      </>
+    ),
+    fit: <path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5M8 8h8v8H8Z" />,
+    pan: (
+      <path d="M12 3v18M3 12h18M8 7l4-4 4 4M8 17l4 4 4-4M7 8l-4 4 4 4M17 8l4 4-4 4" />
+    ),
+    polygon: (
+      <path d="M5 4 21 8 16 21 3 16ZM3 16l2-12M5 4h.01M21 8h.01M16 21h.01" />
+    ),
+    vertices: (
+      <>
+        <path d="M6 4h12M20 6v12M18 20H6M4 18V6" />
+        <rect x="2" y="2" width="4" height="4" />
+        <rect x="18" y="2" width="4" height="4" />
+        <rect x="18" y="18" width="4" height="4" />
+        <rect x="2" y="18" width="4" height="4" />
+      </>
+    ),
     delete: <path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7" />,
     document: <path d="M5 3h9l5 5v13H5ZM14 3v6h5M8 13h8M8 17h6" />,
     key: (

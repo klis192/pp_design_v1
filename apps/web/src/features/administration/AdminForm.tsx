@@ -109,24 +109,26 @@ export function AdminForm() {
             value={propertyForm.description}
           />
         </label>
-        <Button
-          variant="primary"
-          className="primary-button"
-          disabled={busyAction.startsWith("/api/properties")}
-          type="submit"
-        >
-          {editingAdmin.property ? adminSaveChangesLabel : t.actions.save}
-        </Button>
-        {editingAdmin.property ? (
+        <div className="ui-actions admin-form-actions">
           <Button
-            variant="secondary"
-            className="secondary-button"
-            onClick={() => cancelAdminEdit("property")}
-            type="button"
+            variant="primary"
+            className="primary-button"
+            disabled={busyAction.startsWith("/api/properties")}
+            type="submit"
           >
-            {adminCancelLabel}
+            {editingAdmin.property ? adminSaveChangesLabel : t.actions.save}
           </Button>
-        ) : null}
+          {editingAdmin.property ? (
+            <Button
+              variant="secondary"
+              className="secondary-button"
+              onClick={() => cancelAdminEdit("property")}
+              type="button"
+            >
+              {adminCancelLabel}
+            </Button>
+          ) : null}
+        </div>
       </form>
     );
   }
@@ -199,24 +201,26 @@ export function AdminForm() {
             ))}
           </Select>
         </label>
-        <Button
-          variant="primary"
-          className="primary-button"
-          disabled={busyAction.startsWith("/api/tenants")}
-          type="submit"
-        >
-          {editingAdmin.tenant ? adminSaveChangesLabel : t.actions.save}
-        </Button>
-        {editingAdmin.tenant ? (
+        <div className="ui-actions admin-form-actions">
           <Button
-            variant="secondary"
-            className="secondary-button"
-            onClick={() => cancelAdminEdit("tenant")}
-            type="button"
+            variant="primary"
+            className="primary-button"
+            disabled={busyAction.startsWith("/api/tenants")}
+            type="submit"
           >
-            {adminCancelLabel}
+            {editingAdmin.tenant ? adminSaveChangesLabel : t.actions.save}
           </Button>
-        ) : null}
+          {editingAdmin.tenant ? (
+            <Button
+              variant="secondary"
+              className="secondary-button"
+              onClick={() => cancelAdminEdit("tenant")}
+              type="button"
+            >
+              {adminCancelLabel}
+            </Button>
+          ) : null}
+        </div>
       </form>
     );
   }
@@ -353,24 +357,26 @@ export function AdminForm() {
         >
           {t.fields.hasGate}
         </Checkbox>
-        <Button
-          variant="primary"
-          className="primary-button"
-          disabled={busyAction.startsWith("/api/units")}
-          type="submit"
-        >
-          {editingAdmin.unit ? adminSaveChangesLabel : t.actions.save}
-        </Button>
-        {editingAdmin.unit ? (
+        <div className="ui-actions admin-form-actions">
           <Button
-            variant="secondary"
-            className="secondary-button"
-            onClick={() => cancelAdminEdit("unit")}
-            type="button"
+            variant="primary"
+            className="primary-button"
+            disabled={busyAction.startsWith("/api/units")}
+            type="submit"
           >
-            {adminCancelLabel}
+            {editingAdmin.unit ? adminSaveChangesLabel : t.actions.save}
           </Button>
-        ) : null}
+          {editingAdmin.unit ? (
+            <Button
+              variant="secondary"
+              className="secondary-button"
+              onClick={() => cancelAdminEdit("unit")}
+              type="button"
+            >
+              {adminCancelLabel}
+            </Button>
+          ) : null}
+        </div>
       </form>
     );
   }
@@ -426,7 +432,7 @@ export function AdminForm() {
         >
           {availableLeaseUnits.map((unit) => (
             <option key={unit.id} value={unit.id}>
-              {unit.propertyName} · {unit.number}
+              {unit.number} · {unit.propertyName}
             </option>
           ))}
         </Select>
@@ -509,24 +515,26 @@ export function AdminForm() {
           договоре; изменение ставки и начислений подтверждает менеджер вручную.
         </small>
       </label>
-      <Button
-        variant="primary"
-        className="primary-button"
-        disabled={busyAction.startsWith("/api/leases")}
-        type="submit"
-      >
-        {editingAdmin.lease ? adminSaveChangesLabel : t.actions.save}
-      </Button>
-      {editingAdmin.lease ? (
+      <div className="ui-actions admin-form-actions">
         <Button
-          variant="secondary"
-          className="secondary-button"
-          onClick={() => cancelAdminEdit("lease")}
-          type="button"
+          variant="primary"
+          className="primary-button"
+          disabled={busyAction.startsWith("/api/leases")}
+          type="submit"
         >
-          {adminCancelLabel}
+          {editingAdmin.lease ? adminSaveChangesLabel : t.actions.save}
         </Button>
-      ) : null}
+        {editingAdmin.lease ? (
+          <Button
+            variant="secondary"
+            className="secondary-button"
+            onClick={() => cancelAdminEdit("lease")}
+            type="button"
+          >
+            {adminCancelLabel}
+          </Button>
+        ) : null}
+      </div>
     </form>
   );
 }

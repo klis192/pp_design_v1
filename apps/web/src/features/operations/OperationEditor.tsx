@@ -8,8 +8,9 @@ import {
 } from "../../../../../packages/contracts/src/permissions";
 import { TemplateSelect } from "../platform/TemplateSelect";
 import { SidePanel } from "../../ui/SidePanel";
-import { useState } from "react";
+import { useId, useState } from "react";
 export function OperationEditor({ model }: { model: OperationsModel }) {
+  const formId = useId();
   const [initialDraft] = useState(() => JSON.stringify(model.draft));
   const {
     draft,
@@ -36,13 +37,35 @@ export function OperationEditor({ model }: { model: OperationsModel }) {
       onClose={() => setDraft(null)}
       busy={busy}
       dirty={JSON.stringify(draft) !== initialDraft}
+      footer={
+        <div className="mvp-actions">
+          <Button
+            variant="primary"
+            className="primary-button"
+            form={formId}
+            type="submit"
+            disabled={busy}
+          >
+            {busy ? "Сохраняем…" : "Сохранить"}
+          </Button>
+          <Button
+            variant="secondary"
+            type="button"
+            className="secondary-button"
+            disabled={busy}
+            onClick={() => setDraft(null)}
+          >
+            Отмена
+          </Button>
+        </div>
+      }
     >
       {model.error && (
         <p className="notice notice--error" role="alert">
           {model.error}
         </p>
       )}
-      <form className="form-grid" onSubmit={save}>
+      <form id={formId} className="form-grid" onSubmit={save}>
         {tab === "users" ? (
           <>
             {input("fullName", "Имя", "text", true)}
@@ -326,25 +349,6 @@ export function OperationEditor({ model }: { model: OperationsModel }) {
             )}
           </>
         )}
-        <div className="mvp-actions form-wide">
-          <Button
-            variant="primary"
-            className="primary-button"
-            type="submit"
-            disabled={busy}
-          >
-            {busy ? "Сохраняем…" : "Сохранить"}
-          </Button>
-          <Button
-            variant="secondary"
-            type="button"
-            className="secondary-button"
-            disabled={busy}
-            onClick={() => setDraft(null)}
-          >
-            Отмена
-          </Button>
-        </div>
       </form>
     </SidePanel>
   );

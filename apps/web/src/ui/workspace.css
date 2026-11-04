@@ -333,15 +333,19 @@
     grid-column: 1/-1;
   }
 }
-@media (max-width: 760px) {
+@media (max-width: 1080px) {
   .mvp-detail-head {
     top: 60px;
   }
+  .workspace-record-header {
+    top: 60px;
+  }
+}
+@media (max-width: 760px) {
   .mvp-main {
     padding: 16px 16px 24px;
   }
   .workspace-record-header {
-    top: 60px;
     padding: 8px 0;
   }
   .workspace-record-header h2 {

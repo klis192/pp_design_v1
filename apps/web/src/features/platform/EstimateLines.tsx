@@ -26,8 +26,17 @@ export function EstimateLines({
     <>
       {lines.map((l, i) => (
         <fieldset className="estimate-line" key={i}>
-          <legend>Позиция {i + 1}</legend>
-          <label>
+          <legend>
+            <span>Позиция {i + 1}</span>
+            <IconButton
+              label={`Удалить позицию ${i + 1}`}
+              disabled={lines.length === 1}
+              onClick={() => onChange(lines.filter((_, j) => i !== j))}
+            >
+              <ActionIcon name="delete" />
+            </IconButton>
+          </legend>
+          <label className="estimate-kind">
             Тип
             <Select
               value={l.kind}
@@ -44,7 +53,7 @@ export function EstimateLines({
             </Select>
           </label>
           {l.kind !== "material" && (
-            <label>
+            <label className="estimate-catalog">
               Из каталога услуг
               <Select
                 value={l.catalogId ?? ""}
@@ -78,7 +87,7 @@ export function EstimateLines({
             </label>
           )}
           {l.kind === "material" && (
-            <label>
+            <label className="estimate-catalog">
               Из каталога
               <Select
                 value={l.catalogId ?? ""}
@@ -160,13 +169,6 @@ export function EstimateLines({
               ))}
             </Select>
           </label>
-          <IconButton
-            label={`Удалить позицию ${i + 1}`}
-            disabled={lines.length === 1}
-            onClick={() => onChange(lines.filter((_, j) => i !== j))}
-          >
-            <ActionIcon name="delete" />
-          </IconButton>
         </fieldset>
       ))}
     </>

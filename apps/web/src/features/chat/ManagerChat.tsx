@@ -7,6 +7,7 @@ import {
 } from "../../shared/format";
 import { Button, IconButton, Select, Textarea } from "../../ui";
 import { ActionIcon } from "../business/ActionIcon";
+import "./workspace.css";
 export function ManagerChat() {
   const {
     managerUi,
@@ -32,7 +33,7 @@ export function ManagerChat() {
     Boolean(selectedChatTenantId),
   );
   return (
-    <section className="mvp-page">
+    <section className="mvp-page chat-workspace">
       <div className="mvp-page-header">
         <div>
           <h2>{managerUi.titles.chat}</h2>
@@ -80,18 +81,18 @@ export function ManagerChat() {
         </article>
 
         <article className="mvp-card chat-conversation-pane">
-          <IconButton
-            label="К списку чатов"
-            className="chat-back"
-            onClick={() => setConversationOpen(false)}
-          >
-            <ActionIcon name="back" />
-          </IconButton>
-          <div className="mvp-card-head">
+          <div className="mvp-card-head chat-conversation-header">
+            <IconButton
+              label="К списку чатов"
+              className="chat-back"
+              onClick={() => setConversationOpen(false)}
+            >
+              <ActionIcon name="back" />
+            </IconButton>
             <div>
               <h3>{selectedChatThread?.tenantName ?? managerUi.nav.chat}</h3>
+              <small>{selectedChatThread?.propertyName ?? "—"}</small>
             </div>
-            <small>{selectedChatThread?.propertyName ?? "—"}</small>
           </div>
 
           <div className="mvp-chat-body">
@@ -132,6 +133,7 @@ export function ManagerChat() {
           <form className="mvp-chat-form" onSubmit={handleChatSubmit}>
             {selectedChatTickets.length > 1 ? (
               <Select
+                className="chat-target-select"
                 aria-label="Заявка для сообщения"
                 onChange={(event) =>
                   setSelectedChatTicketId(event.target.value)
@@ -140,8 +142,8 @@ export function ManagerChat() {
               >
                 {selectedChatTickets.map((ticket) => (
                   <option key={ticket.id} value={ticket.id}>
-                    {ticket.propertyName ?? "—"} · {ticket.unitNumber ?? "—"} ·{" "}
-                    {ticket.number}
+                    {ticket.number} · {ticket.unitNumber ?? "—"} ·{" "}
+                    {ticket.propertyName ?? "—"}
                   </option>
                 ))}
               </Select>

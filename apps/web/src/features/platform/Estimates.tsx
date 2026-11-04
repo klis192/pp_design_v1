@@ -3,7 +3,7 @@ import { SidePanel } from "../../ui/SidePanel";
 import { Register } from "../business/Register";
 import { EstimateLines } from "./EstimateLines";
 import { ResponsiveTable } from "../../ResponsiveTable";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Button, IconButton, Input, Select } from "../../ui";
 import { usePlatform } from "./usePlatform";
 import type {
@@ -30,6 +30,7 @@ const blankLine = (): EstimateInput["lines"][number] => ({
   vatRate: "0",
 });
 export function Estimates(props: Props & { services: Row[] }) {
+  const formId = useId();
   const { data, error, busy, mutate } = usePlatform(props.token);
   const [draft, setDraft] = useState<(EstimateInput & { id?: string }) | null>(
     null,
@@ -162,6 +163,16 @@ export function Estimates(props: Props & { services: Row[] }) {
           onClose={() => setDraft(null)}
           busy={busy}
           dirty={dirty}
+          footer={
+            <div className="mvp-actions">
+              <Button variant="primary" type="submit" form={formId} busy={busy}>
+                Сохранить черновик
+              </Button>
+              <Button disabled={busy} onClick={() => setDraft(null)}>
+                Отмена
+              </Button>
+            </div>
+          }
         >
           {error && (
             <p className="notice notice--error" role="alert">
@@ -169,6 +180,7 @@ export function Estimates(props: Props & { services: Row[] }) {
             </p>
           )}
           <form
+            id={formId}
             className="platform-section estimate-workspace-form"
             onSubmit={async (e) => {
               e.preventDefault();
@@ -278,12 +290,6 @@ export function Estimates(props: Props & { services: Row[] }) {
               >
                 <ActionIcon name="plus" />
               </IconButton>
-              <Button variant="primary" type="submit" busy={busy}>
-                Сохранить черновик
-              </Button>
-              <Button disabled={busy} onClick={() => setDraft(null)}>
-                Отмена
-              </Button>
             </div>
           </form>
         </SidePanel>

@@ -69,6 +69,24 @@ label:not(.secondary-button):has(> .ui-input--file) > span:first-child {
   font-size: 14px;
   line-height: 20px;
 }
+.admin-form-actions {
+  grid-column: 1 / -1;
+  padding-top: 16px;
+  margin-top: 4px;
+  border-top: 1px solid var(--ui-border);
+}
+.mvp-info-list .mvp-info-row > strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 760px) {
+  .mvp-info-list .mvp-info-row {
+    display: grid;
+    grid-template-columns: minmax(96px, 0.85fr) minmax(0, 1.15fr);
+    align-items: start;
+    gap: 8px 12px;
+  }
+}
 @media (max-width: 1200px) {
   :is(.form-grid, .split-grid, .business-form, .mvp-form, .inline-form)
     > .mvp-actions {

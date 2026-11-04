@@ -1,0 +1,3912 @@
+{
+  "stage": "workspace-scenarios-4",
+  "verifiedAtUtc": "2026-11-04T16:15:22.518018+00:00",
+  "userDate": "2026-11-04",
+  "userTimezone": "Asia/Yekaterinburg",
+  "origin": "http://wirehouse.localhost:5186",
+  "distIndexSha256": "44a0726be3bfeb545b080be83d4f880a41973b9a421d7fb8a1c96de488e3ff2e",
+  "distFiles": {
+    "assets/AccountingWorkspace-D-1kb4B2.js": {
+      "bytes": 16288,
+      "sha256": "e497eeec571299f2477ead585f024a6aa0a5837ae1b56bc99688f93213e9379f"
+    },
+    "assets/Admin-BB_CLvM1.js": {
+      "bytes": 5130,
+      "sha256": "608aa98f43184b5d871d8f096655384db8ffe9a27c63d082f1da7e114f9ce0f1"
+    },
+    "assets/DocumentRegistry-C7MzZHb5.js": {
+      "bytes": 5251,
+      "sha256": "81ac5debab8a7512ab1f3d4ffbd9b800c6c0585746b854a4071ec122567fe5b7"
+    },
+    "assets/FilterBar-BoJWAhj4.js": {
+      "bytes": 2002,
+      "sha256": "9ed75c19364a73d25339b26d2ba6a5f00c9b7876edfa9ff2b6789fa7808e1242"
+    },
+    "assets/index-DEmbgiN7.js": {
+      "bytes": 239184,
+      "sha256": "513945f6e60c68f6f6129b8d572a5d2b06f0a46b2c89fb637542a0966fa77450"
+    },
+    "assets/index-DlChOj7n.css": {
+      "bytes": 104153,
+      "sha256": "85fc1314a950472f155f8702cc4eaa6f124c2c19836b2a1f45c29bd5bc874025"
+    },
+    "assets/iso-CyLnQ4BE.js": {
+      "bytes": 85134,
+      "sha256": "e2a102a2c55dc00520d5406f3b044e5c1898c0dec56b922d8e3df2429c06f870"
+    },
+    "assets/Leases-B2I-8CZj.js": {
+      "bytes": 7900,
+      "sha256": "0e7976a7aeea86d03a40e7583ca01f40e8f4611bd617a403a640c6b30fea3683"
+    },
+    "assets/ManagerBilling-Ca6IqPL5.css": {
+      "bytes": 3472,
+      "sha256": "f063a69fbfa8c7da8f001c325a09c3de41b3022296f545464a9967451b3b64db"
+    },
+    "assets/ManagerBilling-CNSJJOiu.js": {
+      "bytes": 13593,
+      "sha256": "164f47c7b05911e112a2452fb7b110502e1eae4aa65587c892033671773a1310"
+    },
+    "assets/ManagerChat-BYEfMkx4.js": {
+      "bytes": 3264,
+      "sha256": "bf17d8c242c47975aa4aab961361fbd5140af2e0a821f80e128fc373f22c0b56"
+    },
+    "assets/ManagerChat-CVECjooc.css": {
+      "bytes": 2769,
+      "sha256": "ea19aa9fcc0d19df421241c63d1e6a4c451042dd1b8e08c2ec8872406331d733"
+    },
+    "assets/ManagerDashboard-6e9FLhWs.js": {
+      "bytes": 6050,
+      "sha256": "5e5664fca02c83406ecb1d7eeb3f809668bd26fcca20df0f5234519b41abc71e"
+    },
+    "assets/ManagerImport-CAmWK-uO.js": {
+      "bytes": 10358,
+      "sha256": "198cbe105ca97144976c2fca0f5e65132590082b5b5f149347f7e29b3fe29828"
+    },
+    "assets/ManagerLeases-D_ZJ61W4.js": {
+      "bytes": 3435,
+      "sha256": "d4a8c736760751e094e0b88b335c7145d2d03594b25bed13c41c96463c11d2c4"
+    },
+    "assets/ManagerNotifications-NzYf4ROi.js": {
+      "bytes": 1374,
+      "sha256": "aa29f2f38eec9188040dd196ceacf3680878790fbee24c12dad4fa17d57b1d9b"
+    },
+    "assets/ManagerObjectLaunch-CkhiZA-Q.js": {
+      "bytes": 5823,
+      "sha256": "6e24fc5a2be222d84ad9795cc5f4ae70c195f5f722682df76a484faf618915f1"
+    },
+    "assets/ManagerObjects-9Q6pP7ox.js": {
+      "bytes": 4556,
+      "sha256": "c1bdfb0ad48fbe9a26e4b272bb8ca07ea2ec8261a0b7d3751ca93db895b66297"
+    },
+    "assets/ManagerProfile-BQ7ED-Rt.js": {
+      "bytes": 4491,
+      "sha256": "d3096a8bbb619e3efcc2b03185e8c000e262b3b5da43b5046e5bd0c16b8e154e"
+    },
+    "assets/ManagerStaff-C_RuRe_7.js": {
+      "bytes": 427,
+      "sha256": "db86a7cc338d68c0b5fc28df0730bd3a4c569e00b0c6498cbfd55c63819529aa"
+    },
+    "assets/ManagerStaffCreate-BsNav9AS.js": {
+      "bytes": 2285,
+      "sha256": "a8df570a17f1f81fdfca33da2adf89c0f7c8ab3d706e9dd340f49b937d4926e5"
+    },
+    "assets/ManagerTenantDetail-DP8fCxWb.js": {
+      "bytes": 13195,
+      "sha256": "c741d5e8a467991ad4f50645783b9ea89e0a5398144f52e86a21f838bd0fa3d6"
+    },
+    "assets/ManagerTenants-DzoIWuzA.js": {
+      "bytes": 3292,
+      "sha256": "bcab7d688acf3a329bddaf08b792b3d7e63501b6323527c7f2b59e73fadfd794"
+    },
+    "assets/ManagerTicketCreate-Cy7Ik5lF.js": {
+      "bytes": 1015,
+      "sha256": "6d0e1810a0d6d264489d5c3b77ffdd8143803bb29d56fadc98c6e7b53384f054"
+    },
+    "assets/ManagerTicketDetail-DeSRWuic.js": {
+      "bytes": 31994,
+      "sha256": "c906fa4f78ddff8ea12f86ca8c61d2214fe095e956bf6940e54fb3897e3e24ba"
+    },
+    "assets/ManagerTickets-DpJ0a95O.js": {
+      "bytes": 13110,
+      "sha256": "175795d3319eb86781ef709cd4db66d9625fdf7ff5c692b6c8898dcadbb50333"
+    },
+    "assets/ManagerUnitDetail-C40dt5Cn.js": {
+      "bytes": 7125,
+      "sha256": "35f800c10a7296dcfe6985f9603407a494596592d42c5d52b4e88c87ef807d1e"
+    },
+    "assets/ManagerUnits-umINdF-u.js": {
+      "bytes": 4973,
+      "sha256": "254dc530975c24a88e17596008c908c0fb28eceeb71f172aa05295a9b92148a0"
+    },
+    "assets/Operations-BWWEtOhW.css": {
+      "bytes": 1081,
+      "sha256": "43cdf8eb01abe07937a9f2c398046fbb42fc808a02d39c2f4004041246adf509"
+    },
+    "assets/Operations-CnllvV0b.js": {
+      "bytes": 72643,
+      "sha256": "515a847b84368192063d87a247c69e3f8490e491ba373d0fc30f6986fbbd3d73"
+    },
+    "assets/Overview-5OIMh1_j.js": {
+      "bytes": 12749,
+      "sha256": "786fab8aa8ff08b181e474cebe784909810c64055cea37e0bbb131b2dfa974b1"
+    },
+    "assets/permissions-BLscaukU.js": {
+      "bytes": 2192,
+      "sha256": "c5e3d0d4266106d8bdfb78545befed2e9c1c34f16db29d66f2825cfb3d6b980e"
+    },
+    "assets/Portfolio-1H-vYfQg.js": {
+      "bytes": 7235,
+      "sha256": "11405503229cb0cb39b774e066f2459fcdb50538eca4c5e36893e16c161e246f"
+    },
+    "assets/ReadingsWorkspace-CQ3phiYH.js": {
+      "bytes": 11365,
+      "sha256": "ffdb8accc5d3240a43fd9228f1f71cb55fe897332ac06909db4199b907720ab7"
+    },
+    "assets/ResponsiveTable-Dh_8pf9Q.js": {
+      "bytes": 1128,
+      "sha256": "b9dc79def4a32a58b1c1ce6674022fe2fac3bf6104086a86d3b3b5a4eaa1aa00"
+    },
+    "assets/Service-B6g-HcKe.js": {
+      "bytes": 5392,
+      "sha256": "7a9aeffb0e1cdece732f02bee86dea91ec7cbecaad542d919155a0864012aa01"
+    },
+    "assets/shared-Bb-H6o01.js": {
+      "bytes": 1817,
+      "sha256": "737ef82d3bd31ecf4c16bacef7180f3b0d98b26e9f75990be3543abd469a4519"
+    },
+    "assets/shared-BuhUsYR9.js": {
+      "bytes": 6682,
+      "sha256": "83e668e25fd9183b7755747e2837e75960f9a60eac84367184f27132eb2a1a25"
+    },
+    "assets/StructureWorkspace-Co7Ga25s.css": {
+      "bytes": 1070,
+      "sha256": "92fae3cc29ecf19d4dd615c7c6c22b3da3b2cffdca53adf9e1eacb3e5879cfa7"
+    },
+    "assets/StructureWorkspace-DdXO3g9_.js": {
+      "bytes": 20644,
+      "sha256": "6920a159462af534656c11024260c77f030a9172ec99affb9fdc2d921e46346d"
+    },
+    "assets/TenantChat-DhXbe3VS.js": {
+      "bytes": 2627,
+      "sha256": "b1d45a410384e8183ebd9a447c4d7086929a371fbfd75f904e05b6f6bef58c03"
+    },
+    "assets/TenantServices-BNmd2rOj.js": {
+      "bytes": 1197,
+      "sha256": "2926568f63d83eb96039e399c25f9e7e2c2f3f7ff8bc2040958f551d4db6be16"
+    },
+    "assets/ticket-search-LK6TsXg5.js": {
+      "bytes": 696,
+      "sha256": "cad88e3afbab0a629e136ddde804f5cf03c0acc137df5584239d5847ee8efebb"
+    },
+    "assets/TicketCreateFields-DlUDdiLv.js": {
+      "bytes": 1751,
+      "sha256": "7c1476469e13003db688c8e41f3ca1f78f4112f2c2b305abc6df111d1ea8eea0"
+    },
+    "assets/usePagedResource-CIWgMOYf.js": {
+      "bytes": 705,
+      "sha256": "3202c23b6b98c771ae4222b484171a848b1450e2672dd3535b10025e2ba46d30"
+    },
+    "assets/useSurfaceView-Bc0MEOTd.js": {
+      "bytes": 643,
+      "sha256": "2adeadd1fdce87f99946f6891fcb74e30831ef3e54b2724ea738ab99b28fc577"
+    },
+    "assets/useWorkspaceViewState-yErj77P3.js": {
+      "bytes": 427,
+      "sha256": "65fc3a2c1726efef417af0700c220b1656498f9365281765a229e25b5b92fd6f"
+    },
+    "assets/workspace-C_zf7ieP.css": {
+      "bytes": 10515,
+      "sha256": "6789aa220572ffa6a9710b397048f7bed4d79aa341c0000c0ce933eed60b8d9f"
+    },
+    "assets/WorkspaceContext-DiQoCVUR.css": {
+      "bytes": 12673,
+      "sha256": "22b4998881d5ace5bb22ba0ac4264297606aadc30034c04fdae0d107c4e46569"
+    },
+    "assets/WorkspaceContext-DyKD04v2.js": {
+      "bytes": 110161,
+      "sha256": "cfd9fd16b790337c6ce93c25d84f7e68bbd89835fb3829a3c0e0d903bb1dc8fa"
+    },
+    "index.html": {
+      "bytes": 584,
+      "sha256": "44a0726be3bfeb545b080be83d4f880a41973b9a421d7fb8a1c96de488e3ff2e"
+    }
+  },
+  "build": {
+    "typecheck": "passed",
+    "webBuild": "passed",
+    "targetedUnits": 20,
+    "entry": "assets/index-DEmbgiN7.js"
+  },
+  "builtReadOnlySweep": {
+    "passed": true,
+    "entry": "assets/index-DEmbgiN7.js",
+    "workspaces": 14,
+    "widths": [
+      1440,
+      390,
+      320
+    ],
+    "groups": 351,
+    "errors": [],
+    "writes": [],
+    "checks": [
+      {
+        "name": "dashboard-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Заявки 13"
+      },
+      {
+        "name": "tickets-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Службы и маршруты"
+      },
+      {
+        "name": "objects-tab0-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "objects-tab0-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Обзор"
+      },
+      {
+        "name": "objects-tab1-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "objects-tab1-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "objects-tab2-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "objects-tab2-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "objects-tab3-1440",
+        "width": 1440,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "objects-tab3-1440",
+        "width": 1440,
+        "icons": 7,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "units-tab0-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "units-tab0-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Список"
+      },
+      {
+        "name": "units-tab1-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "units-tab1-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "units-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "units-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "tenants-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "leases-1440",
+        "width": 1440,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Счета 1"
+      },
+      {
+        "name": "billing-tab1-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab1-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Лицевые счета"
+      },
+      {
+        "name": "billing-tab2-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "billing-tab2-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Сверка 1"
+      },
+      {
+        "name": "billing-tab3-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "billing-tab3-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "План доходов"
+      },
+      {
+        "name": "billing-tab4-1440",
+        "width": 1440,
+        "icons": 9,
+        "passed": true
+      },
+      {
+        "name": "billing-tab4-1440",
+        "width": 1440,
+        "icons": 9,
+        "passed": true,
+        "selectedLabel": "Источники"
+      },
+      {
+        "name": "billing-tab5-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab5-1440",
+        "width": 1440,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Сопоставления"
+      },
+      {
+        "name": "billing-tab6-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "billing-tab6-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Журнал обмена"
+      },
+      {
+        "name": "chat-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "agenda-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Сметы и акты"
+      },
+      {
+        "name": "operations-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Оборудование"
+      },
+      {
+        "name": "operations-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Графики"
+      },
+      {
+        "name": "operations-tab2-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "План и факт"
+      },
+      {
+        "name": "operations-tab2-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Регламенты"
+      },
+      {
+        "name": "operations-tab2-tab3-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab3-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "ППР"
+      },
+      {
+        "name": "operations-tab3-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Каталог"
+      },
+      {
+        "name": "operations-tab3-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Материалы"
+      },
+      {
+        "name": "operations-tab3-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Услуги"
+      },
+      {
+        "name": "operations-tab4-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Приборы"
+      },
+      {
+        "name": "operations-tab4-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab1-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Переданные"
+      },
+      {
+        "name": "operations-tab4-tab1-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Счётчики"
+      },
+      {
+        "name": "operations-tab5-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab5-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Объявления"
+      },
+      {
+        "name": "operations-tab6-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab6-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Расходы"
+      },
+      {
+        "name": "notifications-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Пользователи"
+      },
+      {
+        "name": "staff-tab1-1440",
+        "width": 1440,
+        "icons": 13,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-1440",
+        "width": 1440,
+        "icons": 13,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-1440",
+        "width": 1440,
+        "icons": 13,
+        "passed": true,
+        "selectedLabel": "Назначения 5"
+      },
+      {
+        "name": "staff-tab1-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab1-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Доступ"
+      },
+      {
+        "name": "staff-tab2-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab2-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Аудит"
+      },
+      {
+        "name": "import-tab0-1440",
+        "width": 1440,
+        "icons": 9,
+        "passed": true
+      },
+      {
+        "name": "import-tab0-1440",
+        "width": 1440,
+        "icons": 9,
+        "passed": true,
+        "selectedLabel": "Загрузка"
+      },
+      {
+        "name": "import-tab1-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "import-tab1-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Проверка 0"
+      },
+      {
+        "name": "import-tab2-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "import-tab2-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Согласование 0"
+      },
+      {
+        "name": "import-tab3-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "import-tab3-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "История 0"
+      },
+      {
+        "name": "import-tab4-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "import-tab4-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Экспорт"
+      },
+      {
+        "name": "profile-tab0-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "profile-tab0-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Профиль и доступ"
+      },
+      {
+        "name": "profile-tab1-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "profile-tab1-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Безопасность"
+      },
+      {
+        "name": "profile-tab2-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "profile-tab2-1440",
+        "width": 1440,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Мессенджеры"
+      },
+      {
+        "name": "dashboard-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Заявки 13"
+      },
+      {
+        "name": "tickets-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Службы и маршруты"
+      },
+      {
+        "name": "objects-tab0-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "objects-tab0-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Обзор"
+      },
+      {
+        "name": "objects-tab1-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "objects-tab1-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "objects-tab2-390",
+        "width": 390,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "objects-tab2-390",
+        "width": 390,
+        "icons": 7,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "objects-tab3-390",
+        "width": 390,
+        "icons": 8,
+        "passed": true
+      },
+      {
+        "name": "objects-tab3-390",
+        "width": 390,
+        "icons": 8,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "units-tab0-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "units-tab0-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Список"
+      },
+      {
+        "name": "units-tab1-390",
+        "width": 390,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "units-tab1-390",
+        "width": 390,
+        "icons": 7,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "units-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "units-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "tenants-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "leases-390",
+        "width": 390,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Счета 1"
+      },
+      {
+        "name": "billing-tab1-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "billing-tab1-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Лицевые счета"
+      },
+      {
+        "name": "billing-tab2-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab2-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Сверка 1"
+      },
+      {
+        "name": "billing-tab3-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "billing-tab3-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "План доходов"
+      },
+      {
+        "name": "billing-tab4-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "billing-tab4-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Источники"
+      },
+      {
+        "name": "billing-tab5-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "billing-tab5-390",
+        "width": 390,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Сопоставления"
+      },
+      {
+        "name": "billing-tab6-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab6-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Журнал обмена"
+      },
+      {
+        "name": "chat-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "agenda-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Сметы и акты"
+      },
+      {
+        "name": "operations-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Оборудование"
+      },
+      {
+        "name": "operations-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Графики"
+      },
+      {
+        "name": "operations-tab2-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "План и факт"
+      },
+      {
+        "name": "operations-tab2-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Регламенты"
+      },
+      {
+        "name": "operations-tab2-tab3-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab3-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "ППР"
+      },
+      {
+        "name": "operations-tab3-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Каталог"
+      },
+      {
+        "name": "operations-tab3-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Материалы"
+      },
+      {
+        "name": "operations-tab3-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Услуги"
+      },
+      {
+        "name": "operations-tab4-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Приборы"
+      },
+      {
+        "name": "operations-tab4-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab1-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Переданные"
+      },
+      {
+        "name": "operations-tab4-tab1-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Счётчики"
+      },
+      {
+        "name": "operations-tab5-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab5-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Объявления"
+      },
+      {
+        "name": "operations-tab6-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab6-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Расходы"
+      },
+      {
+        "name": "notifications-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Пользователи"
+      },
+      {
+        "name": "staff-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-390",
+        "width": 390,
+        "icons": 14,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-390",
+        "width": 390,
+        "icons": 14,
+        "passed": true,
+        "selectedLabel": "Назначения 5"
+      },
+      {
+        "name": "staff-tab1-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab1-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Доступ"
+      },
+      {
+        "name": "staff-tab2-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "staff-tab2-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Аудит"
+      },
+      {
+        "name": "import-tab0-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "import-tab0-390",
+        "width": 390,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Загрузка"
+      },
+      {
+        "name": "import-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Проверка 0"
+      },
+      {
+        "name": "import-tab2-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab2-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Согласование 0"
+      },
+      {
+        "name": "import-tab3-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab3-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "История 0"
+      },
+      {
+        "name": "import-tab4-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab4-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Экспорт"
+      },
+      {
+        "name": "profile-tab0-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab0-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Профиль и доступ"
+      },
+      {
+        "name": "profile-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Безопасность"
+      },
+      {
+        "name": "profile-tab2-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab2-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Мессенджеры"
+      },
+      {
+        "name": "dashboard-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab0-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Заявки 13"
+      },
+      {
+        "name": "tickets-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "tickets-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Службы и маршруты"
+      },
+      {
+        "name": "objects-tab0-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "objects-tab0-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Обзор"
+      },
+      {
+        "name": "objects-tab1-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "objects-tab1-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "objects-tab2-320",
+        "width": 320,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "objects-tab2-320",
+        "width": 320,
+        "icons": 7,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "objects-tab3-320",
+        "width": 320,
+        "icons": 8,
+        "passed": true
+      },
+      {
+        "name": "objects-tab3-320",
+        "width": 320,
+        "icons": 8,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "units-tab0-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "units-tab0-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Список"
+      },
+      {
+        "name": "units-tab1-320",
+        "width": 320,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "units-tab1-320",
+        "width": 320,
+        "icons": 7,
+        "passed": true,
+        "selectedLabel": "Структура"
+      },
+      {
+        "name": "units-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "units-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Планы"
+      },
+      {
+        "name": "tenants-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "leases-320",
+        "width": 320,
+        "icons": 7,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab0-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Счета 1"
+      },
+      {
+        "name": "billing-tab1-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "billing-tab1-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Лицевые счета"
+      },
+      {
+        "name": "billing-tab2-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab2-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Сверка 1"
+      },
+      {
+        "name": "billing-tab3-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "billing-tab3-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "План доходов"
+      },
+      {
+        "name": "billing-tab4-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "billing-tab4-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Источники"
+      },
+      {
+        "name": "billing-tab5-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true
+      },
+      {
+        "name": "billing-tab5-320",
+        "width": 320,
+        "icons": 6,
+        "passed": true,
+        "selectedLabel": "Сопоставления"
+      },
+      {
+        "name": "billing-tab6-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "billing-tab6-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Журнал обмена"
+      },
+      {
+        "name": "chat-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "agenda-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Сметы и акты"
+      },
+      {
+        "name": "operations-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Оборудование"
+      },
+      {
+        "name": "operations-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Графики"
+      },
+      {
+        "name": "operations-tab2-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "План и факт"
+      },
+      {
+        "name": "operations-tab2-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Регламенты"
+      },
+      {
+        "name": "operations-tab2-tab3-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab2-tab3-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "ППР"
+      },
+      {
+        "name": "operations-tab3-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Каталог"
+      },
+      {
+        "name": "operations-tab3-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Материалы"
+      },
+      {
+        "name": "operations-tab3-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab3-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Услуги"
+      },
+      {
+        "name": "operations-tab4-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Приборы"
+      },
+      {
+        "name": "operations-tab4-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab4-tab1-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Переданные"
+      },
+      {
+        "name": "operations-tab4-tab1-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Счётчики"
+      },
+      {
+        "name": "operations-tab5-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab5-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Объявления"
+      },
+      {
+        "name": "operations-tab6-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "operations-tab6-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Расходы"
+      },
+      {
+        "name": "notifications-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab0-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Пользователи"
+      },
+      {
+        "name": "staff-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-320",
+        "width": 320,
+        "icons": 14,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab0-320",
+        "width": 320,
+        "icons": 14,
+        "passed": true,
+        "selectedLabel": "Назначения 5"
+      },
+      {
+        "name": "staff-tab1-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "staff-tab1-tab1-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Доступ"
+      },
+      {
+        "name": "staff-tab2-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "staff-tab2-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Аудит"
+      },
+      {
+        "name": "import-tab0-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true
+      },
+      {
+        "name": "import-tab0-320",
+        "width": 320,
+        "icons": 10,
+        "passed": true,
+        "selectedLabel": "Загрузка"
+      },
+      {
+        "name": "import-tab1-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab1-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Проверка 0"
+      },
+      {
+        "name": "import-tab2-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab2-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Согласование 0"
+      },
+      {
+        "name": "import-tab3-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab3-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "История 0"
+      },
+      {
+        "name": "import-tab4-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "import-tab4-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Экспорт"
+      },
+      {
+        "name": "profile-tab0-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab0-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Профиль и доступ"
+      },
+      {
+        "name": "profile-tab1-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab1-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Безопасность"
+      },
+      {
+        "name": "profile-tab2-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "profile-tab2-320",
+        "width": 320,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Мессенджеры"
+      },
+      {
+        "name": "ticket-record-tab0-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab0-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Работа"
+      },
+      {
+        "name": "ticket-record-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab1-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Условия"
+      },
+      {
+        "name": "ticket-record-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab2-1440",
+        "width": 1440,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Обсуждение 3"
+      },
+      {
+        "name": "ticket-record-tab3-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab3-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Фото и файлы 0"
+      },
+      {
+        "name": "ticket-record-tab4-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab4-1440",
+        "width": 1440,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "ticket-record-tab5-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab5-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "История 1"
+      },
+      {
+        "name": "ticket-record-tab6-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab6-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Связи"
+      },
+      {
+        "name": "ticket-record-tab7-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab7-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Затраты"
+      },
+      {
+        "name": "ticket-title-scroll",
+        "width": 1440,
+        "actualScroll": 0,
+        "headerY": 24,
+        "passed": true
+      },
+      {
+        "name": "ticket-work-1440",
+        "width": 1440,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab0-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab0-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Работа"
+      },
+      {
+        "name": "ticket-record-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab1-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Условия"
+      },
+      {
+        "name": "ticket-record-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab2-390",
+        "width": 390,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Обсуждение 3"
+      },
+      {
+        "name": "ticket-record-tab3-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab3-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Фото и файлы 0"
+      },
+      {
+        "name": "ticket-record-tab4-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab4-390",
+        "width": 390,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "ticket-record-tab5-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab5-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "История 1"
+      },
+      {
+        "name": "ticket-record-tab6-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab6-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Связи"
+      },
+      {
+        "name": "ticket-record-tab7-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab7-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Затраты"
+      },
+      {
+        "name": "ticket-title-scroll",
+        "width": 390,
+        "actualScroll": 555,
+        "headerY": 60,
+        "passed": true
+      },
+      {
+        "name": "ticket-work-390",
+        "width": 390,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab0-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab0-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Работа"
+      },
+      {
+        "name": "ticket-record-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab1-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Условия"
+      },
+      {
+        "name": "ticket-record-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab2-320",
+        "width": 320,
+        "icons": 4,
+        "passed": true,
+        "selectedLabel": "Обсуждение 3"
+      },
+      {
+        "name": "ticket-record-tab3-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab3-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Фото и файлы 0"
+      },
+      {
+        "name": "ticket-record-tab4-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab4-320",
+        "width": 320,
+        "icons": 5,
+        "passed": true,
+        "selectedLabel": "Документы"
+      },
+      {
+        "name": "ticket-record-tab5-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab5-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "История 1"
+      },
+      {
+        "name": "ticket-record-tab6-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab6-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Связи"
+      },
+      {
+        "name": "ticket-record-tab7-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "ticket-record-tab7-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true,
+        "selectedLabel": "Затраты"
+      },
+      {
+        "name": "ticket-title-scroll",
+        "width": 320,
+        "actualScroll": 708,
+        "headerY": 60,
+        "passed": true
+      },
+      {
+        "name": "ticket-work-320",
+        "width": 320,
+        "icons": 3,
+        "passed": true
+      },
+      {
+        "name": "role-2-worker-tab0-390",
+        "width": 390,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "role-2-worker-tab0-390",
+        "width": 390,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Мои задания 6"
+      },
+      {
+        "name": "role-2-worker-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "role-2-worker-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Показания"
+      },
+      {
+        "name": "role-2-worker-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true
+      },
+      {
+        "name": "role-2-worker-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true,
+        "selectedLabel": "Мессенджеры"
+      },
+      {
+        "name": "role-3-worker-tab0-390",
+        "width": 390,
+        "icons": 1,
+        "passed": true
+      },
+      {
+        "name": "role-3-worker-tab0-390",
+        "width": 390,
+        "icons": 1,
+        "passed": true,
+        "selectedLabel": "Мои задания 1"
+      },
+      {
+        "name": "role-3-worker-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "role-3-worker-tab1-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Показания"
+      },
+      {
+        "name": "role-3-worker-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true
+      },
+      {
+        "name": "role-3-worker-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true,
+        "selectedLabel": "Мессенджеры"
+      },
+      {
+        "name": "role-4-tenant-tab0-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true
+      },
+      {
+        "name": "role-4-tenant-tab0-390",
+        "width": 390,
+        "icons": 2,
+        "passed": true,
+        "selectedLabel": "Мои заявки 7"
+      },
+      {
+        "name": "role-4-tenant-tab1-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true
+      },
+      {
+        "name": "role-4-tenant-tab1-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true,
+        "selectedLabel": "Создать заявку"
+      },
+      {
+        "name": "role-4-tenant-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true
+      },
+      {
+        "name": "role-4-tenant-tab2-390",
+        "width": 390,
+        "icons": 0,
+        "passed": true,
+        "selectedLabel": "Уведомления 3"
+      }
+    ]
+  },
+  "builtRootScenarios": {
+    "passed": true,
+    "entry": "assets/index-DEmbgiN7.js",
+    "groups": 19,
+    "errors": [],
+    "writes": [],
+    "checks": [
+      {
+        "scenario": "chat",
+        "width": 1280,
+        "height": 720,
+        "pane": {
+          "x": 564,
+          "y": 66,
+          "width": 688,
+          "height": 630,
+          "bottom": 696
+        },
+        "body": {
+          "x": 581,
+          "y": 135,
+          "width": 654,
+          "height": 416,
+          "bottom": 551
+        },
+        "form": {
+          "x": 581,
+          "y": 563,
+          "width": 654,
+          "height": 116,
+          "bottom": 679
+        },
+        "send": {
+          "x": 1199,
+          "y": 643,
+          "width": 36,
+          "height": 36,
+          "bottom": 679
+        },
+        "docWidth": 1280,
+        "docHeight": 720,
+        "viewportHeight": 720,
+        "navTop": 720
+      },
+      {
+        "scenario": "lease-add",
+        "width": 1280,
+        "height": 720,
+        "form": {
+          "width": 950,
+          "y": 118,
+          "height": 584.921875,
+          "fields": [
+            {
+              "caption": "Арендатор *",
+              "x": 281,
+              "y": 165.5,
+              "width": 467,
+              "controlY": 193.5
+            },
+            {
+              "caption": "Помещение",
+              "x": 764,
+              "y": 165.5,
+              "width": 467,
+              "controlY": 193.5
+            },
+            {
+              "caption": "Номер договора",
+              "x": 281,
+              "y": 245.5,
+              "width": 467,
+              "controlY": 273.5
+            },
+            {
+              "caption": "Стадия",
+              "x": 764,
+              "y": 245.5,
+              "width": 467,
+              "controlY": 273.5
+            },
+            {
+              "caption": "Начало",
+              "x": 281,
+              "y": 325.5,
+              "width": 467,
+              "controlY": 353.5
+            },
+            {
+              "caption": "Окончание",
+              "x": 764,
+              "y": 325.5,
+              "width": 467,
+              "controlY": 353.5
+            },
+            {
+              "caption": "Ставка за м²",
+              "x": 281,
+              "y": 405.5,
+              "width": 467,
+              "controlY": 433.5
+            },
+            {
+              "caption": "Депозит",
+              "x": 764,
+              "y": 405.5,
+              "width": 467,
+              "controlY": 433.5
+            },
+            {
+              "caption": "Индексация, % в год",
+              "x": 281,
+              "y": 485.5,
+              "width": 467,
+              "controlY": 513.5
+            }
+          ],
+          "submitY": 666.921875
+        }
+      },
+      {
+        "scenario": "unit-add",
+        "width": 1280,
+        "height": 720,
+        "form": {
+          "width": 950,
+          "y": 118,
+          "height": 537,
+          "fields": [
+            {
+              "caption": "Объект",
+              "x": 281,
+              "y": 118,
+              "width": 467,
+              "controlY": 146
+            },
+            {
+              "caption": "Номер",
+              "x": 764,
+              "y": 118,
+              "width": 467,
+              "controlY": 146
+            },
+            {
+              "caption": "Корпус / подъезд / этаж",
+              "x": 281,
+              "y": 198,
+              "width": 467,
+              "controlY": 226
+            },
+            {
+              "caption": "Фото помещения (HTTPS)",
+              "x": 764,
+              "y": 198,
+              "width": 467,
+              "controlY": 226
+            },
+            {
+              "caption": "Площадь",
+              "x": 281,
+              "y": 306,
+              "width": 467,
+              "controlY": 334
+            },
+            {
+              "caption": "Тип",
+              "x": 764,
+              "y": 306,
+              "width": 467,
+              "controlY": 334
+            },
+            {
+              "caption": "Статус",
+              "x": 281,
+              "y": 386,
+              "width": 467,
+              "controlY": 414
+            },
+            {
+              "caption": "Температурный режим",
+              "x": 764,
+              "y": 386,
+              "width": 467,
+              "controlY": 414
+            },
+            {
+              "caption": "Высота потолка",
+              "x": 281,
+              "y": 466,
+              "width": 467,
+              "controlY": 494
+            },
+            {
+              "caption": "",
+              "x": 764,
+              "y": 494,
+              "width": 66,
+              "controlY": 503
+            },
+            {
+              "caption": "",
+              "x": 281,
+              "y": 546,
+              "width": 71.53125,
+              "controlY": 555
+            }
+          ],
+          "submitY": 619
+        }
+      },
+      {
+        "scenario": "property-add",
+        "width": 1280,
+        "height": 720,
+        "form": {
+          "width": 950,
+          "y": 118,
+          "height": 445,
+          "fields": [
+            {
+              "caption": "Название",
+              "x": 281,
+              "y": 118,
+              "width": 467,
+              "controlY": 146
+            },
+            {
+              "caption": "Адрес",
+              "x": 764,
+              "y": 118,
+              "width": 467,
+              "controlY": 146
+            },
+            {
+              "caption": "Общая площадь",
+              "x": 281,
+              "y": 198,
+              "width": 467,
+              "controlY": 226
+            },
+            {
+              "caption": "Арендуемая площадь",
+              "x": 764,
+              "y": 198,
+              "width": 467,
+              "controlY": 226
+            },
+            {
+              "caption": "Класс склада",
+              "x": 281,
+              "y": 278,
+              "width": 467,
+              "controlY": 306
+            },
+            {
+              "caption": "Описание",
+              "x": 281,
+              "y": 358,
+              "width": 950,
+              "controlY": 386
+            }
+          ],
+          "submitY": 527
+        }
+      },
+      {
+        "scenario": "tenant-add",
+        "width": 1280,
+        "height": 720,
+        "form": {
+          "width": 950,
+          "y": 118,
+          "height": 297,
+          "fields": [
+            {
+              "caption": "Название",
+              "x": 281,
+              "y": 118,
+              "width": 467,
+              "controlY": 146
+            },
+            {
+              "caption": "ИНН",
+              "x": 764,
+              "y": 118,
+              "width": 467,
+              "controlY": 146
+            },
+            {
+              "caption": "Контактное лицо",
+              "x": 281,
+              "y": 198,
+              "width": 467,
+              "controlY": 226
+            },
+            {
+              "caption": "Телефон",
+              "x": 764,
+              "y": 198,
+              "width": 467,
+              "controlY": 226
+            },
+            {
+              "caption": "Email",
+              "x": 281,
+              "y": 278,
+              "width": 467,
+              "controlY": 306
+            },
+            {
+              "caption": "Риск",
+              "x": 764,
+              "y": 278,
+              "width": 467,
+              "controlY": 306
+            }
+          ],
+          "submitY": 379
+        }
+      },
+      {
+        "scenario": "chat",
+        "width": 1024,
+        "height": 768,
+        "pane": {
+          "x": 28,
+          "y": 84,
+          "width": 968,
+          "height": 596,
+          "bottom": 680
+        },
+        "body": {
+          "x": 45,
+          "y": 153,
+          "width": 934,
+          "height": 382,
+          "bottom": 535
+        },
+        "form": {
+          "x": 45,
+          "y": 547,
+          "width": 934,
+          "height": 116,
+          "bottom": 663
+        },
+        "send": {
+          "x": 943,
+          "y": 627,
+          "width": 36,
+          "height": 36,
+          "bottom": 663
+        },
+        "docWidth": 1024,
+        "docHeight": 768,
+        "viewportHeight": 768,
+        "navTop": 711.5
+      },
+      {
+        "scenario": "lease-add",
+        "width": 1024,
+        "height": 768,
+        "form": {
+          "width": 926,
+          "y": 178,
+          "height": 584.921875,
+          "fields": [
+            {
+              "caption": "Арендатор *",
+              "x": 49,
+              "y": 225.5,
+              "width": 455,
+              "controlY": 253.5
+            },
+            {
+              "caption": "Помещение",
+              "x": 520,
+              "y": 225.5,
+              "width": 455,
+              "controlY": 253.5
+            },
+            {
+              "caption": "Номер договора",
+              "x": 49,
+              "y": 305.5,
+              "width": 455,
+              "controlY": 333.5
+            },
+            {
+              "caption": "Стадия",
+              "x": 520,
+              "y": 305.5,
+              "width": 455,
+              "controlY": 333.5
+            },
+            {
+              "caption": "Начало",
+              "x": 49,
+              "y": 385.5,
+              "width": 455,
+              "controlY": 413.5
+            },
+            {
+              "caption": "Окончание",
+              "x": 520,
+              "y": 385.5,
+              "width": 455,
+              "controlY": 413.5
+            },
+            {
+              "caption": "Ставка за м²",
+              "x": 49,
+              "y": 465.5,
+              "width": 455,
+              "controlY": 493.5
+            },
+            {
+              "caption": "Депозит",
+              "x": 520,
+              "y": 465.5,
+              "width": 455,
+              "controlY": 493.5
+            },
+            {
+              "caption": "Индексация, % в год",
+              "x": 49,
+              "y": 545.5,
+              "width": 455,
+              "controlY": 573.5
+            }
+          ],
+          "submitY": 726.921875
+        }
+      },
+      {
+        "scenario": "unit-add",
+        "width": 1024,
+        "height": 768,
+        "form": {
+          "width": 926,
+          "y": 178,
+          "height": 537,
+          "fields": [
+            {
+              "caption": "Объект",
+              "x": 49,
+              "y": 178,
+              "width": 455,
+              "controlY": 206
+            },
+            {
+              "caption": "Номер",
+              "x": 520,
+              "y": 178,
+              "width": 455,
+              "controlY": 206
+            },
+            {
+              "caption": "Корпус / подъезд / этаж",
+              "x": 49,
+              "y": 258,
+              "width": 455,
+              "controlY": 286
+            },
+            {
+              "caption": "Фото помещения (HTTPS)",
+              "x": 520,
+              "y": 258,
+              "width": 455,
+              "controlY": 286
+            },
+            {
+              "caption": "Площадь",
+              "x": 49,
+              "y": 366,
+              "width": 455,
+              "controlY": 394
+            },
+            {
+              "caption": "Тип",
+              "x": 520,
+              "y": 366,
+              "width": 455,
+              "controlY": 394
+            },
+            {
+              "caption": "Статус",
+              "x": 49,
+              "y": 446,
+              "width": 455,
+              "controlY": 474
+            },
+            {
+              "caption": "Температурный режим",
+              "x": 520,
+              "y": 446,
+              "width": 455,
+              "controlY": 474
+            },
+            {
+              "caption": "Высота потолка",
+              "x": 49,
+              "y": 526,
+              "width": 455,
+              "controlY": 554
+            },
+            {
+              "caption": "",
+              "x": 520,
+              "y": 554,
+              "width": 66,
+              "controlY": 563
+            },
+            {
+              "caption": "",
+              "x": 49,
+              "y": 606,
+              "width": 71.53125,
+              "controlY": 615
+            }
+          ],
+          "submitY": 679
+        }
+      },
+      {
+        "scenario": "chat",
+        "width": 390,
+        "height": 844,
+        "pane": {
+          "x": 16,
+          "y": 76,
+          "width": 358,
+          "height": 688,
+          "bottom": 764
+        },
+        "body": {
+          "x": 33,
+          "y": 149,
+          "width": 324,
+          "height": 462,
+          "bottom": 611
+        },
+        "form": {
+          "x": 33,
+          "y": 623,
+          "width": 324,
+          "height": 124,
+          "bottom": 747
+        },
+        "send": {
+          "x": 313,
+          "y": 703,
+          "width": 44,
+          "height": 44,
+          "bottom": 747
+        },
+        "docWidth": 390,
+        "docHeight": 844,
+        "viewportHeight": 844,
+        "navTop": 787.5
+      },
+      {
+        "scenario": "lease-add",
+        "width": 390,
+        "height": 844,
+        "form": {
+          "width": 324,
+          "y": 174,
+          "height": 1004.421875,
+          "fields": [
+            {
+              "caption": "Арендатор *",
+              "x": 33,
+              "y": 241,
+              "width": 324,
+              "controlY": 269
+            },
+            {
+              "caption": "Помещение",
+              "x": 33,
+              "y": 329,
+              "width": 324,
+              "controlY": 357
+            },
+            {
+              "caption": "Номер договора",
+              "x": 33,
+              "y": 417,
+              "width": 324,
+              "controlY": 445
+            },
+            {
+              "caption": "Стадия",
+              "x": 33,
+              "y": 505,
+              "width": 324,
+              "controlY": 533
+            },
+            {
+              "caption": "Начало",
+              "x": 33,
+              "y": 593,
+              "width": 324,
+              "controlY": 621
+            },
+            {
+              "caption": "Окончание",
+              "x": 33,
+              "y": 681,
+              "width": 324,
+              "controlY": 709
+            },
+            {
+              "caption": "Ставка за м²",
+              "x": 33,
+              "y": 769,
+              "width": 324,
+              "controlY": 797
+            },
+            {
+              "caption": "Депозит",
+              "x": 33,
+              "y": 857,
+              "width": 324,
+              "controlY": 885
+            },
+            {
+              "caption": "Индексация, % в год",
+              "x": 33,
+              "y": 945,
+              "width": 324,
+              "controlY": 973
+            }
+          ],
+          "submitY": 1134.421875
+        }
+      },
+      {
+        "scenario": "unit-add",
+        "width": 390,
+        "height": 844,
+        "form": {
+          "width": 324,
+          "y": 174,
+          "height": 1025,
+          "fields": [
+            {
+              "caption": "Объект",
+              "x": 33,
+              "y": 174,
+              "width": 324,
+              "controlY": 202
+            },
+            {
+              "caption": "Номер",
+              "x": 33,
+              "y": 262,
+              "width": 324,
+              "controlY": 290
+            },
+            {
+              "caption": "Корпус / подъезд / этаж",
+              "x": 33,
+              "y": 350,
+              "width": 324,
+              "controlY": 378
+            },
+            {
+              "caption": "Фото помещения (HTTPS)",
+              "x": 33,
+              "y": 486,
+              "width": 324,
+              "controlY": 514
+            },
+            {
+              "caption": "Площадь",
+              "x": 33,
+              "y": 574,
+              "width": 324,
+              "controlY": 602
+            },
+            {
+              "caption": "Тип",
+              "x": 33,
+              "y": 662,
+              "width": 324,
+              "controlY": 690
+            },
+            {
+              "caption": "Статус",
+              "x": 33,
+              "y": 750,
+              "width": 324,
+              "controlY": 778
+            },
+            {
+              "caption": "Температурный режим",
+              "x": 33,
+              "y": 838,
+              "width": 324,
+              "controlY": 866
+            },
+            {
+              "caption": "Высота потолка",
+              "x": 33,
+              "y": 926,
+              "width": 324,
+              "controlY": 954
+            },
+            {
+              "caption": "",
+              "x": 33,
+              "y": 1014,
+              "width": 66,
+              "controlY": 1027
+            },
+            {
+              "caption": "",
+              "x": 33,
+              "y": 1074,
+              "width": 71.53125,
+              "controlY": 1087
+            }
+          ],
+          "submitY": 1155
+        }
+      },
+      {
+        "scenario": "property-add",
+        "width": 390,
+        "height": 844,
+        "form": {
+          "width": 324,
+          "y": 174,
+          "height": 653,
+          "fields": [
+            {
+              "caption": "Название",
+              "x": 33,
+              "y": 174,
+              "width": 324,
+              "controlY": 202
+            },
+            {
+              "caption": "Адрес",
+              "x": 33,
+              "y": 262,
+              "width": 324,
+              "controlY": 290
+            },
+            {
+              "caption": "Общая площадь",
+              "x": 33,
+              "y": 350,
+              "width": 324,
+              "controlY": 378
+            },
+            {
+              "caption": "Арендуемая площадь",
+              "x": 33,
+              "y": 438,
+              "width": 324,
+              "controlY": 466
+            },
+            {
+              "caption": "Класс склада",
+              "x": 33,
+              "y": 526,
+              "width": 324,
+              "controlY": 554
+            },
+            {
+              "caption": "Описание",
+              "x": 33,
+              "y": 614,
+              "width": 324,
+              "controlY": 642
+            }
+          ],
+          "submitY": 783
+        }
+      },
+      {
+        "scenario": "tenant-add",
+        "width": 390,
+        "height": 844,
+        "form": {
+          "width": 324,
+          "y": 174,
+          "height": 593,
+          "fields": [
+            {
+              "caption": "Название",
+              "x": 33,
+              "y": 174,
+              "width": 324,
+              "controlY": 202
+            },
+            {
+              "caption": "ИНН",
+              "x": 33,
+              "y": 262,
+              "width": 324,
+              "controlY": 290
+            },
+            {
+              "caption": "Контактное лицо",
+              "x": 33,
+              "y": 350,
+              "width": 324,
+              "controlY": 378
+            },
+            {
+              "caption": "Телефон",
+              "x": 33,
+              "y": 438,
+              "width": 324,
+              "controlY": 466
+            },
+            {
+              "caption": "Email",
+              "x": 33,
+              "y": 526,
+              "width": 324,
+              "controlY": 554
+            },
+            {
+              "caption": "Риск",
+              "x": 33,
+              "y": 614,
+              "width": 324,
+              "controlY": 642
+            }
+          ],
+          "submitY": 723
+        }
+      },
+      {
+        "scenario": "chat",
+        "width": 320,
+        "height": 640,
+        "pane": {
+          "x": 16,
+          "y": 76,
+          "width": 288,
+          "height": 484,
+          "bottom": 560
+        },
+        "body": {
+          "x": 33,
+          "y": 149,
+          "width": 254,
+          "height": 258,
+          "bottom": 407
+        },
+        "form": {
+          "x": 33,
+          "y": 419,
+          "width": 254,
+          "height": 124,
+          "bottom": 543
+        },
+        "send": {
+          "x": 243,
+          "y": 499,
+          "width": 44,
+          "height": 44,
+          "bottom": 543
+        },
+        "docWidth": 320,
+        "docHeight": 640,
+        "viewportHeight": 640,
+        "navTop": 583.5
+      },
+      {
+        "scenario": "lease-add",
+        "width": 320,
+        "height": 640,
+        "form": {
+          "width": 254,
+          "y": 174,
+          "height": 1044.703125,
+          "fields": [
+            {
+              "caption": "Арендатор *",
+              "x": 33,
+              "y": 241,
+              "width": 254,
+              "controlY": 269
+            },
+            {
+              "caption": "Помещение",
+              "x": 33,
+              "y": 329,
+              "width": 254,
+              "controlY": 357
+            },
+            {
+              "caption": "Номер договора",
+              "x": 33,
+              "y": 417,
+              "width": 254,
+              "controlY": 445
+            },
+            {
+              "caption": "Стадия",
+              "x": 33,
+              "y": 505,
+              "width": 254,
+              "controlY": 533
+            },
+            {
+              "caption": "Начало",
+              "x": 33,
+              "y": 593,
+              "width": 254,
+              "controlY": 621
+            },
+            {
+              "caption": "Окончание",
+              "x": 33,
+              "y": 681,
+              "width": 254,
+              "controlY": 709
+            },
+            {
+              "caption": "Ставка за м²",
+              "x": 33,
+              "y": 769,
+              "width": 254,
+              "controlY": 797
+            },
+            {
+              "caption": "Депозит",
+              "x": 33,
+              "y": 857,
+              "width": 254,
+              "controlY": 885
+            },
+            {
+              "caption": "Индексация, % в год",
+              "x": 33,
+              "y": 945,
+              "width": 254,
+              "controlY": 973
+            }
+          ],
+          "submitY": 1174.703125
+        }
+      },
+      {
+        "scenario": "unit-add",
+        "width": 320,
+        "height": 640,
+        "form": {
+          "width": 254,
+          "y": 174,
+          "height": 1025,
+          "fields": [
+            {
+              "caption": "Объект",
+              "x": 33,
+              "y": 174,
+              "width": 254,
+              "controlY": 202
+            },
+            {
+              "caption": "Номер",
+              "x": 33,
+              "y": 262,
+              "width": 254,
+              "controlY": 290
+            },
+            {
+              "caption": "Корпус / подъезд / этаж",
+              "x": 33,
+              "y": 350,
+              "width": 254,
+              "controlY": 378
+            },
+            {
+              "caption": "Фото помещения (HTTPS)",
+              "x": 33,
+              "y": 486,
+              "width": 254,
+              "controlY": 514
+            },
+            {
+              "caption": "Площадь",
+              "x": 33,
+              "y": 574,
+              "width": 254,
+              "controlY": 602
+            },
+            {
+              "caption": "Тип",
+              "x": 33,
+              "y": 662,
+              "width": 254,
+              "controlY": 690
+            },
+            {
+              "caption": "Статус",
+              "x": 33,
+              "y": 750,
+              "width": 254,
+              "controlY": 778
+            },
+            {
+              "caption": "Температурный режим",
+              "x": 33,
+              "y": 838,
+              "width": 254,
+              "controlY": 866
+            },
+            {
+              "caption": "Высота потолка",
+              "x": 33,
+              "y": 926,
+              "width": 254,
+              "controlY": 954
+            },
+            {
+              "caption": "",
+              "x": 33,
+              "y": 1014,
+              "width": 66,
+              "controlY": 1027
+            },
+            {
+              "caption": "",
+              "x": 33,
+              "y": 1074,
+              "width": 71.53125,
+              "controlY": 1087
+            }
+          ],
+          "submitY": 1155
+        }
+      },
+      {
+        "scenario": "chat",
+        "width": 844,
+        "height": 390,
+        "pane": {
+          "x": 28,
+          "y": 68,
+          "width": 788,
+          "height": 314,
+          "bottom": 382
+        },
+        "body": {
+          "x": 41,
+          "y": 129,
+          "width": 762,
+          "height": 144,
+          "bottom": 273
+        },
+        "form": {
+          "x": 41,
+          "y": 281,
+          "width": 762,
+          "height": 88,
+          "bottom": 369
+        },
+        "send": {
+          "x": 767,
+          "y": 333,
+          "width": 36,
+          "height": 36,
+          "bottom": 369
+        },
+        "docWidth": 844,
+        "docHeight": 390,
+        "viewportHeight": 390,
+        "navTop": 390
+      },
+      {
+        "scenario": "lease-add",
+        "width": 844,
+        "height": 390,
+        "form": {
+          "width": 746,
+          "y": 178,
+          "height": 584.921875,
+          "fields": [
+            {
+              "caption": "Арендатор *",
+              "x": 49,
+              "y": 225.5,
+              "width": 365,
+              "controlY": 253.5
+            },
+            {
+              "caption": "Помещение",
+              "x": 430,
+              "y": 225.5,
+              "width": 365,
+              "controlY": 253.5
+            },
+            {
+              "caption": "Номер договора",
+              "x": 49,
+              "y": 305.5,
+              "width": 365,
+              "controlY": 333.5
+            },
+            {
+              "caption": "Стадия",
+              "x": 430,
+              "y": 305.5,
+              "width": 365,
+              "controlY": 333.5
+            },
+            {
+              "caption": "Начало",
+              "x": 49,
+              "y": 385.5,
+              "width": 365,
+              "controlY": 413.5
+            },
+            {
+              "caption": "Окончание",
+              "x": 430,
+              "y": 385.5,
+              "width": 365,
+              "controlY": 413.5
+            },
+            {
+              "caption": "Ставка за м²",
+              "x": 49,
+              "y": 465.5,
+              "width": 365,
+              "controlY": 493.5
+            },
+            {
+              "caption": "Депозит",
+              "x": 430,
+              "y": 465.5,
+              "width": 365,
+              "controlY": 493.5
+            },
+            {
+              "caption": "Индексация, % в год",
+              "x": 49,
+              "y": 545.5,
+              "width": 365,
+              "controlY": 573.5
+            }
+          ],
+          "submitY": 726.921875
+        }
+      },
+      {
+        "scenario": "unit-add",
+        "width": 844,
+        "height": 390,
+        "form": {
+          "width": 746,
+          "y": 178,
+          "height": 537,
+          "fields": [
+            {
+              "caption": "Объект",
+              "x": 49,
+              "y": 178,
+              "width": 365,
+              "controlY": 206
+            },
+            {
+              "caption": "Номер",
+              "x": 430,
+              "y": 178,
+              "width": 365,
+              "controlY": 206
+            },
+            {
+              "caption": "Корпус / подъезд / этаж",
+              "x": 49,
+              "y": 258,
+              "width": 365,
+              "controlY": 286
+            },
+            {
+              "caption": "Фото помещения (HTTPS)",
+              "x": 430,
+              "y": 258,
+              "width": 365,
+              "controlY": 286
+            },
+            {
+              "caption": "Площадь",
+              "x": 49,
+              "y": 366,
+              "width": 365,
+              "controlY": 394
+            },
+            {
+              "caption": "Тип",
+              "x": 430,
+              "y": 366,
+              "width": 365,
+              "controlY": 394
+            },
+            {
+              "caption": "Статус",
+              "x": 49,
+              "y": 446,
+              "width": 365,
+              "controlY": 474
+            },
+            {
+              "caption": "Температурный режим",
+              "x": 430,
+              "y": 446,
+              "width": 365,
+              "controlY": 474
+            },
+            {
+              "caption": "Высота потолка",
+              "x": 49,
+              "y": 526,
+              "width": 365,
+              "controlY": 554
+            },
+            {
+              "caption": "",
+              "x": 430,
+              "y": 554,
+              "width": 66,
+              "controlY": 563
+            },
+            {
+              "caption": "",
+              "x": 49,
+              "y": 606,
+              "width": 71.53125,
+              "controlY": 615
+            }
+          ],
+          "submitY": 679
+        }
+      }
+    ]
+  },
+  "scenarioReceipts": {
+    "operationsDev": {
+      "passed": true,
+      "checkGroups": 20,
+      "entry": "dev",
+      "errors": 0,
+      "writes": 0,
+      "privateReceiptSha256": "016e35940794478229b28b82644a1e9d5fc3d2ca2f7af4399fa7d92a12e28043"
+    },
+    "operationsBuilt": {
+      "passed": true,
+      "checkGroups": 5,
+      "entry": "assets/index-Bxrfo118.js",
+      "errors": 0,
+      "writes": 0,
+      "privateReceiptSha256": "6b265a5a635dd7b7d97d1cf93633ba256b4831f4d0cdd9a4bf6cb4e168317f19"
+    },
+    "filesBuilt": {
+      "passed": true,
+      "checkGroups": 6,
+      "entry": "assets/index-Bxrfo118.js",
+      "errors": 0,
+      "writes": 0,
+      "privateReceiptSha256": "bb777dbd31186b92ca024e1a17177a45ea18282fed02d3bb3b8d2cf82355dab6"
+    },
+    "independentMain": {
+      "passed": true,
+      "checkGroups": 30,
+      "entry": "assets/index-Bxrfo118.js",
+      "errors": 0,
+      "writes": 0,
+      "privateReceiptSha256": "788249c90894716bb9a574f2fd5cc9bf3e5a08c1fdf46bf080ed0cc76513be7b"
+    },
+    "independentTouch": {
+      "passed": true,
+      "checkGroups": 1,
+      "entry": "assets/index-Bxrfo118.js",
+      "errors": 0,
+      "writes": 0,
+      "privateReceiptSha256": "26ba9500713b37af9d282885a8bae38dd07fe2649a5299463e7e27c4c9a419c9"
+    },
+    "independentLabelsFinal": {
+      "passed": true,
+      "checkGroups": 3,
+      "entry": "assets/index-DEmbgiN7.js",
+      "errors": 0,
+      "writes": 0,
+      "privateReceiptSha256": "c28a9bd3991bafdba35df60ff31eaefc3e20149733f8c2fc7e627cf080e85456"
+    },
+    "ticketDev": {
+      "passed": true,
+      "groups": 10,
+      "tabVisits": 80,
+      "nativePayloadCases": 6,
+      "privateReceiptSha256": "9852af976ca2297ac61c44c28736cec6d96ecfcb48d705d0bf625de65bca2da3"
+    }
+  },
+  "versionBoundary": "Main layout/flow evidence is Bxrfo118; final DE differs only by four native option-label orders, checked independently and by repeated final root/sweep/navigation checks. No control values or handlers changed in the label pass.",
+  "navigation": {
+    "passed": true,
+    "groups": 10,
+    "boundary": "Built React with controlled HTTP/WS fixtures; no PostgreSQL",
+    "initialTimeout": "One timeout at final list heading under a full run; identical assertions passed after adding diagnostics without application changes. Cause unproven."
+  },
+  "chatBeforeAfter": [
+    {
+      "width": 1280,
+      "height": 720,
+      "sendBottomBefore": 854.1875,
+      "sendBottomAfter": 679,
+      "messageRegionAfter": 416
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "sendBottomBefore": 1063.640625,
+      "sendBottomAfter": 663,
+      "messageRegionAfter": 382
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "sendBottomBefore": 860.796875,
+      "sendBottomAfter": 747,
+      "messageRegionAfter": 462
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "sendBottomBefore": 789.625,
+      "sendBottomAfter": 543,
+      "messageRegionAfter": 258
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "sendBottomBefore": 1063.640625,
+      "sendBottomAfter": 369,
+      "messageRegionAfter": 144
+    }
+  ],
+  "frames": {
+    "chat-landscape.png": {
+      "bytes": 18154,
+      "sha256": "0ca69a4441bbdb0ab7d293afc96fb0ec47d3d74d8b040b361ff260ad53325dfe"
+    },
+    "ticket-create-1280.png": {
+      "bytes": 41180,
+      "sha256": "517a4c0d878b7f090df59f08329581150064960e8585cbc2ed24a480301944bd"
+    },
+    "file-320.png": {
+      "bytes": 30310,
+      "sha256": "1c878c3b04a21166d3b3db9e69bfd592e7ec2a866a9e4aaefdec72a5a2583705"
+    },
+    "tenant-info-390.png": {
+      "bytes": 27119,
+      "sha256": "feddd44e038f9137b963b152bc7de331dcafaf4bde71641bcccb9aec1a0f8486"
+    },
+    "invoice-long-320.png": {
+      "bytes": 24104,
+      "sha256": "13e82401c5022d649ee3d0524809db021e93c5e8326f051bd108cc6009ec5fe8"
+    },
+    "estimate-320.png": {
+      "bytes": 17750,
+      "sha256": "8e462837a89837c5d984ea266a62dbc2855eac50526f8aef322d8c626693cd55"
+    },
+    "plan-320.png": {
+      "bytes": 9479,
+      "sha256": "574eddcee58a49c291150936c721d6f7d13993b46d9e6aa6a83bbacaa2faf103"
+    },
+    "number-first-320.png": {
+      "bytes": 16294,
+      "sha256": "0a9fef1a98bcd0910d827f20c1b16e9ac158ed26f71d4ea580bf73e299b2305b"
+    }
+  },
+  "boundaries": [
+    "Only isolated fixture API/PostgreSQL reads; API writes blocked",
+    "Long ticket/file/legal name use controlled local GET response fixtures, no DB mutation",
+    "Native submits intercepted before React/API; no new persistence run",
+    "Touch emulation is not a physical device test",
+    "No production login/POST, new 1C or full specification acceptance"
+  ],
+  "privateLogs": {
+    "typecheck.log": {
+      "sha256": "798c870082bb10df8bee8cdd8f92b7cce95372df64f3d92751b79752ab6c285d"
+    },
+    "build.log": {
+      "sha256": "38824d37260a0a107d8112bd637d8de44affefba26de8428e82347537e67ad9f"
+    },
+    "unit.log": {
+      "sha256": "4bafbdf0947445dea40eaed07e7240a23827d6ade80b934dc57ff805a45fd5c5"
+    },
+    "sweep.log": {
+      "sha256": "0250ea7ac2befa4715844b0aa786e8423b715f5111b6c9d9058b1ec6ed0ad3df"
+    },
+    "root-built.log": {
+      "sha256": "cd027889bf21532fb4a62892f63de491e0e0de696dec179ad0b44eb92fa861eb"
+    },
+    "routes-browser.log": {
+      "sha256": "63335eb1e98fd5a6e99f2605b82e68cb37fcc931dc2cc87e26288b92b276eb6b"
+    },
+    "layout-final.json": {
+      "sha256": "2708be578e03e792e308e41c26495572a8aa7654cb654bca2c5ccccc7c8ef761"
+    }
+  }
+}

@@ -3,22 +3,19 @@ import { useWorkspace } from "../../app/WorkspaceContext";
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
 import { BotLinkPanel } from "../../MessengerButtons";
 import { WorkerMeters } from "../operations/WorkerMeters";
-import {
-  ticketCategoryOptions,
-  ticketPriorityOptions,
-  ticketStatusOptions,
-} from "../../projectData";
+import { ticketStatusOptions } from "../../projectData";
 import {
   formatDateTime,
   getSlaState,
   getTicketStatusLabel,
 } from "../../shared/format";
 import { type TicketFilter } from "../../shared/types";
-import { Button, IconButton, Input, Select, Textarea } from "../../ui";
+import { Button, IconButton, Select } from "../../ui";
 import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
 import { Register } from "../business/Register";
 import { ActionIcon } from "../business/ActionIcon";
 import { TicketRecord } from "./ManagerTicketDetail";
+import { TicketCreateFields } from "./TicketCreateFields";
 import "./workspace.css";
 
 type ServiceView =
@@ -29,11 +26,6 @@ export function Service() {
     session,
     t,
     handleCreateTicket,
-    handleFieldChange,
-    setTicketForm,
-    ticketForm,
-    ticketUnits,
-    selectedChecklistTemplate,
     locale,
     busyAction,
     setTicketFilter,
@@ -200,91 +192,18 @@ export function Service() {
             className="workspace-surface service-create-panel"
           >
             <h3>{t.sections.ticketCreate}</h3>
-            <form
-              className="form-grid form-grid--single"
-              onSubmit={handleCreateTicket}
-            >
-              <label>
-                <span>{t.fields.unit}</span>
-                <Select
-                  name="unitId"
-                  onChange={handleFieldChange(setTicketForm)}
-                  value={ticketForm.unitId}
+            <form className="ticket-create-form" onSubmit={handleCreateTicket}>
+              <TicketCreateFields showChecklist />
+              <div className="ui-actions ticket-create-actions">
+                <Button
+                  variant="primary"
+                  className="primary-button"
+                  disabled={busyAction === "ticket-create"}
+                  type="submit"
                 >
-                  {ticketUnits.map((unit) => (
-                    <option key={unit.id} value={unit.id}>
-                      {unit.propertyName} · {unit.number}
-                    </option>
-                  ))}
-                </Select>
-              </label>
-              <div className="split-grid">
-                <label>
-                  <span>{t.fields.category}</span>
-                  <Select
-                    name="category"
-                    onChange={handleFieldChange(setTicketForm)}
-                    value={ticketForm.category}
-                  >
-                    {ticketCategoryOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {t.ticketCategories[option]}
-                      </option>
-                    ))}
-                  </Select>
-                </label>
-                <label>
-                  <span>{t.fields.priority}</span>
-                  <Select
-                    name="priority"
-                    onChange={handleFieldChange(setTicketForm)}
-                    value={ticketForm.priority}
-                  >
-                    {ticketPriorityOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {t.ticketPriorities[option]}
-                      </option>
-                    ))}
-                  </Select>
-                </label>
+                  {t.actions.create}
+                </Button>
               </div>
-              {selectedChecklistTemplate ? (
-                <div className="checklist-template-preview">
-                  <strong>
-                    {locale === "ru"
-                      ? "Шаблон чек-листа"
-                      : "Checklist template"}
-                  </strong>
-                  {selectedChecklistTemplate.items.map((item) => (
-                    <span key={item.id}>{item.label}</span>
-                  ))}
-                </div>
-              ) : null}
-              <label>
-                <span>{t.fields.title}</span>
-                <Input
-                  name="title"
-                  onChange={handleFieldChange(setTicketForm)}
-                  value={ticketForm.title}
-                />
-              </label>
-              <label>
-                <span>{t.fields.description}</span>
-                <Textarea
-                  name="description"
-                  onChange={handleFieldChange(setTicketForm)}
-                  rows={5}
-                  value={ticketForm.description}
-                />
-              </label>
-              <Button
-                variant="primary"
-                className="primary-button"
-                disabled={busyAction === "ticket-create"}
-                type="submit"
-              >
-                {t.actions.create}
-              </Button>
             </form>
           </section>
         )}

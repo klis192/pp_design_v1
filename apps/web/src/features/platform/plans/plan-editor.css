@@ -1,0 +1,37 @@
+.plan-editor .plan-selection-toolbar {
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.plan-editor .plan-selection-toolbar > .ui-control {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  max-width: 560px;
+}
+
+.plan-editor .plan-toolbar {
+  gap: 8px 16px;
+}
+
+.plan-editor .plan-tool-group {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 4px;
+}
+
+.plan-editor .plan-tool-group + .plan-tool-group {
+  padding-left: 16px;
+  border-left: 1px solid var(--ui-border);
+}
+
+@media (max-width: 760px) {
+  .plan-editor .plan-toolbar {
+    gap: 8px 12px;
+  }
+  .plan-editor .plan-tool-group + .plan-tool-group {
+    padding-left: 0;
+    border-left: 0;
+  }
+}

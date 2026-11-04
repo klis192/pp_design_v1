@@ -99,7 +99,7 @@ const server = http.createServer((req, res) => {
   );
   res.end(fs.readFileSync(file));
 });
-let browser;
+let browser, page;
 const errors = [],
   writes = [],
   checks = [];
@@ -113,7 +113,7 @@ try {
   await once(server, "listening");
   const origin = `http://127.0.0.1:${server.address().port}`;
   browser = await chromium.launch();
-  const page = await browser.newPage({
+  page = await browser.newPage({
     viewport: { width: 1440, height: 1000 },
   });
   page.on("pageerror", (e) => errors.push(e.message));
@@ -498,7 +498,10 @@ try {
     new URLSearchParams(new URL(page.url()).hash.slice(1)).get("ticketFrom"),
     "dashboard",
   );
-  await page.locator(".ticket-record-header").getByRole("button", {name:"Назад",exact:true}).click();
+  await page
+    .locator(".ticket-record-header")
+    .getByRole("button", { name: "Назад", exact: true })
+    .click();
   await dashboard.waitFor();
   assert.equal(
     await dashboard.getByLabel("Поиск", { exact: true }).inputValue(),
@@ -540,7 +543,10 @@ try {
     .getByRole("heading", { name: task.title, exact: true })
     .first()
     .waitFor();
-  await page.locator(".ticket-record-header").getByRole("button", {name:"Назад",exact:true}).click();
+  await page
+    .locator(".ticket-record-header")
+    .getByRole("button", { name: "Назад", exact: true })
+    .click();
   await page.getByRole("heading", { name: "Заявки", exact: true }).waitFor();
   assert.equal(
     new URLSearchParams(new URL(page.url()).hash.slice(1)).get("screen"),
@@ -559,6 +565,32 @@ try {
         "Actual built React UI; controlled local HTTP/WS fixtures, no PostgreSQL, 1C or production.",
     }),
   );
+} catch (error) {
+  const destination = process.env.WAREHOUSE_NAV_EVIDENCE;
+  if (destination && page && !page.isClosed()) {
+    const output = path.resolve(destination);
+    assert.ok(output.startsWith(path.resolve(".local") + path.sep));
+    fs.mkdirSync(output, { recursive: true });
+    await page.screenshot({
+      path: path.join(output, "failure.png"),
+      fullPage: true,
+    });
+    fs.writeFileSync(
+      path.join(output, "failure.json"),
+      JSON.stringify(
+        {
+          url: page.url(),
+          headings: await page.locator("h1,h2").allTextContents(),
+          checks,
+          errors,
+          writes,
+        },
+        null,
+        2,
+      ) + "\n",
+    );
+  }
+  throw error;
 } finally {
   await browser?.close();
   await new Promise((r) => server.close(r));

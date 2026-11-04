@@ -48,6 +48,14 @@
 .billing-record-status {
   margin-bottom: 20px;
 }
+.billing-record-party {
+  margin: 0 0 12px;
+  color: var(--ui-text);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  overflow-wrap: anywhere;
+}
 .billing-invoice-summary dd.billing-invoice-balance {
   font-size: 20px;
   font-weight: 600;

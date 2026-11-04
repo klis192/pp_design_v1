@@ -8,12 +8,7 @@ export function TenantInfoTab() {
 
   return (
     <div className="mvp-grid">
-      <article className="mvp-card">
-        <div className="mvp-card-head">
-          <div>
-            <h3>{tenantDetail.tenant.name}</h3>
-          </div>
-        </div>
+      <article className="mvp-card" aria-label={tenantDetail.tenant.name}>
         <div className="mvp-info-list">
           <div className="mvp-info-row">
             <span>{t.fields.inn}</span>
@@ -36,8 +31,7 @@ export function TenantInfoTab() {
             <strong>
               {
                 t.riskLevels[
-                  tenantDetail.tenant
-                    .riskLevel as keyof typeof t.riskLevels
+                  tenantDetail.tenant.riskLevel as keyof typeof t.riskLevels
                 ]
               }
             </strong>
@@ -67,10 +61,7 @@ export function TenantInfoTab() {
           >
             <span>{ui.monthlyRent} ⓘ</span>
             <strong>
-              {formatCompactMoney(
-                tenantDetail.summary.monthlyRent,
-                locale,
-              )}
+              {formatCompactMoney(tenantDetail.summary.monthlyRent, locale)}
             </strong>
           </article>
           <article
@@ -86,10 +77,7 @@ export function TenantInfoTab() {
           >
             <span>{ui.arrears} ⓘ</span>
             <strong>
-              {formatCompactMoney(
-                tenantDetail.summary.arrearsAmount,
-                locale,
-              )}
+              {formatCompactMoney(tenantDetail.summary.arrearsAmount, locale)}
             </strong>
           </article>
         </div>

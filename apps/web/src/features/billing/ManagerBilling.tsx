@@ -504,7 +504,7 @@ export function ManagerBilling() {
       </div>
       {paymentOpen && selectedBillingInvoice && (
         <SidePanel
-          title={`${selectedBillingInvoice.period} · ${selectedBillingInvoice.tenantName ?? "Счёт"}`}
+          title={`Счёт · ${selectedBillingInvoice.period}`}
           onClose={closeInvoice}
           busy={busyAction === "billing-payment"}
           dirty={paymentDirty}
@@ -523,6 +523,9 @@ export function ManagerBilling() {
           }
         >
           <Feedback error={workspaceError} />
+          <p className="billing-record-party">
+            {selectedBillingInvoice.tenantName ?? "—"}
+          </p>
           <div className="billing-record-status">
             <Badge tone={paymentTone(selectedBillingInvoice.status)}>
               {ui.paymentStatus[selectedBillingInvoice.status]}

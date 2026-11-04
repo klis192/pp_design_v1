@@ -39,6 +39,44 @@
   overflow-wrap: anywhere;
   text-wrap: pretty;
 }
+.ticket-create-form {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+.ticket-create-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.4fr);
+  align-items: start;
+  gap: 24px;
+  min-width: 0;
+}
+.ticket-create-context,
+.ticket-create-content {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  min-width: 0;
+}
+.ticket-create-title {
+  grid-column: 1 / -1;
+}
+.ticket-create-context > .split-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.ticket-create-content textarea {
+  min-height: 160px;
+}
+.ticket-create-actions {
+  justify-content: flex-end;
+  padding-top: 16px;
+  border-top: 1px solid var(--ui-border);
+}
+.ticket-create-actions > .ui-button {
+  min-width: 144px;
+}
 .ticket-filter-bar {
   margin-block: 0;
 }
@@ -356,9 +394,36 @@
 }
 .ticket-record .attachment-card {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
   gap: 12px;
+}
+.ticket-record .attachment-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+.ticket-file-info {
+  min-width: 0;
+}
+.ticket-file-actions {
+  display: flex;
+  align-items: start;
+  gap: 4px;
+}
+.ticket-record .attachment-card strong,
+.ticket-record .attachment-card small {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+.ticket-record .attachment-card strong {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.ticket-record .attachment-card small {
+  margin-top: 4px;
+  line-height: 1.45;
 }
 .ticket-record .attachment-preview.ui-icon-button {
   width: var(--ui-control-height);
@@ -445,15 +510,20 @@
 .service-list-panel .register-table th:first-child {
   width: 45%;
 }
-.service-create-panel .form-grid--single {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.service-create-panel .split-grid {
-  display: contents;
-}
-.service-create-panel .checklist-template-preview,
-.service-create-panel form > label:has(textarea) {
-  grid-column: 1 / -1;
+@media (max-width: 1080px) {
+  .ticket-record-header {
+    top: 60px;
+    padding-bottom: 8px;
+  }
+  .ticket-record-heading {
+    padding-bottom: 8px;
+  }
+  .ticket-record-title h2 {
+    font-size: 18px;
+  }
+  .ticket-record-header .ui-workspace-tabs {
+    margin-top: 0;
+  }
 }
 @media (max-width: 1100px) {
   .ticket-work-layout {
@@ -464,8 +534,21 @@
   .ticket-work-layout {
     grid-template-columns: minmax(0, 1fr);
   }
+  .ticket-create-context > .split-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 @media (max-width: 760px) {
+  .ticket-create-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .ticket-create-context > .split-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ticket-create-actions > .ui-button {
+    width: 100%;
+  }
   .ticket-table .register-table td.ticket-cell-number {
     display: block;
     padding: 0 0 6px;
@@ -495,20 +578,20 @@
   .ticket-filter-bar .filter-bar-controls > .ticket-status-filter {
     min-width: 0;
   }
-  .ticket-record-header {
-    top: 60px;
-  }
   .ticket-record-heading {
     gap: 8px;
-  }
-  .ticket-record-title h2 {
-    font-size: 18px;
   }
   .ticket-record .workspace-surface {
     padding: 16px;
   }
   .ticket-record .work-proof-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .ticket-record .attachment-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ticket-file-actions {
+    justify-self: end;
   }
   .service-workspace .workspace-surface {
     padding: 16px;
@@ -521,7 +604,9 @@
     min-width: 0;
     width: auto;
   }
-  .service-create-panel .form-grid--single {
+}
+@media (max-width: 360px) {
+  .ticket-create-context > .split-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 }

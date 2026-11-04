@@ -40,6 +40,7 @@ export function ManagerShell() {
     "tenants",
     "leases",
     "billing",
+    "chat",
     "operations",
     "notifications",
     "staff",

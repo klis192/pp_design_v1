@@ -123,9 +123,6 @@ export function ManagerShell() {
           className={`mvp-sidebar ${mobileNavOpen ? "mobile-nav-open" : ""}`}
         >
           <div className="mvp-brand">
-            <span className="mvp-brand__mark" aria-hidden="true">
-              <NavigationIcon name="objects" />
-            </span>
             <strong>{productBrand.name}</strong>
           </div>
 

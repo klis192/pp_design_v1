@@ -6,20 +6,6 @@
   margin-bottom: 0;
   padding: 0 16px 16px;
 }
-.mvp-brand__mark {
-  display: grid;
-  place-items: center;
-  flex: 0 0 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  color: var(--ui-surface);
-  background: var(--ui-accent);
-}
-.mvp-brand__mark svg {
-  width: 20px;
-  height: 20px;
-}
 .mvp-brand strong {
   font-size: 15px;
   line-height: 20px;

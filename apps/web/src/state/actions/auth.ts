@@ -32,6 +32,7 @@ export function useAuthActions(
     | "setTenantDetail"
     | "setManagerScreen"
     | "setSelectedUnitId"
+    | "setServiceRecordId"
     | "setTenantDetailTab"
     | "setSelectedChatTenantId"
     | "setChatMessages"
@@ -67,6 +68,7 @@ export function useAuthActions(
     setTenantDetail,
     setManagerScreen,
     setSelectedUnitId,
+    setServiceRecordId,
     setTenantDetailTab,
     setSelectedChatTenantId,
     setChatMessages,
@@ -354,6 +356,7 @@ export function useAuthActions(
     setTenantOtpRequested(false);
     setManagerScreen("dashboard");
     setSelectedUnitId("");
+    setServiceRecordId("");
     setTenantDetailTab("info");
     setSelectedChatTenantId("");
     setChatMessages([]);

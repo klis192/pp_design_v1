@@ -1,6 +1,5 @@
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { PageBoundary } from "../../app/PageBoundary";
-import { useEffect, useState } from "react";
 import {
   managerMainNav,
   managerExtraNavGroups,
@@ -28,13 +27,6 @@ export function ManagerShell() {
     error,
     notice,
   } = useWorkspace();
-  const extraActive = managerExtraNavGroups.some((group) =>
-    group.screens.some((screen) => screen === activeManagerNav),
-  );
-  const [extraOpen, setExtraOpen] = useState(extraActive);
-  useEffect(() => {
-    setExtraOpen(extraActive);
-  }, [activeManagerNav, extraActive]);
   const navItem = (
     screen:
       | (typeof managerMainNav)[number]
@@ -59,11 +51,6 @@ export function ManagerShell() {
         className={`mvp-nav-button ${activeManagerNav === screen ? "mvp-nav-button--active" : ""}`}
         aria-current={activeManagerNav === screen ? "page" : undefined}
         onClick={() => {
-          setExtraOpen(
-            managerExtraNavGroups.some((group) =>
-              group.screens.some((item) => item === screen),
-            ),
-          );
           setManagerScreen(screen);
           setMobileNavOpen(false);
         }}
@@ -124,21 +111,7 @@ export function ManagerShell() {
             {managerMainNav.map(navItem)}
           </div>
           <div className="workspace-extra-nav">
-            <Button
-              variant="text"
-              type="button"
-              className="workspace-extra-toggle"
-              aria-expanded={extraOpen}
-              aria-controls="workspace-extra-groups"
-              onClick={() => setExtraOpen((value) => !value)}
-            >
-              {extraOpen ? "Скрыть разделы" : "Другие разделы"}
-            </Button>
-            <div
-              id="workspace-extra-groups"
-              className="workspace-extra-groups"
-              hidden={!extraOpen}
-            >
+            <div id="workspace-extra-groups" className="workspace-extra-groups">
               {managerExtraNavGroups.map((group) => (
                 <div className="mvp-nav-group" key={group.label}>
                   <h2 className="navigation-group-label">{group.label}</h2>
@@ -199,7 +172,6 @@ export function ManagerShell() {
             key={screen}
             aria-current={activeManagerNav === screen ? "page" : undefined}
             onClick={() => {
-              setExtraOpen(false);
               setManagerScreen(screen);
               setMobileNavOpen(false);
             }}

@@ -3,7 +3,6 @@ import { mobileProduct } from "../mobile-product";
 import { DocumentPanel } from "../features/leases/DocumentPanel";
 import { ManagerShell } from "../features/shell/ManagerShell";
 import { Section } from "../features/shell/Section";
-import { getCollectionBasisLabel } from "../shared/format";
 import { Button } from "../ui";
 import { useWorkspaceContext } from "./WorkspaceContext";
 export function WorkspaceRouter() {
@@ -25,9 +24,6 @@ export function WorkspaceRouter() {
     selectedProperty,
     handleLogout,
     sectionTitle,
-    isWorker,
-    ui,
-    locale,
     error,
     notice,
   } = useWorkspaceContext();
@@ -137,41 +133,11 @@ export function WorkspaceRouter() {
       </aside>
 
       <section className="workspace-main">
-        <header className="workspace-header">
-          <div>
+        {activeWorkspaceSection !== "service" && (
+          <header className="ui-page-header">
             <h1>{sectionTitle}</h1>
-          </div>
-
-          <div className="workspace-toolbar">
-            <div className="workspace-kpis">
-              {!isWorker ? (
-                <div className="workspace-kpi">
-                  <span>{isTenant ? t.nav.leases : ui.collectionRate}</span>
-                  <strong>
-                    {isTenant
-                      ? overview.leases.length
-                      : `${overview.finance.collectionRate}%`}
-                  </strong>
-                  {!isTenant ? (
-                    <small title="Фактически оплачено / начислено за указанный месяц">
-                      {getCollectionBasisLabel(overview.finance, locale)}
-                    </small>
-                  ) : null}
-                </div>
-              ) : null}
-              <div className="workspace-kpi">
-                <span>
-                  {isWorker
-                    ? locale === "ru"
-                      ? "Назначенные заявки"
-                      : "Assigned jobs"
-                    : t.metrics.openTickets}
-                </span>
-                <strong>{openTicketCount}</strong>
-              </div>
-            </div>
-          </div>
-        </header>
+          </header>
+        )}
 
         {error ? (
           <div className="banner banner--error" role="alert">

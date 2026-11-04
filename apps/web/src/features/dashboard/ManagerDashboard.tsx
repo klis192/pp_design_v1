@@ -10,7 +10,8 @@ import { useWorkspace } from "../../app/WorkspaceContext";
 import { ticketStatusOptions } from "../../projectData";
 import { getSlaState, getTicketStatusLabel } from "../../shared/format";
 import { NavigationIcon } from "../shell/NavigationIcon";
-import { Button, Input, Select } from "../../ui";
+import { Button, IconButton, Input, Select } from "../../ui";
+import { ActionIcon } from "../business/ActionIcon";
 
 type DashboardFilters = {
   query: string;
@@ -110,30 +111,42 @@ export function ManagerDashboard() {
       <div className="mvp-page-header">
         <h2>{managerUi.titles.dashboard}</h2>
         <div className="mvp-actions">
-          <Button onClick={() => setManagerScreen("agenda")}>
-            Сроки и работы
+          <IconButton
+            label="Сроки и работы"
+            title={
+              overview.expiringLeaseCount > 0
+                ? `Сроки и работы · К продлению: ${overview.expiringLeaseCount}`
+                : "Сроки и работы"
+            }
+            onClick={() => setManagerScreen("agenda")}
+          >
+            <ActionIcon name="calendar" />
             {overview.expiringLeaseCount > 0 && (
               <span className="dashboard-agenda-count">
-                · К продлению: {overview.expiringLeaseCount}
+                {overview.expiringLeaseCount}
               </span>
             )}
-          </Button>
+          </IconButton>
           {hasPermission(session.user, "tickets.write") && (
-            <Button
+            <IconButton
+              label="Создать заявку"
               variant="primary"
               onClick={() => setManagerScreen("ticket-create")}
             >
-              Создать заявку
-            </Button>
+              <ActionIcon name="plus" />
+            </IconButton>
           )}
         </div>
       </div>
       <article className="mvp-card dashboard-tickets">
         <div className="dashboard-list-heading">
           <h3>Открытые заявки</h3>
-          <Button variant="text" onClick={() => setManagerScreen("tickets")}>
-            Все заявки
-          </Button>
+          <IconButton
+            label="Все заявки"
+            onClick={() => setManagerScreen("tickets")}
+          >
+            <ActionIcon name="next" />
+          </IconButton>
         </div>
         <div
           className="dashboard-filters"

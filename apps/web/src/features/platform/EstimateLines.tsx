@@ -1,4 +1,5 @@
-import { Button, Input, Select } from "../../ui";
+import { IconButton, Input, Select } from "../../ui";
+import { ActionIcon } from "../business/ActionIcon";
 import type {
   EstimateInput,
   CatalogItem,
@@ -159,13 +160,13 @@ export function EstimateLines({
               ))}
             </Select>
           </label>
-          <Button
-            aria-label={`Удалить позицию ${i + 1}`}
+          <IconButton
+            label={`Удалить позицию ${i + 1}`}
             disabled={lines.length === 1}
             onClick={() => onChange(lines.filter((_, j) => i !== j))}
           >
-            Удалить
-          </Button>
+            <ActionIcon name="delete" />
+          </IconButton>
         </fieldset>
       ))}
     </>

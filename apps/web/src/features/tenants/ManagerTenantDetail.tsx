@@ -2,6 +2,7 @@ import { ActionIcon } from "../business/ActionIcon";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { type TenantDetailTab } from "../../shared/types";
 import { Button, IconButton } from "../../ui";
+import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
 import { TenantInfoTab } from "./components/TenantInfoTab";
 import { TenantContractsTab } from "./components/TenantContractsTab";
 import { TenantPaymentsTab } from "./components/TenantPaymentsTab";
@@ -94,23 +95,12 @@ export function ManagerTenantDetail() {
         </div>
       ) : tenantDetail ? (
         <>
-          <div className="mvp-tabs">
-            {tenantTabs.map((tab) => (
-              <Button
-                variant="plain"
-                className={
-                  tenantDetailTab === tab.id
-                    ? "mvp-tab mvp-tab--active"
-                    : "mvp-tab"
-                }
-                key={tab.id}
-                onClick={() => setTenantDetailTab(tab.id)}
-                type="button"
-              >
-                {tab.label}
-              </Button>
-            ))}
-          </div>
+          <WorkspaceTabs
+            label="Карточка арендатора"
+            items={tenantTabs}
+            value={tenantDetailTab}
+            onChange={(id) => setTenantDetailTab(id as TenantDetailTab)}
+          />
 
           {tenantDetailTab === "info" && <TenantInfoTab />}
           {tenantDetailTab === "contracts" && <TenantContractsTab />}

@@ -2,6 +2,7 @@ import { MessengerButtons } from "../../MessengerButtons";
 import { mobileProduct } from "../../mobile-product";
 import { useWorkspaceContext } from "../../app/WorkspaceContext";
 import { Button, Input } from "../../ui";
+import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
 export function LoginPage() {
   const {
     session,
@@ -68,28 +69,17 @@ export function LoginPage() {
         </div>
 
         {!tenantConnectionOpen && !mobileProduct && (
-          <div className="auth-tabs auth-tabs--mvp">
-            <Button
-              variant="plain"
-              className={
-                authMode === "staff" ? "auth-tab auth-tab--active" : "auth-tab"
-              }
-              onClick={() => setAuthMode("staff")}
-              type="button"
-            >
-              {t.auth.staffTab}
-            </Button>
-            <Button
-              variant="plain"
-              className={
-                authMode === "tenant" ? "auth-tab auth-tab--active" : "auth-tab"
-              }
-              onClick={() => setAuthMode("tenant")}
-              type="button"
-            >
-              {t.auth.tenantTab}
-            </Button>
-          </div>
+          <WorkspaceTabs
+            label="Способ входа"
+            value={authMode}
+            onChange={(value) =>
+              setAuthMode(value === "tenant" ? "tenant" : "staff")
+            }
+            items={[
+              { id: "staff", label: t.auth.staffTab },
+              { id: "tenant", label: t.auth.tenantTab },
+            ]}
+          />
         )}
 
         {error ? (

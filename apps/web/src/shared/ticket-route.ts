@@ -9,6 +9,7 @@ export const ticketOriginScreens = [
   "chat",
   "notifications",
   "operations",
+  "billing",
 ] as const;
 
 export type TicketOrigin = (typeof ticketOriginScreens)[number];

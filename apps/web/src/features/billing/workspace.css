@@ -1,0 +1,147 @@
+.billing-workspace .billing-view,
+.billing-payment-form,
+.billing-key-panel,
+.billing-forecast-view {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+.billing-workspace .billing-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  padding: 8px 0 16px;
+  margin: 0;
+  border-bottom: 1px solid var(--ui-border);
+}
+.billing-summary > div,
+.billing-invoice-summary > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+}
+.billing-summary dt,
+.billing-invoice-summary dt {
+  color: var(--ui-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.billing-summary dd,
+.billing-invoice-summary dd {
+  margin: 0;
+  color: var(--ui-text);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.billing-summary dd {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.billing-invoice-summary,
+.billing-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+}
+.billing-invoice-summary {
+  padding: 0 0 16px;
+  border-bottom: 1px solid var(--ui-border);
+}
+.billing-invoice-summary + :is(.data-register, .billing-key-panel) {
+  margin-top: 20px;
+}
+.billing-document-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 20px;
+}
+.billing-payment-form h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.billing-payment-form > .ui-button {
+  justify-self: start;
+}
+.billing-forecast-months {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.billing-forecast-month {
+  min-width: 0;
+}
+.billing-forecast-month h3 {
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+.billing-month-totals {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 24px;
+}
+.billing-month-totals > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.billing-month-totals dt {
+  color: var(--ui-muted);
+  line-height: 1.4;
+}
+.billing-month-totals dd {
+  flex-shrink: 0;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.billing-forecast-month h4 {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+.billing-forecast-details {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.billing-forecast-details li {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--ui-border);
+}
+.billing-forecast-details li > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.billing-forecast-details li > span {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.billing-forecast-details small,
+.billing-forecast-details div > span {
+  color: var(--ui-muted);
+}
+@media (max-width: 1100px) {
+  .billing-forecast-months {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 760px) {
+  .billing-workspace .billing-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+@media (max-width: 480px) {
+  .billing-form-row {
+    grid-template-columns: 1fr;
+  }
+}

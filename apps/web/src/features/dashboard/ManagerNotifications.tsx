@@ -1,6 +1,7 @@
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { formatDateTime } from "../../shared/format";
-import { Button } from "../../ui";
+import { Button, IconButton } from "../../ui";
+import { ActionIcon } from "../business/ActionIcon";
 export function ManagerNotifications() {
   const {
     managerUi,
@@ -17,14 +18,13 @@ export function ManagerNotifications() {
           <h2>{managerUi.titles.notifications}</h2>
         </div>
         {overview.notifications.some((item) => item.unread) ? (
-          <Button
-            variant="secondary"
-            className="secondary-button"
+          <IconButton
+            label={locale === "ru" ? "Отметить прочитанными" : "Mark as read"}
             onClick={() => void markAllNotificationsRead()}
             type="button"
           >
-            {locale === "ru" ? "Отметить прочитанными" : "Mark as read"}
-          </Button>
+            <ActionIcon name="check" />
+          </IconButton>
         ) : null}
       </div>
 

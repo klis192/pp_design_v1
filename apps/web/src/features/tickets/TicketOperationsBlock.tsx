@@ -3,7 +3,13 @@ import { TicketOperations } from "../operations/TicketOperations";
 import { formatDateTime, getSlaState } from "../../shared/format";
 import { type Ticket } from "../../shared/types";
 import { Checkbox } from "../../ui";
-export function TicketOperationsBlock({ ticket }: { ticket: Ticket }) {
+export function TicketOperationsBlock({
+  ticket,
+  includeContext = true,
+}: {
+  ticket: Ticket;
+  includeContext?: boolean;
+}) {
   const {
     locale,
     isManagerShell,
@@ -27,7 +33,7 @@ export function TicketOperationsBlock({ ticket }: { ticket: Ticket }) {
 
   return (
     <div className="ticket-ops">
-      {!isManagerShell && session && overview ? (
+      {includeContext && !isManagerShell && session && overview ? (
         <TicketOperations
           token={session.token}
           ticket={ticket}

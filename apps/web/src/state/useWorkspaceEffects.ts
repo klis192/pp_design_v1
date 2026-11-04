@@ -38,6 +38,8 @@ export function useWorkspaceEffects(model: WorkspaceModel) {
     selectedTenantId,
     selectedUnitId,
     selectedTicketId,
+    serviceRecordId,
+    setServiceRecordId,
     ticketFrom,
     setTicketFrom,
     tenantDetailTab,
@@ -160,6 +162,7 @@ export function useWorkspaceEffects(model: WorkspaceModel) {
       tenant: selectedTenantId,
       unit: selectedUnitId,
       ticket: selectedTicketId,
+      serviceTicket: serviceRecordId,
       ticketFrom,
       tab: tenantDetailTab,
       editProperty: editingAdmin.property || "",
@@ -177,6 +180,7 @@ export function useWorkspaceEffects(model: WorkspaceModel) {
       setSelectedTenantId(route.tenant || "");
       setSelectedUnitId(route.unit || "");
       setSelectedTicketId(route.ticket || "");
+      setServiceRecordId(route.serviceTicket || "");
       setTicketFrom(parseTicketFrom(route.ticketFrom));
       setTenantDetailTab((route.tab as TenantDetailTab) || "info");
       setEditingAdmin({

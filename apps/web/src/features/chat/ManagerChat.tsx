@@ -154,16 +154,16 @@ export function ManagerChat() {
               rows={3}
               value={chatDraft.content}
             />
-            <Button
+            <IconButton
+              label={managerUi.send}
               variant="primary"
-              className="primary-button"
               disabled={
                 busyAction === "chat-submit" || !selectedChatTargetTicket
               }
               type="submit"
             >
-              {managerUi.send}
-            </Button>
+              <ActionIcon name="send" />
+            </IconButton>
           </form>
         </article>
       </div>

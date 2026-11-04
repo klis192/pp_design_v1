@@ -244,26 +244,16 @@ try {
   await planEvent
     .getByRole("button", { name: "Открыть раздел", exact: true })
     .click();
-  await page
-    .locator(".operation-detail")
-    .getByRole("heading", { name: plan.name, exact: true })
-    .waitFor();
+  await page.getByRole("dialog", { name: plan.name, exact: true }).waitFor();
   let route = new URLSearchParams(new URL(page.url()).hash.slice(1));
   assert.equal(route.get("operationsTab"), "plans");
   assert.equal(route.get("operation"), plan.id);
   assert.equal(route.get("operationsProperty"), f.property.id);
   checks.push("Agenda opens the exact plan in its property");
   await page.reload();
+  await page.getByRole("dialog", { name: plan.name, exact: true }).waitFor();
   await page
-    .locator(".operation-detail")
-    .getByRole("heading", { name: plan.name, exact: true })
-    .waitFor();
-  await page
-    .locator(".operation-detail")
-    .getByRole("button", { name: /^Показать Задания и история выполнения/ })
-    .click();
-  await page
-    .locator(".operation-detail")
+    .getByRole("dialog")
     .getByRole("button", { name: new RegExp(task.title), exact: false })
     .click();
   await page
@@ -275,10 +265,7 @@ try {
     task.id,
   );
   await page.goBack();
-  await page
-    .locator(".operation-detail")
-    .getByRole("heading", { name: plan.name, exact: true })
-    .waitFor();
+  await page.getByRole("dialog", { name: plan.name, exact: true }).waitFor();
   await page.goBack();
   await page
     .getByRole("heading", { name: "Сроки и работы", exact: true })
@@ -296,10 +283,7 @@ try {
     f.property.id,
   );
   await page.goForward();
-  await page
-    .locator(".operation-detail")
-    .getByRole("heading", { name: plan.name, exact: true })
-    .waitFor();
+  await page.getByRole("dialog", { name: plan.name, exact: true }).waitFor();
   checks.push("Plan reload and task Back/Forward preserve the selected record");
   await page.goBack();
   await page
@@ -315,8 +299,7 @@ try {
     .getByRole("button", { name: "Открыть раздел", exact: true })
     .click();
   await page
-    .locator(".operation-detail")
-    .getByRole("heading", { name: equipment.name, exact: true })
+    .getByRole("dialog", { name: equipment.name, exact: true })
     .waitFor();
   assert.equal(
     new URLSearchParams(new URL(page.url()).hash.slice(1)).get("operationsTab"),
@@ -324,14 +307,19 @@ try {
   );
   checks.push("Warranty opens its equipment instead of the default list");
   await page
-    .locator(".operations-nav")
-    .getByRole("button", { name: "ППР", exact: true })
+    .getByRole("dialog")
+    .getByRole("button", { name: "Закрыть панель", exact: true })
     .click();
   await page
-    .locator(".operations-subnav")
-    .getByRole("button", { name: "Регламенты", exact: true })
+    .getByRole("tablist", { name: "Разделы эксплуатации" })
+    .getByRole("tab", { name: "ППР", exact: true })
     .click();
-  await page.getByLabel("Поиск в справочнике", { exact: true }).waitFor();
+  await page
+    .getByRole("tablist")
+    .filter({ has: page.getByRole("tab", { name: "Регламенты", exact: true }) })
+    .getByRole("tab", { name: "Регламенты", exact: true })
+    .click();
+  await page.getByLabel("Поиск: Регламенты", { exact: true }).waitFor();
   route = new URLSearchParams(new URL(page.url()).hash.slice(1));
   assert.equal(route.get("operationsTab"), "templates");
   assert.equal(route.get("operation"), "");
@@ -346,7 +334,7 @@ try {
       .waitFor();
     assert.equal(
       await page
-        .locator(".operations-nav, .operation-detail, .platform-section")
+        .locator("[role=tablist], .ui-side-panel, .platform-section")
         .count(),
       0,
     );
@@ -393,7 +381,7 @@ try {
       .waitFor();
     assert.equal(
       await page
-        .locator(".operations-nav, .operation-detail, .platform-section")
+        .locator("[role=tablist], .ui-side-panel, .platform-section")
         .count(),
       0,
     );
@@ -410,7 +398,7 @@ try {
     await page
       .getByRole("button", { name: "Открыть список раздела", exact: true })
       .click();
-    await page.locator(".operations-nav").waitFor();
+    await page.getByRole("tablist", { name: "Разделы эксплуатации" }).waitFor();
     assert.equal(
       await page.locator(".operations-page [role=alert]").count(),
       0,
@@ -451,7 +439,7 @@ try {
       exact: true,
     })
     .waitFor();
-  assert.equal(await page.locator(".operation-detail").count(), 0);
+  assert.equal(await page.getByRole("dialog").count(), 0);
   await page.goto(
     origin +
       `/#screen=operations&operationsTab=plans&operation=${plan.id}&operationsProperty=${f.other.id}`,
@@ -461,7 +449,7 @@ try {
       exact: true,
     })
     .waitFor();
-  assert.equal(await page.locator(".operation-detail").count(), 0);
+  assert.equal(await page.getByRole("dialog").count(), 0);
   checks.push(
     "Unknown record and mismatched property do not open a fallback record",
   );
@@ -510,7 +498,7 @@ try {
     new URLSearchParams(new URL(page.url()).hash.slice(1)).get("ticketFrom"),
     "dashboard",
   );
-  await page.locator(".mvp-detail-head .mvp-back").click();
+  await page.locator(".ticket-record-header").getByRole("button", {name:"Назад",exact:true}).click();
   await dashboard.waitFor();
   assert.equal(
     await dashboard.getByLabel("Поиск", { exact: true }).inputValue(),
@@ -552,7 +540,7 @@ try {
     .getByRole("heading", { name: task.title, exact: true })
     .first()
     .waitFor();
-  await page.locator(".mvp-detail-head .mvp-back").click();
+  await page.locator(".ticket-record-header").getByRole("button", {name:"Назад",exact:true}).click();
   await page.getByRole("heading", { name: "Заявки", exact: true }).waitFor();
   assert.equal(
     new URLSearchParams(new URL(page.url()).hash.slice(1)).get("screen"),

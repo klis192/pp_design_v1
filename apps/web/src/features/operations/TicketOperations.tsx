@@ -1,4 +1,3 @@
-import { Disclosure } from "../../ui/Disclosure";
 import { useState } from "react";
 import { isOpenTicket } from "../../../../../packages/contracts/src/domain.js";
 import { Button, Input, Select } from "../../ui";
@@ -15,7 +14,12 @@ export function TicketOperations({
   tickets,
   readOnly,
   canEditLinks = true,
-}: TicketProps) {
+  section = "all",
+  canNavigateContext = true,
+}: TicketProps & {
+  section?: "all" | "links" | "work";
+  canNavigateContext?: boolean;
+}) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [work, setWork] = useState({
@@ -54,212 +58,224 @@ export function TicketOperations({
   };
   return (
     <div className="ticket-context">
-      <h4>Связанные данные</h4>
-      <div className="mvp-actions">
-        <Button
-          variant="text"
-          type="button"
-          className="text-button"
-          onClick={() => onUnit(ticket.unitId)}
-        >
-          Помещение {unit?.number || "—"}
-        </Button>
-        {currentLease && (
-          <Button
-            variant="text"
-            type="button"
-            className="text-button"
-            onClick={() => onTenant(currentLease.tenantId)}
-          >
-            Арендатор · договор {currentLease.contractNumber}
-          </Button>
-        )}
-      </div>
-      {unit?.photoUrl && (
-        <img
-          src={unit.photoUrl}
-          alt={`Помещение ${unit.number}`}
-          className="equipment-photo"
-        />
-      )}
-      {!readOnly && canEditLinks && (
-        <div className="form-grid">
-          <label>
-            Оборудование
-            <Select
-              disabled={busy}
-              value={ticket.equipmentId || ""}
-              onChange={(e) => void changeLink("equipmentId", e.target.value)}
-            >
-              <option value="">Не привязано</option>
-              {equipment.map((row) => (
-                <option key={row.id} value={row.id}>
-                  {row.name}
-                </option>
+      {section !== "work" && (
+        <>
+          <h4>Связанные данные</h4>
+          <div className="mvp-actions">
+            {canNavigateContext ? (
+              <Button
+                variant="text"
+                type="button"
+                className="text-button"
+                onClick={() => onUnit(ticket.unitId)}
+              >
+                Помещение {unit?.number || "—"}
+              </Button>
+            ) : (
+              <span>Помещение {unit?.number || "—"}</span>
+            )}
+            {currentLease &&
+              (canNavigateContext ? (
+                <Button
+                  variant="text"
+                  type="button"
+                  className="text-button"
+                  onClick={() => onTenant(currentLease.tenantId)}
+                >
+                  Арендатор · договор {currentLease.contractNumber}
+                </Button>
+              ) : (
+                <span>Арендатор · договор {currentLease.contractNumber}</span>
               ))}
-            </Select>
-          </label>
-          <label>
-            Услуга
-            <Select
-              disabled={busy}
-              value={ticket.serviceId || ""}
-              onChange={(e) => void changeLink("serviceId", e.target.value)}
-            >
-              <option value="">Не выбрана</option>
-              {services.map((row) => (
-                <option key={row.id} value={row.id}>
-                  {row.name} · {row.paid ? "платная" : "бесплатная"}
-                </option>
-              ))}
-            </Select>
-          </label>
-          <label>
-            Договор
-            <Select
-              disabled={busy}
-              value={ticket.leaseId || ""}
-              onChange={(e) => void changeLink("leaseId", e.target.value)}
-            >
-              <option value="">Не привязан</option>
-              {leases.map((row) => (
-                <option key={row.id} value={row.id}>
-                  {row.contractNumber}
-                </option>
-              ))}
-            </Select>
-          </label>
-        </div>
+          </div>
+          {unit?.photoUrl && (
+            <img
+              src={unit.photoUrl}
+              alt={`Помещение ${unit.number}`}
+              className="equipment-photo"
+            />
+          )}
+          {!readOnly && canEditLinks && (
+            <div className="form-grid">
+              <label>
+                Оборудование
+                <Select
+                  disabled={busy}
+                  value={ticket.equipmentId || ""}
+                  onChange={(e) =>
+                    void changeLink("equipmentId", e.target.value)
+                  }
+                >
+                  <option value="">Не привязано</option>
+                  {equipment.map((row) => (
+                    <option key={row.id} value={row.id}>
+                      {row.name}
+                    </option>
+                  ))}
+                </Select>
+              </label>
+              <label>
+                Услуга
+                <Select
+                  disabled={busy}
+                  value={ticket.serviceId || ""}
+                  onChange={(e) => void changeLink("serviceId", e.target.value)}
+                >
+                  <option value="">Не выбрана</option>
+                  {services.map((row) => (
+                    <option key={row.id} value={row.id}>
+                      {row.name} · {row.paid ? "платная" : "бесплатная"}
+                    </option>
+                  ))}
+                </Select>
+              </label>
+              <label>
+                Договор
+                <Select
+                  disabled={busy}
+                  value={ticket.leaseId || ""}
+                  onChange={(e) => void changeLink("leaseId", e.target.value)}
+                >
+                  <option value="">Не привязан</option>
+                  {leases.map((row) => (
+                    <option key={row.id} value={row.id}>
+                      {row.contractNumber}
+                    </option>
+                  ))}
+                </Select>
+              </label>
+            </div>
+          )}
+        </>
       )}
       {error && (
         <p role="alert" className="ops-error">
           {error}
         </p>
       )}
-      <Disclosure
-        title={
-          <>
-            {" "}
-            Предыдущие обращения по помещению (
-            {
-              tickets.filter(
-                (t) => t.unitId === ticket.unitId && t.id !== ticket.id,
-              ).length
-            }
-            ){" "}
-          </>
-        }
-      >
-        {tickets
-          .filter((t) => t.unitId === ticket.unitId && t.id !== ticket.id)
-          .map((t) => (
-            <Button
-              variant="plain"
-              type="button"
-              className="mvp-list-button"
-              key={t.id}
-              onClick={() => onTicket(t.id)}
-            >
-              {t.number} · {t.title} · {statusNames[t.status]}
-            </Button>
-          ))}
-      </Disclosure>
-      <Disclosure
-        title={
-          <>
-            {" "}
-            Работы и ТМЦ{" "}
-            {ticket.financialAccess ? ` · затраты ${currency(cost)}` : ""}
-            {ticket.financialAccess && service?.paid
-              ? ` · к оплате ${currency(cost + service.basePrice)}`
-              : ""}{" "}
-          </>
-        }
-      >
-        {logs.map((log) => (
-          <p key={log.id}>
-            {log.description} · {log.hours} ч{" "}
-            {ticket.financialAccess
-              ? ` · ТМЦ ${currency(log.materialCost)} · всего ${currency(log.cost)}`
-              : ""}{" "}
-            · {log.createdByName}
-          </p>
-        ))}
-        {!readOnly && isOpenTicket(ticket.status) && (
-          <form
-            className="form-grid"
-            onSubmit={async (event) => {
-              event.preventDefault();
-              setBusy(true);
-              setError("");
-              try {
-                await request(
-                  `/api/operations/tickets/${ticket.id}/work`,
-                  token,
-                  "POST",
-                  {
-                    description: work.description,
-                    hours: Number(work.hours || 0),
-                    materialCost: Number(work.materialCost || 0),
-                  },
-                );
-                setWork({ description: "", hours: "", materialCost: "" });
-                await onRefresh();
-              } catch (error) {
-                setError((error as Error).message);
-              } finally {
-                setBusy(false);
+      {section !== "work" && (
+        <section className="ticket-related-requests">
+          <h3>
+            Предыдущие обращения{" "}
+            <small>
+              {
+                tickets.filter(
+                  (t) => t.unitId === ticket.unitId && t.id !== ticket.id,
+                ).length
               }
-            }}
-          >
-            <label>
-              Работа / использованные материалы *
-              <Input
-                required
-                value={work.description}
-                onChange={(e) =>
-                  setWork({ ...work, description: e.target.value })
-                }
-              />
-            </label>
-            <label>
-              Трудозатраты, ч
-              <Input
-                type="number"
-                min="0"
-                max="744"
-                step="0.25"
-                value={work.hours}
-                onChange={(e) => setWork({ ...work, hours: e.target.value })}
-              />
-            </label>
-            <label>
-              Стоимость ТМЦ, ₽
-              <Input
-                type="number"
-                min="0"
-                step="0.01"
-                value={work.materialCost}
-                onChange={(e) =>
-                  setWork({ ...work, materialCost: e.target.value })
-                }
-              />
-            </label>
-            <Button
-              variant="secondary"
-              type="submit"
-              disabled={busy}
-              className="secondary-button"
-            >
-              Добавить работу
-            </Button>
-            <small className="field-hint">
-              Тариф фиксируется в момент добавления работы. Счёт на оплату
-              оформляется после согласования.
             </small>
-          </form>
-        )}
-      </Disclosure>
+          </h3>
+          {tickets
+            .filter((t) => t.unitId === ticket.unitId && t.id !== ticket.id)
+            .map((t) => (
+              <Button
+                variant="plain"
+                type="button"
+                className="mvp-list-button"
+                key={t.id}
+                onClick={() => onTicket(t.id)}
+              >
+                {t.number} · {t.title} · {statusNames[t.status]}
+              </Button>
+            ))}
+        </section>
+      )}
+      {section !== "links" && (
+        <section className="ticket-work-logs">
+          <h3>Работы и материалы</h3>
+          {ticket.financialAccess && (
+            <p className="ticket-cost-summary">
+              Затраты: <strong>{currency(cost)}</strong>
+              {service?.paid
+                ? ` · К оплате ${currency(cost + service.basePrice)}`
+                : ""}
+            </p>
+          )}
+          {logs.map((log) => (
+            <p key={log.id}>
+              {log.description} · {log.hours} ч{" "}
+              {ticket.financialAccess
+                ? ` · ТМЦ ${currency(log.materialCost)} · всего ${currency(log.cost)}`
+                : ""}{" "}
+              · {log.createdByName}
+            </p>
+          ))}
+          {!readOnly && isOpenTicket(ticket.status) && (
+            <form
+              className="form-grid"
+              onSubmit={async (event) => {
+                event.preventDefault();
+                setBusy(true);
+                setError("");
+                try {
+                  await request(
+                    `/api/operations/tickets/${ticket.id}/work`,
+                    token,
+                    "POST",
+                    {
+                      description: work.description,
+                      hours: Number(work.hours || 0),
+                      materialCost: Number(work.materialCost || 0),
+                    },
+                  );
+                  setWork({ description: "", hours: "", materialCost: "" });
+                  await onRefresh();
+                } catch (error) {
+                  setError((error as Error).message);
+                } finally {
+                  setBusy(false);
+                }
+              }}
+            >
+              <label>
+                Работа / использованные материалы *
+                <Input
+                  required
+                  value={work.description}
+                  onChange={(e) =>
+                    setWork({ ...work, description: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Трудозатраты, ч
+                <Input
+                  type="number"
+                  min="0"
+                  max="744"
+                  step="0.25"
+                  value={work.hours}
+                  onChange={(e) => setWork({ ...work, hours: e.target.value })}
+                />
+              </label>
+              <label>
+                Стоимость ТМЦ, ₽
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={work.materialCost}
+                  onChange={(e) =>
+                    setWork({ ...work, materialCost: e.target.value })
+                  }
+                />
+              </label>
+              <Button
+                variant="secondary"
+                type="submit"
+                disabled={busy}
+                className="secondary-button"
+              >
+                Добавить работу
+              </Button>
+              <small className="field-hint">
+                Тариф фиксируется в момент добавления работы. Счёт на оплату
+                оформляется после согласования.
+              </small>
+            </form>
+          )}
+        </section>
+      )}
     </div>
   );
 }

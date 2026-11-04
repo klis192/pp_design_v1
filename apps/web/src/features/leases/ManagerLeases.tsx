@@ -73,9 +73,9 @@ export function ManagerLeases() {
                 : "Expired"}
             </option>
           </Select>
-          <Button
+          <IconButton
+            label="Добавить договор"
             variant="primary"
-            className="primary-button"
             onClick={() => {
               cancelAdminEdit("lease");
               setAdminPanel("lease");
@@ -83,8 +83,8 @@ export function ManagerLeases() {
             }}
             type="button"
           >
-            Добавить договор
-          </Button>
+            <ActionIcon name="plus" />
+          </IconButton>
         </div>
       </div>
 
@@ -131,14 +131,13 @@ export function ManagerLeases() {
                     ) : null}
                   </td>
                   <td>
-                    <Button
-                      variant="secondary"
-                      className="secondary-button secondary-button--compact"
+                    <IconButton
+                      label="Документы договора"
                       onClick={() => void loadLeaseDocuments(lease)}
                       type="button"
                     >
-                      {managerUi.open}
-                    </Button>
+                      <ActionIcon name="document" />
+                    </IconButton>
                   </td>
                   <td>
                     <IconButton

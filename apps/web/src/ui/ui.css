@@ -115,6 +115,9 @@ a:focus-visible {
   height: var(--ui-control-height);
   padding: 0;
   flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: var(--ui-control-height);
+  max-width: var(--ui-control-height);
   justify-content: center;
 }
 .ui-button--plain.ui-icon-button {

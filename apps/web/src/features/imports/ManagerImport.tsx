@@ -4,7 +4,10 @@ import {
   formatDateTime,
   getImportApprovalStatusLabel,
 } from "../../shared/format";
-import { Button, Input, Select } from "../../ui";
+import { Button, IconButton, Input, Select } from "../../ui";
+import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
+import { useWorkspaceViewState } from "../../ui/useWorkspaceViewState";
+import { ActionIcon } from "../business/ActionIcon";
 export function ManagerImport() {
   const {
     managerUi,
@@ -30,6 +33,11 @@ export function ManagerImport() {
     overview,
     downloadExport,
   } = useWorkspace();
+  const [view, setView] = useWorkspaceViewState(
+    `wirehouse.import.view:${session.user.id}`,
+    "upload",
+    ["upload", "preview", "approvals", "history", "export"] as const,
+  );
   return (
     <section className="mvp-page">
       <div className="mvp-page-header">
@@ -38,8 +46,31 @@ export function ManagerImport() {
         </div>
       </div>
 
-      <div className="mvp-grid">
-        <article className="mvp-card mvp-card--wide">
+      <WorkspaceTabs
+        label="Импорт и экспорт"
+        idPrefix="import-views"
+        value={view}
+        onChange={(id) => setView(id as typeof view)}
+        items={[
+          { id: "upload", label: "Загрузка" },
+          { id: "preview", label: "Проверка", count: importResults.length },
+          {
+            id: "approvals",
+            label: "Согласование",
+            count: importApprovals.length,
+          },
+          { id: "history", label: "История", count: importBatches.length },
+          { id: "export", label: "Экспорт" },
+        ]}
+      />
+      <div className="workspace-pane">
+        <article
+          className="mvp-card"
+          hidden={view !== "upload"}
+          role="tabpanel"
+          id="import-views-panel-upload"
+          aria-labelledby="import-views-tab-upload"
+        >
           <div className="mvp-card-head">
             <div>
               <h3>{managerUi.templates}</h3>
@@ -82,32 +113,45 @@ export function ManagerImport() {
                           ? "шаблон, проверка и применение"
                           : "template, preview, and apply"}
                         {draft
-                          ? ` · ${draft.mode} · ${locale === "ru" ? "ожидает применения" : "pending apply"}`
+                          ? ` · ${{ create: "только новые", update: "обновление", upsert: "создание и обновление" }[draft.mode]} · ${locale === "ru" ? "ожидает применения" : "pending apply"}`
                           : ""}
                       </p>
                     </div>
                     <div className="mvp-list-aside import-actions">
-                      <Button
-                        variant="secondary"
-                        className="secondary-button"
+                      <IconButton
+                        label={`${locale === "ru" ? "Скачать шаблон" : "Download template"}: ${managerUi.nav[templateId]}`}
                         onClick={() => void downloadImportTemplate(templateId)}
                         type="button"
                       >
-                        {locale === "ru" ? "Шаблон" : "Template"}
-                      </Button>
-                      <label className="secondary-button import-file-button">
-                        <span>{locale === "ru" ? "Проверить" : "Preview"}</span>
-                        <Input
-                          accept=".xls,.xlsx,.csv"
-                          disabled={busyAction === `import-${templateId}`}
-                          onChange={(event) => {
-                            const file = event.currentTarget.files?.[0] ?? null;
-                            void handleImportUpload(templateId, file);
-                            event.currentTarget.value = "";
-                          }}
-                          type="file"
-                        />
-                      </label>
+                        <ActionIcon name="download" />
+                      </IconButton>
+                      <IconButton
+                        label={`${locale === "ru" ? "Загрузить и проверить" : "Upload and preview"}: ${managerUi.nav[templateId]}`}
+                        disabled={busyAction === `import-${templateId}`}
+                        onClick={() =>
+                          document
+                            .getElementById(`import-file-${templateId}`)
+                            ?.click()
+                        }
+                      >
+                        <ActionIcon name="upload" />
+                      </IconButton>
+                      <Input
+                        id={`import-file-${templateId}`}
+                        hidden
+                        accept=".xls,.xlsx,.csv"
+                        disabled={busyAction === `import-${templateId}`}
+                        onChange={async (event) => {
+                          const file = event.currentTarget.files?.[0] ?? null;
+                          event.currentTarget.value = "";
+                          if (
+                            file &&
+                            (await handleImportUpload(templateId, file))
+                          )
+                            setView("preview");
+                        }}
+                        type="file"
+                      />
                       {draft ? (
                         <Button
                           variant="primary"
@@ -130,7 +174,13 @@ export function ManagerImport() {
         </article>
 
         {importResults.length > 0 ? (
-          <article className="mvp-card mvp-card--wide">
+          <article
+            className="mvp-card"
+            hidden={view !== "preview"}
+            role="tabpanel"
+            id="import-views-panel-preview"
+            aria-labelledby="import-views-tab-preview"
+          >
             <div className="mvp-card-head">
               <div>
                 <h3>{locale === "ru" ? "Отчеты импорта" : "Import reports"}</h3>
@@ -182,14 +232,32 @@ export function ManagerImport() {
                     </div>
                   </div>
                   <div className="mvp-list-aside">
-                    <Button
-                      variant="secondary"
-                      className="secondary-button secondary-button--compact"
+                    <IconButton
+                      label={
+                        locale === "ru" ? "Скачать отчёт" : "Download report"
+                      }
                       onClick={() => downloadImportReport(result)}
                       type="button"
                     >
-                      {locale === "ru" ? "Отчет" : "Report"}
-                    </Button>
+                      <ActionIcon name="download" />
+                    </IconButton>
+                    {importDrafts.some(
+                      (draft) =>
+                        draft.templateId === result.templateId &&
+                        draft.fileName === result.fileName,
+                    ) && (
+                      <Button
+                        variant="primary"
+                        disabled={
+                          busyAction === `import-commit-${result.templateId}`
+                        }
+                        onClick={() =>
+                          void handleImportCommit(result.templateId)
+                        }
+                      >
+                        {locale === "ru" ? "Применить" : "Apply"}
+                      </Button>
+                    )}
                   </div>
                 </div>
               ))}
@@ -198,7 +266,13 @@ export function ManagerImport() {
         ) : null}
 
         {importApprovals.length > 0 ? (
-          <article className="mvp-card mvp-card--wide">
+          <article
+            className="mvp-card"
+            hidden={view !== "approvals"}
+            role="tabpanel"
+            id="import-views-panel-approvals"
+            aria-labelledby="import-views-tab-approvals"
+          >
             <div className="mvp-card-head">
               <div>
                 <h3>
@@ -271,7 +345,13 @@ export function ManagerImport() {
         ) : null}
 
         {importBatches.length > 0 ? (
-          <article className="mvp-card mvp-card--wide">
+          <article
+            className="mvp-card"
+            hidden={view !== "history"}
+            role="tabpanel"
+            id="import-views-panel-history"
+            aria-labelledby="import-views-tab-history"
+          >
             <div className="mvp-card-head">
               <div>
                 <h3>{locale === "ru" ? "Партии импорта" : "Import batches"}</h3>
@@ -323,7 +403,42 @@ export function ManagerImport() {
           </article>
         ) : null}
 
-        <article className="mvp-card mvp-card--wide">
+        {view === "preview" && !importResults.length && (
+          <article
+            className="mvp-card"
+            role="tabpanel"
+            id="import-views-panel-preview"
+            aria-labelledby="import-views-tab-preview"
+          >
+            Загрузите таблицу на вкладке «Загрузка», чтобы проверить строки
+            перед применением.
+          </article>
+        )}
+        {view === "approvals" && !importApprovals.length && (
+          <article
+            className="mvp-card"
+            role="tabpanel"
+            id="import-views-panel-approvals"
+          >
+            Импортов на согласовании нет.
+          </article>
+        )}
+        {view === "history" && !importBatches.length && (
+          <article
+            className="mvp-card"
+            role="tabpanel"
+            id="import-views-panel-history"
+          >
+            Применённые импорты появятся здесь.
+          </article>
+        )}
+        <article
+          className="mvp-card"
+          hidden={view !== "export"}
+          role="tabpanel"
+          id="import-views-panel-export"
+          aria-labelledby="import-views-tab-export"
+        >
           <div className="mvp-card-head">
             <div>
               <h3>{managerUi.readyExports}</h3>

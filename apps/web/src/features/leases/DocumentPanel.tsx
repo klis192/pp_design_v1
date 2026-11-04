@@ -6,6 +6,7 @@ import {
 } from "../../shared/format";
 import { Button, IconButton, Input } from "../../ui";
 import { ActionIcon } from "../business/ActionIcon";
+import { SidePanel } from "../../ui/SidePanel";
 export function DocumentPanel() {
   const {
     documentPanelLease,
@@ -25,29 +26,16 @@ export function DocumentPanel() {
     openLeaseDocument,
   } = useWorkspace();
   return documentPanelLease ? (
-    <div className="document-overlay" role="dialog" aria-modal="true">
+    <SidePanel
+      title={`Документы договора ${documentPanelLease.contractNumber}`}
+      description={`${documentPanelLease.tenantName ?? "—"} · ${documentPanelLease.propertyName ?? "—"} · ${documentPanelLease.unitNumber ?? "—"}`}
+      busy={busyAction === `lease-document-upload-${documentPanelLease.id}`}
+      onClose={() => {
+        setDocumentPanelLease(null);
+        setLeaseDocuments([]);
+      }}
+    >
       <section className="document-panel">
-        <div className="document-panel-head">
-          <div>
-            <h3>{documentPanelLease.contractNumber}</h3>
-            <p>
-              {documentPanelLease.tenantName ?? "—"} ·{" "}
-              {documentPanelLease.propertyName ?? "—"} ·{" "}
-              {documentPanelLease.unitNumber ?? "—"}
-            </p>
-          </div>
-          <IconButton
-            label={locale === "ru" ? "Закрыть" : "Close"}
-            onClick={() => {
-              setDocumentPanelLease(null);
-              setLeaseDocuments([]);
-            }}
-            type="button"
-          >
-            <ActionIcon name="close" />
-          </IconButton>
-        </div>
-
         {canManageDocuments ? (
           <label className="document-upload">
             <span>
@@ -108,27 +96,26 @@ export function DocumentPanel() {
                   </small>
                 </div>
                 <div className="document-actions">
-                  <Button
-                    variant="secondary"
-                    className="secondary-button secondary-button--compact"
+                  <IconButton
+                    label={locale === "ru" ? "Скачать файл" : "Download file"}
                     onClick={() =>
                       void downloadLeaseDocument(documentPanelLease.id, item)
                     }
                     type="button"
                   >
-                    {managerUi.open}
-                  </Button>
+                    <ActionIcon name="download" />
+                  </IconButton>
                   {canManageDocuments ? (
-                    <Button
-                      variant="text"
+                    <IconButton
+                      label={t.actions.delete}
                       className="text-button text-button--danger"
                       onClick={() =>
                         void deleteLeaseDocument(documentPanelLease.id, item.id)
                       }
                       type="button"
                     >
-                      {t.actions.delete}
-                    </Button>
+                      <ActionIcon name="delete" />
+                    </IconButton>
                   ) : null}
                 </div>
               </div>
@@ -142,17 +129,18 @@ export function DocumentPanel() {
           )}
         </div>
 
-        <Button
-          variant="text"
-          className="text-button text-button--neutral"
+        <IconButton
+          label={
+            locale === "ru"
+              ? "Открыть системную карточку договора"
+              : "Open generated lease card"
+          }
           onClick={() => void openLeaseDocument(documentPanelLease.id)}
           type="button"
         >
-          {locale === "ru"
-            ? "Открыть системную карточку договора"
-            : "Open generated lease card"}
-        </Button>
+          <ActionIcon name="document" />
+        </IconButton>
       </section>
-    </div>
+    </SidePanel>
   ) : null;
 }

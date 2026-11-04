@@ -88,10 +88,12 @@ export function useImportsActions(
           ? `Файл проверен: готово ${result.summary.ready ?? 0}, ошибок ${result.summary.errors}. После проверки нажмите «Применить».`
           : `File checked: ready ${result.summary.ready ?? 0}, errors ${result.summary.errors}. Apply it after review.`,
       );
+      return true;
     } catch (caughtError) {
       setError(
         caughtError instanceof Error ? caughtError.message : "Import failed",
       );
+      return false;
     } finally {
       setBusyAction("");
     }

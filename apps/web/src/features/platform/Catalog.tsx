@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { SidePanel } from "../../ui/SidePanel";
+import { Register } from "../business/Register";
 import {
   Button,
   IconButton,
@@ -18,13 +20,20 @@ export function Catalog({
 }: Props & { kind: "templates" | "materials" | "contractors" }) {
   const { data, error, busy, mutate } = usePlatform(props.token);
   const [draft, setDraft] = useState<CatalogItem | null>(null);
-  const [query, setQuery] = useState("");
+  const [dirty, setDirty] = useState(false);
+  const labels = {
+    templates: "Регламенты",
+    materials: "Материалы",
+    contractors: "Подрядчики",
+  };
   const canWrite = hasPermission(
     props.user,
     kind === "templates" ? "maintenance.write" : "services.write",
   );
-  const change = (key: string, value: unknown) =>
+  const change = (key: string, value: unknown) => {
+    setDirty(true);
     setDraft((d) => (d ? { ...d, [key]: value } : d));
+  };
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!draft) return;
@@ -54,186 +63,207 @@ export function Catalog({
           {error}
         </p>
       )}
-      <div className="mvp-actions">
-        <Input
-          aria-label="Поиск в справочнике"
-          placeholder="Название"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        {canWrite && (
-          <Button
-            variant="primary"
-            onClick={() =>
-              setDraft({
-                id: "",
-                propertyId: props.overview.properties[0]?.id ?? "",
-                name: "",
-                updatedAt: "",
-                instructions: "",
-                checklist: [""],
-                unit: "шт.",
-                price: 0,
-                inn: "",
-                contact: "",
-                active: true,
-              })
-            }
-          >
-            Добавить
-          </Button>
-        )}
-      </div>
+      <Register
+        title={labels[kind]}
+        rows={data[kind]}
+        searchText={(row) =>
+          `${row.name} ${row.inn ?? ""} ${row.contact ?? ""}`
+        }
+        onSelect={
+          canWrite
+            ? (row) => {
+                setDirty(false);
+                setDraft({ ...row });
+              }
+            : undefined
+        }
+        action={
+          canWrite ? (
+            <IconButton
+              label="Добавить"
+              variant="primary"
+              onClick={() => {
+                setDirty(false);
+                setDraft({
+                  id: "",
+                  propertyId: props.overview.properties[0]?.id ?? "",
+                  name: "",
+                  updatedAt: "",
+                  instructions: "",
+                  checklist: [""],
+                  unit: "шт.",
+                  price: 0,
+                  inn: "",
+                  contact: "",
+                  active: true,
+                });
+              }}
+            >
+              <ActionIcon name="plus" />
+            </IconButton>
+          ) : undefined
+        }
+        columns={[
+          {
+            key: "name",
+            label: "Название",
+            render: (row) => <strong>{row.name}</strong>,
+          },
+          {
+            key: "property",
+            label: "Объект",
+            render: (row) =>
+              props.overview.properties.find((p) => p.id === row.propertyId)
+                ?.name ?? "—",
+          },
+          {
+            key: "details",
+            label:
+              kind === "templates"
+                ? "Версия и чек-лист"
+                : kind === "materials"
+                  ? "Цена / единица"
+                  : "ИНН",
+            render: (row) =>
+              kind === "templates"
+                ? `Версия ${row.version} · ${row.checklist?.length ?? 0} пунктов`
+                : kind === "materials"
+                  ? `${row.price} ₽ / ${row.unit}`
+                  : row.inn,
+          },
+          {
+            key: "status",
+            label: kind === "contractors" ? "Контакт" : "Состояние",
+            render: (row) =>
+              row.active === false
+                ? "Отключён"
+                : kind === "contractors"
+                  ? row.contact || "—"
+                  : "Доступен",
+          },
+        ]}
+      />
       {draft && (
-        <form className="mvp-card form-grid" onSubmit={save}>
-          <h3 className="form-span-2">
-            {draft.id ? "Редактирование" : "Новая запись"}
-          </h3>
-          <label>
-            Название
-            <Input
-              required
-              value={draft.name}
-              onChange={(e) => change("name", e.target.value)}
-            />
-          </label>
-          <label>
-            Объект
-            <Select
-              disabled={!!draft.id}
-              value={draft.propertyId}
-              onChange={(e) => change("propertyId", e.target.value)}
-            >
-              {props.overview.properties.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
-                </option>
-              ))}
-            </Select>
-          </label>
-          {kind === "templates" ? (
-            <>
-              <label>
-                Инструкция
-                <Textarea
-                  value={draft.instructions}
-                  onChange={(e) => change("instructions", e.target.value)}
-                />
-              </label>
-              <label>
-                Чек-лист, по пункту на строку
-                <Textarea
-                  required
-                  value={draft.checklist?.join("\n")}
-                  onChange={(e) =>
-                    change("checklist", e.target.value.split("\n"))
-                  }
-                />
-              </label>
-              <p className="field-hint">
-                Изменение регламента создаёт новую версию. Существующие графики
-                сохраняют утверждённый чек-лист; выберите регламент повторно в
-                графике, чтобы обновить его.
-              </p>
-            </>
-          ) : kind === "materials" ? (
-            <>
-              <label>
-                Единица измерения
-                <Input
-                  required
-                  value={draft.unit}
-                  onChange={(e) => change("unit", e.target.value)}
-                />
-              </label>
-              <label>
-                Цена без НДС, ₽
-                <Input
-                  required
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={draft.price}
-                  onChange={(e) => change("price", Number(e.target.value))}
-                />
-              </label>
-            </>
-          ) : (
-            <>
-              <label>
-                ИНН
-                <Input
-                  required
-                  pattern="[0-9]{10}|[0-9]{12}"
-                  value={draft.inn}
-                  onChange={(e) => change("inn", e.target.value)}
-                />
-              </label>
-              <label>
-                Контакт
-                <Input
-                  value={draft.contact}
-                  onChange={(e) => change("contact", e.target.value)}
-                />
-              </label>
-            </>
+        <SidePanel
+          title={`${draft.id ? "Редактирование" : "Новая запись"} · ${labels[kind]}`}
+          onClose={() => setDraft(null)}
+          busy={busy}
+          dirty={dirty}
+        >
+          {error && (
+            <p role="alert" className="notice notice--error">
+              {error}
+            </p>
           )}
-          {kind !== "templates" && (
-            <Checkbox
-              checked={draft.active}
-              onChange={(e) => change("active", e.target.checked)}
-            >
-              Доступен в каталоге
-            </Checkbox>
-          )}
-          <div className="mvp-actions">
-            <Button type="submit" variant="primary" busy={busy}>
-              Сохранить
-            </Button>
-            <Button disabled={busy} onClick={() => setDraft(null)}>
-              Отмена
-            </Button>
-          </div>
-        </form>
-      )}
-      <div className="platform-list">
-        {data[kind]
-          .filter((r) =>
-            r.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
-          )
-          .map((row) => (
-            <article key={row.id} className="platform-row">
-              <div>
-                <strong>{row.name}</strong>
-                <p>
-                  {
-                    props.overview.properties.find(
-                      (p) => p.id === row.propertyId,
-                    )?.name
-                  }
+          <form className="form-grid" onSubmit={save}>
+            <label>
+              Название
+              <Input
+                required
+                value={draft.name}
+                onChange={(e) => change("name", e.target.value)}
+              />
+            </label>
+            <label>
+              Объект
+              <Select
+                disabled={!!draft.id}
+                value={draft.propertyId}
+                onChange={(e) => change("propertyId", e.target.value)}
+              >
+                {props.overview.properties.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            {kind === "templates" ? (
+              <>
+                <label>
+                  Инструкция
+                  <Textarea
+                    value={draft.instructions}
+                    onChange={(e) => change("instructions", e.target.value)}
+                  />
+                </label>
+                <label>
+                  Чек-лист, по пункту на строку
+                  <Textarea
+                    required
+                    value={draft.checklist?.join("\n")}
+                    onChange={(e) =>
+                      change("checklist", e.target.value.split("\n"))
+                    }
+                  />
+                </label>
+                <p className="field-hint">
+                  Изменение регламента создаёт новую версию. Существующие
+                  графики сохраняют утверждённый чек-лист; выберите регламент
+                  повторно в графике, чтобы обновить его.
                 </p>
-              </div>
-              <span>
-                {kind === "templates"
-                  ? `Версия ${row.version} · ${row.checklist?.length} пунктов`
-                  : kind === "materials"
-                    ? `${row.price} ₽ / ${row.unit}`
-                    : `ИНН ${row.inn}`}
-              </span>
-              <span>{row.active === false ? "Отключён" : row.contact}</span>
-              {canWrite && (
-                <IconButton
-                  label="Изменить"
-                  disabled={busy}
-                  onClick={() => setDraft({ ...row })}
-                >
-                  <ActionIcon name="edit" />
-                </IconButton>
-              )}
-            </article>
-          ))}
-      </div>
-      {!data[kind].length && <p className="empty-state">Записей пока нет</p>}
+              </>
+            ) : kind === "materials" ? (
+              <>
+                <label>
+                  Единица измерения
+                  <Input
+                    required
+                    value={draft.unit}
+                    onChange={(e) => change("unit", e.target.value)}
+                  />
+                </label>
+                <label>
+                  Цена без НДС, ₽
+                  <Input
+                    required
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={draft.price}
+                    onChange={(e) => change("price", Number(e.target.value))}
+                  />
+                </label>
+              </>
+            ) : (
+              <>
+                <label>
+                  ИНН
+                  <Input
+                    required
+                    pattern="[0-9]{10}|[0-9]{12}"
+                    value={draft.inn}
+                    onChange={(e) => change("inn", e.target.value)}
+                  />
+                </label>
+                <label>
+                  Контакт
+                  <Input
+                    value={draft.contact}
+                    onChange={(e) => change("contact", e.target.value)}
+                  />
+                </label>
+              </>
+            )}
+            {kind !== "templates" && (
+              <Checkbox
+                checked={draft.active}
+                onChange={(e) => change("active", e.target.checked)}
+              >
+                Доступен в каталоге
+              </Checkbox>
+            )}
+            <div className="mvp-actions">
+              <Button type="submit" variant="primary" busy={busy}>
+                Сохранить
+              </Button>
+              <Button disabled={busy} onClick={() => setDraft(null)}>
+                Отмена
+              </Button>
+            </div>
+          </form>
+        </SidePanel>
+      )}
     </div>
   );
 }

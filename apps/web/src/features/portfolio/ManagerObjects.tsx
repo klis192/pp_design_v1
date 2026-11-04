@@ -1,10 +1,15 @@
 import { ActionIcon } from "../business/ActionIcon";
 import { IconButton } from "../../ui";
-import { Disclosure } from "../business/shared";
 import { DocumentRegistry } from "../business/DocumentRegistry";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { formatArea } from "../../shared/format";
-import { Button } from "../../ui";
+import { Button, Select } from "../../ui";
+import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
+import {
+  useSurfaceView,
+  useVisitedSurfaceViews,
+} from "../operations/useSurfaceView";
+import "./workspace.css";
 import { StructureWorkspace } from "../platform/StructureWorkspace";
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
 export function ManagerObjects() {
@@ -32,8 +37,17 @@ export function ManagerObjects() {
     handleDelete,
     openUnitDetail,
   } = useWorkspace();
+  const [view, setView] = useSurfaceView(
+    `wirehouse.view.objects:${session.user.id}:${selectedPropertyId}`,
+    "overview",
+    ["overview", "structure", "plans", "documents"] as const,
+  );
+  const visited = useVisitedSurfaceViews(selectedPropertyId, view);
+  const activeProperty = propertyOperations.find(
+    (p) => p.id === selectedPropertyId,
+  );
   return (
-    <section className="mvp-page">
+    <section className="mvp-page portfolio-page">
       <div className="mvp-page-header">
         <div>
           <h2>{managerUi.titles.objects}</h2>
@@ -48,9 +62,8 @@ export function ManagerObjects() {
             >
               {locale === "ru" ? "Запустить объект" : "Launch"}
             </Button>
-            <Button
-              variant="secondary"
-              className="secondary-button"
+            <IconButton
+              label={managerUi.add}
               onClick={() => {
                 cancelAdminEdit("property");
                 setAdminPanel("property");
@@ -58,167 +71,169 @@ export function ManagerObjects() {
               }}
               type="button"
             >
-              {managerUi.add}
-            </Button>
+              <ActionIcon name="plus" />
+            </IconButton>
           </div>
         )}
       </div>
 
-      <div className="property-rail">
-        {propertyOperations.map((property) => (
-          <Button
-            variant="plain"
-            className={
-              selectedPropertyId === property.id
-                ? "property-stat property-stat--active"
-                : "property-stat"
-            }
-            key={property.id}
-            onClick={() => handleManagerPropertySelect(property.id, "objects")}
-            type="button"
-          >
-            <div className="property-stat-head">
-              <div>
-                <strong>{property.name}</strong>
-                <p>{property.address}</p>
-              </div>
-              <span>{property.warehouseClass}</span>
-            </div>
-            <div className="property-progress">
-              <span
-                style={{
-                  width: `${Math.max(0, Math.min(property.occupancy, 100))}%`,
-                }}
-              />
-            </div>
-            <div className="property-stat-meta">
-              <small>
-                {property.occupancy}% {t.metrics.occupancy.toLowerCase()}
-              </small>
-              <small>
-                {property.openTicketCount} {t.metrics.openTickets.toLowerCase()}
-              </small>
-            </div>
-          </Button>
-        ))}
-      </div>
-
-      {selectedPropertySnapshot ? (
-        <article
-          className="mvp-card area-split-card selection-stage"
-          key={`manager-area-split-${selectedPropertyId}`}
-        >
-          <div className="mvp-card-head">
-            <div>
-              <h3>{locale === "ru" ? "Деление площадей" : "Area split"}</h3>
-            </div>
-            <small>
-              {formatArea(selectedPropertySnapshot.rentableArea, locale)}
-            </small>
-          </div>
-          <div
-            className="area-split-bar"
-            aria-label={
-              locale === "ru"
-                ? "Деление площадей по статусам"
-                : "Area split by status"
+      <div className="workspace-context-row">
+        <label>
+          Объект
+          <Select
+            value={selectedPropertyId}
+            onChange={(event) =>
+              handleManagerPropertySelect(event.target.value, "objects")
             }
           >
-            {selectedPropertySnapshot.statusBreakdown.map((item) => (
-              <span
-                className={`area-split-segment area-split-segment--${item.id}`}
-                key={item.id}
-                style={{
-                  width: `${Math.max(2, (item.area / Math.max(1, selectedPropertySnapshot.rentableArea)) * 100)}%`,
-                }}
-                title={`${item.label}: ${formatArea(item.area, locale)}`}
-              />
+            {propertyOperations.map((property) => (
+              <option value={property.id} key={property.id}>
+                {property.name}
+              </option>
             ))}
-          </div>
-          <div className="area-split-grid">
-            {selectedPropertySnapshot.statusBreakdown.map((item) => (
-              <div className="area-split-item" key={item.id}>
-                <span className={`area-split-dot area-split-dot--${item.id}`} />
-                <div>
-                  <strong>{item.label}</strong>
-                  <small>
-                    {formatArea(item.area, locale)} ·{" "}
-                    {Math.round(
-                      (item.area /
-                        Math.max(1, selectedPropertySnapshot.rentableArea)) *
-                        100,
-                    )}
-                    %
-                  </small>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="area-type-grid">
-            {selectedPropertySnapshot.typeBreakdown.map((item) => (
-              <div className="area-type-chip" key={item.id}>
-                <span>{item.label}</span>
-                <strong>{formatArea(item.area, locale)}</strong>
-              </div>
-            ))}
-          </div>
-        </article>
-      ) : null}
-
-      <div className="platform-section">
-        <article
-          className="mvp-card platform-section"
-          key={`manager-objects-board-${selectedPropertyId}`}
-        >
-          <div className="surface-head">
-            <div>
-              <h3>{selectedProperty?.name ?? t.sections.twin}</h3>
-            </div>
-            {selectedProperty && canManagePortfolio ? (
-              <div className="mvp-actions">
-                <IconButton
-                  label={adminEditLabel}
-                  onClick={() => openManagerPropertyEdit(selectedProperty)}
-                  type="button"
-                >
-                  <ActionIcon name="edit" />
-                </IconButton>
-                {canDeletePortfolioItems ? (
-                  <Button
-                    variant="text"
-                    className="text-button text-button--danger"
-                    onClick={() =>
-                      void handleDelete(
-                        `/api/properties/${selectedProperty.id}`,
-                      )
-                    }
-                    type="button"
-                  >
-                    {t.actions.delete}
-                  </Button>
-                ) : null}
-              </div>
-            ) : null}
-          </div>
-          <StructureWorkspace
-            embedded
-            key={selectedPropertyId}
-            token={session.token}
-            properties={overview.properties.filter(
-              (p) => !selectedPropertyId || p.id === selectedPropertyId,
+          </Select>
+        </label>
+        {selectedProperty && canManagePortfolio && (
+          <div className="mvp-actions">
+            <IconButton
+              label={adminEditLabel}
+              onClick={() => openManagerPropertyEdit(selectedProperty)}
+            >
+              <ActionIcon name="edit" />
+            </IconButton>
+            {canDeletePortfolioItems && (
+              <IconButton
+                label="Удалить объект"
+                onClick={() =>
+                  void handleDelete(`/api/properties/${selectedProperty.id}`)
+                }
+              >
+                <ActionIcon name="delete" />
+              </IconButton>
             )}
-            units={overview.units}
-            tickets={tickets}
-            equipment={operations?.equipment ?? []}
-            onUnit={openUnitDetail}
-            onTicket={openTicketDetail}
-            canWrite={hasPermission(session.user, "plans.write")}
-          />
-        </article>
+          </div>
+        )}
       </div>
-      <Disclosure title="Реестр документов">
-        <DocumentRegistry />
-      </Disclosure>
+      <WorkspaceTabs
+        idPrefix="objects-view"
+        label="Объект: представление"
+        value={view}
+        onChange={(id) => setView(id as typeof view)}
+        items={[
+          { id: "overview", label: "Обзор" },
+          { id: "structure", label: "Структура" },
+          { id: "plans", label: "Планы" },
+          { id: "documents", label: "Документы" },
+        ]}
+      />
+      <div
+        className="workspace-pane"
+        role="tabpanel"
+        id={`objects-view-panel-${view}`}
+        aria-labelledby={`objects-view-tab-${view}`}
+      >
+        {view === "overview" && activeProperty && (
+          <div className="portfolio-summary">
+            <span>{activeProperty.address}</span>
+            <span>Класс {activeProperty.warehouseClass}</span>
+            <span>Заполняемость {activeProperty.occupancy}%</span>
+            <span>Открытых заявок: {activeProperty.openTicketCount}</span>
+          </div>
+        )}
+        {view === "overview" && selectedPropertySnapshot ? (
+          <article
+            className="mvp-card area-split-card selection-stage"
+            key={`manager-area-split-${selectedPropertyId}`}
+          >
+            <div className="mvp-card-head">
+              <div>
+                <h3>{locale === "ru" ? "Деление площадей" : "Area split"}</h3>
+              </div>
+              <small>
+                {formatArea(selectedPropertySnapshot.rentableArea, locale)}
+              </small>
+            </div>
+            <div
+              className="area-split-bar"
+              aria-label={
+                locale === "ru"
+                  ? "Деление площадей по статусам"
+                  : "Area split by status"
+              }
+            >
+              {selectedPropertySnapshot.statusBreakdown.map((item) => (
+                <span
+                  className={`area-split-segment area-split-segment--${item.id}`}
+                  key={item.id}
+                  style={{
+                    width: `${Math.max(2, (item.area / Math.max(1, selectedPropertySnapshot.rentableArea)) * 100)}%`,
+                  }}
+                  title={`${item.label}: ${formatArea(item.area, locale)}`}
+                />
+              ))}
+            </div>
+            <div className="area-split-grid">
+              {selectedPropertySnapshot.statusBreakdown.map((item) => (
+                <div className="area-split-item" key={item.id}>
+                  <span
+                    className={`area-split-dot area-split-dot--${item.id}`}
+                  />
+                  <div>
+                    <strong>{item.label}</strong>
+                    <small>
+                      {formatArea(item.area, locale)} ·{" "}
+                      {Math.round(
+                        (item.area /
+                          Math.max(1, selectedPropertySnapshot.rentableArea)) *
+                          100,
+                      )}
+                      %
+                    </small>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="area-type-grid">
+              {selectedPropertySnapshot.typeBreakdown.map((item) => (
+                <div className="area-type-chip" key={item.id}>
+                  <span>{item.label}</span>
+                  <strong>{formatArea(item.area, locale)}</strong>
+                </div>
+              ))}
+            </div>
+          </article>
+        ) : null}
+
+        {(["structure", "plans"] as const)
+          .filter((mode) => visited.includes(mode))
+          .map((mode) => (
+            <article
+              className="workspace-pane"
+              key={`${selectedPropertyId}:${mode}`}
+              hidden={view !== mode}
+            >
+              <StructureWorkspace
+                embedded
+                view={mode === "plans" ? "plans" : "tree"}
+                token={session.token}
+                properties={overview.properties.filter(
+                  (p) => !selectedPropertyId || p.id === selectedPropertyId,
+                )}
+                units={overview.units}
+                tickets={tickets}
+                equipment={operations?.equipment ?? []}
+                onUnit={openUnitDetail}
+                onTicket={openTicketDetail}
+                canWrite={hasPermission(session.user, "plans.write")}
+              />
+            </article>
+          ))}
+        {view === "documents" && (
+          <article className="workspace-pane">
+            <DocumentRegistry />
+          </article>
+        )}
+      </div>
     </section>
   );
 }

@@ -4,7 +4,6 @@ import { Button, IconButton } from "../../ui";
 import { ActionIcon } from "../business/ActionIcon";
 import {
   Row,
-  auditLabel,
   currency,
   date,
   resourceNames,
@@ -37,7 +36,7 @@ export function OperationCard({
     busy,
   } = model;
   return (
-    <article className="mvp-card operation-card" key={row.id}>
+    <article className="operation-card" key={row.id}>
       <div className="mvp-card-head">
         <div>
           {row.propertyId && (
@@ -45,7 +44,6 @@ export function OperationCard({
               {overview.properties.find((p) => p.id === row.propertyId)?.name}
             </small>
           )}
-          <h3>{row.name || row.fullName || auditLabel(row.action)}</h3>
         </div>
         {tabPermission[tab] &&
           hasPermission(model.user, tabPermission[tab]) && (

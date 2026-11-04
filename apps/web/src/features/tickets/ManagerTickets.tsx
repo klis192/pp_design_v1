@@ -9,6 +9,8 @@ import { getSlaState, getTicketStatusLabel } from "../../shared/format";
 import { type TicketFilter } from "../../shared/types";
 import { Button, IconButton, Checkbox, Select, Input } from "../../ui";
 import { ActionIcon } from "../business/ActionIcon";
+import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
+import { useWorkspaceViewState } from "../../ui/useWorkspaceViewState";
 export function ManagerTickets() {
   const [query, setQuery] = useState(""),
     [from, setFrom] = useState(""),
@@ -30,7 +32,13 @@ export function ManagerTickets() {
     filteredTickets: availableTickets,
     openTicketDetail,
     busyAction,
+    session,
   } = useWorkspace();
+  const [workspaceMode, setWorkspaceMode] = useWorkspaceViewState(
+    `wirehouse.ticket-list.view:${session.user.id}`,
+    "tickets",
+    ["tickets", "dispatch"] as const,
+  );
   const filteredTickets = filterTickets(
     availableTickets,
     new URLSearchParams({
@@ -83,266 +91,297 @@ export function ManagerTickets() {
               </option>
             ))}
           </Select>
-          <Button
+          <IconButton
+            label="Создать заявку"
             variant="primary"
-            className="primary-button"
             onClick={() => setManagerScreen("ticket-create")}
             type="button"
           >
-            Создать заявку
-          </Button>
+            <ActionIcon name="plus" />
+          </IconButton>
         </div>
       </div>
 
+      <WorkspaceTabs
+        label="Работа с заявками"
+        idPrefix="ticket-list"
+        value={workspaceMode}
+        onChange={(value) =>
+          setWorkspaceMode(value === "dispatch" ? "dispatch" : "tickets")
+        }
+        items={[
+          { id: "tickets", label: "Заявки", count: availableTickets.length },
+          { id: "dispatch", label: "Службы и маршруты" },
+        ]}
+      />
       <div
-        className="workspace-filter-grid"
-        role="search"
-        aria-label="Фильтры заявок"
+        hidden={workspaceMode !== "tickets"}
+        role="tabpanel"
+        id="ticket-list-panel-tickets"
+        aria-labelledby="ticket-list-tab-tickets"
+        className="workspace-pane"
       >
-        <label className="workspace-filter-search">
-          Поиск
-          <Input
-            type="search"
-            aria-label="Поиск по номеру, тексту, помещению, заявителю"
-            placeholder="Номер, текст, помещение, заявитель"
-            value={query}
-            maxLength={300}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </label>
-        <label>
-          Создана с
-          <Input
-            type="date"
-            value={from}
-            max={to || undefined}
-            onChange={(e) => setFrom(e.target.value)}
-          />
-        </label>
-        <label>
-          По
-          <Input
-            type="date"
-            value={to}
-            min={from || undefined}
-            onChange={(e) => setTo(e.target.value)}
-          />
-        </label>
-        <label>
-          Категория
-          <Select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="">Все категории</option>
-            {ticketCategoryOptions.map((c) => (
-              <option key={c} value={c}>
-                {t.ticketCategories[c as keyof typeof t.ticketCategories]}
-              </option>
-            ))}
-          </Select>
-        </label>
-        <label>
-          Помещение
-          <Select value={unitId} onChange={(e) => setUnitId(e.target.value)}>
-            <option value="">Все помещения</option>
-            {[
-              ...new Map(
-                availableTickets.map((t) => [
-                  t.unitId,
-                  {
-                    id: t.unitId,
-                    label: `${t.propertyName ?? ""} · ${t.unitNumber ?? ""}`,
-                  },
-                ]),
-              ).values(),
-            ].map((u) => (
-              <option key={u.id} value={u.id}>
-                {u.label}
-              </option>
-            ))}
-          </Select>
-        </label>
-        <label>
-          Заявитель
-          <Select
-            value={applicant}
-            onChange={(e) => setApplicant(e.target.value)}
-          >
-            <option value="">Все заявители</option>
-            {[
-              ...new Map(
-                availableTickets.map((t) => [
-                  t.createdBy,
-                  { id: t.createdBy, name: t.createdByName ?? t.createdBy },
-                ]),
-              ).values(),
-            ].map((u) => (
-              <option key={u.id} value={u.id}>
-                {u.name}
-              </option>
-            ))}
-          </Select>
-        </label>
-        <Checkbox
-          checked={archive}
-          onChange={(e) => setArchive(e.target.checked)}
+        <div
+          className="workspace-filter-grid"
+          role="search"
+          aria-label="Фильтры заявок"
         >
-          Только выполненные и архив
-        </Checkbox>
-      </div>
-      {ticketView === "board" ? (
-        <div className="kanban-board">
-          {[
-            { id: "new", label: "Новые", statuses: ["new", "accepted"] },
-            { id: "in_progress", label: "В работе", statuses: ["in_progress"] },
-            {
-              id: "waiting_tenant",
-              label: "Ожидание",
-              statuses: ["waiting_tenant"],
-            },
-            { id: "deferred", label: "Отложены", statuses: ["deferred"] },
-            {
-              id: "completed",
-              label: "Выполнены",
-              statuses: ["completed", "resolved"],
-            },
-            {
-              id: "closed",
-              label: "Закрыты",
-              statuses: ["closed", "rejected"],
-            },
-          ].map((column) => (
-            <section
-              className="kanban-column"
-              key={column.id}
-              onDragOver={(event) => event.preventDefault()}
-              onDrop={(event) => {
-                event.preventDefault();
-                void moveBoardTicket(
-                  event.dataTransfer.getData("text/plain"),
-                  column.id,
-                );
-              }}
+          <label className="workspace-filter-search">
+            Поиск
+            <Input
+              type="search"
+              aria-label="Поиск по номеру, тексту, помещению, заявителю"
+              placeholder="Номер, текст, помещение, заявитель"
+              value={query}
+              maxLength={300}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </label>
+          <label>
+            Создана с
+            <Input
+              type="date"
+              value={from}
+              max={to || undefined}
+              onChange={(e) => setFrom(e.target.value)}
+            />
+          </label>
+          <label>
+            По
+            <Input
+              type="date"
+              value={to}
+              min={from || undefined}
+              onChange={(e) => setTo(e.target.value)}
+            />
+          </label>
+          <label>
+            Категория
+            <Select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
             >
-              <h3>
-                {column.label}{" "}
-                <small>
-                  {
-                    filteredTickets.filter((t) =>
-                      column.statuses.includes(t.status),
-                    ).length
-                  }
-                </small>
-              </h3>
-              {filteredTickets
-                .filter((t) => column.statuses.includes(t.status))
-                .map((ticket) => (
-                  <article
-                    className="kanban-ticket"
-                    draggable
-                    key={ticket.id}
-                    onDragStart={(event) =>
-                      event.dataTransfer.setData("text/plain", ticket.id)
-                    }
-                  >
-                    <Button
-                      variant="text"
-                      type="button"
-                      className="text-button"
-                      onClick={() => openTicketDetail(ticket.id)}
-                    >
-                      {ticket.number} · {ticket.title}
-                    </Button>
-                    <p>
-                      {ticket.propertyName} · {ticket.unitNumber}
-                    </p>
-                    <small>{ticket.assignedToName || "Не назначен"}</small>
-                    <span
-                      className={`status-pill status-pill--${getSlaState(ticket, locale).tone}`}
-                    >
-                      {getSlaState(ticket, locale).label}
-                    </span>
-                    <Select
-                      aria-label={`Статус ${ticket.number}`}
-                      value={ticket.status}
-                      disabled={Boolean(busyAction)}
-                      onChange={(event) =>
-                        void moveBoardTicket(ticket.id, event.target.value)
-                      }
-                    >
-                      {ticketStatusOptions.map((status) => (
-                        <option key={status} value={status}>
-                          {getTicketStatusLabel(status, locale)}
-                        </option>
-                      ))}
-                    </Select>
-                  </article>
-                ))}
-            </section>
-          ))}
+              <option value="">Все категории</option>
+              {ticketCategoryOptions.map((c) => (
+                <option key={c} value={c}>
+                  {t.ticketCategories[c as keyof typeof t.ticketCategories]}
+                </option>
+              ))}
+            </Select>
+          </label>
+          <label>
+            Помещение
+            <Select value={unitId} onChange={(e) => setUnitId(e.target.value)}>
+              <option value="">Все помещения</option>
+              {[
+                ...new Map(
+                  availableTickets.map((t) => [
+                    t.unitId,
+                    {
+                      id: t.unitId,
+                      label: `${t.propertyName ?? ""} · ${t.unitNumber ?? ""}`,
+                    },
+                  ]),
+                ).values(),
+              ].map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.label}
+                </option>
+              ))}
+            </Select>
+          </label>
+          <label>
+            Заявитель
+            <Select
+              value={applicant}
+              onChange={(e) => setApplicant(e.target.value)}
+            >
+              <option value="">Все заявители</option>
+              {[
+                ...new Map(
+                  availableTickets.map((t) => [
+                    t.createdBy,
+                    { id: t.createdBy, name: t.createdByName ?? t.createdBy },
+                  ]),
+                ).values(),
+              ].map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.name}
+                </option>
+              ))}
+            </Select>
+          </label>
+          <Checkbox
+            checked={archive}
+            onChange={(e) => setArchive(e.target.checked)}
+          >
+            Только выполненные и архив
+          </Checkbox>
         </div>
-      ) : (
-        <article className="mvp-card">
-          <div className="mvp-table-wrap">
-            <ResponsiveTable className="mvp-table">
-              <thead>
-                <tr>
-                  <th>№</th>
-                  <th>{t.fields.title}</th>
-                  <th>{t.fields.tenant}</th>
-                  <th>{t.fields.priority}</th>
-                  <th>{t.fields.status}</th>
-                  <th>SLA</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredTickets.map((ticket) => (
-                  <tr
-                    key={ticket.id}
-                    onClick={() => openTicketDetail(ticket.id)}
-                  >
-                    <td>{ticket.number}</td>
-                    <td>
-                      <strong>{ticket.title}</strong>
-                      <small>
-                        {ticket.propertyName ?? "—"} ·{" "}
-                        {ticket.unitNumber ?? "—"}
-                      </small>
-                    </td>
-                    <td>{ticket.tenantName ?? "—"}</td>
-                    <td>
-                      {
-                        t.ticketPriorities[
-                          ticket.priority as keyof typeof t.ticketPriorities
-                        ]
+        {ticketView === "board" ? (
+          <div className="kanban-board">
+            {[
+              { id: "new", label: "Новые", statuses: ["new", "accepted"] },
+              {
+                id: "in_progress",
+                label: "В работе",
+                statuses: ["in_progress"],
+              },
+              {
+                id: "waiting_tenant",
+                label: "Ожидание",
+                statuses: ["waiting_tenant"],
+              },
+              { id: "deferred", label: "Отложены", statuses: ["deferred"] },
+              {
+                id: "completed",
+                label: "Выполнены",
+                statuses: ["completed", "resolved"],
+              },
+              {
+                id: "closed",
+                label: "Закрыты",
+                statuses: ["closed", "rejected"],
+              },
+            ].map((column) => (
+              <section
+                className="kanban-column"
+                key={column.id}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  void moveBoardTicket(
+                    event.dataTransfer.getData("text/plain"),
+                    column.id,
+                  );
+                }}
+              >
+                <h3>
+                  {column.label}{" "}
+                  <small>
+                    {
+                      filteredTickets.filter((t) =>
+                        column.statuses.includes(t.status),
+                      ).length
+                    }
+                  </small>
+                </h3>
+                {filteredTickets
+                  .filter((t) => column.statuses.includes(t.status))
+                  .map((ticket) => (
+                    <article
+                      className="kanban-ticket"
+                      draggable
+                      key={ticket.id}
+                      onDragStart={(event) =>
+                        event.dataTransfer.setData("text/plain", ticket.id)
                       }
-                    </td>
-                    <td>
-                      {
-                        t.ticketStatuses[
-                          ticket.status as keyof typeof t.ticketStatuses
-                        ]
-                      }
-                    </td>
-                    <td>
+                    >
+                      <Button
+                        variant="text"
+                        type="button"
+                        className="text-button"
+                        onClick={() => openTicketDetail(ticket.id)}
+                      >
+                        {ticket.number} · {ticket.title}
+                      </Button>
+                      <p>
+                        {ticket.propertyName} · {ticket.unitNumber}
+                      </p>
+                      <small>{ticket.assignedToName || "Не назначен"}</small>
                       <span
                         className={`status-pill status-pill--${getSlaState(ticket, locale).tone}`}
                       >
                         {getSlaState(ticket, locale).label}
                       </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </ResponsiveTable>
+                      <Select
+                        aria-label={`Статус ${ticket.number}`}
+                        value={ticket.status}
+                        disabled={Boolean(busyAction)}
+                        onChange={(event) =>
+                          void moveBoardTicket(ticket.id, event.target.value)
+                        }
+                      >
+                        {ticketStatusOptions.map((status) => (
+                          <option key={status} value={status}>
+                            {getTicketStatusLabel(status, locale)}
+                          </option>
+                        ))}
+                      </Select>
+                    </article>
+                  ))}
+              </section>
+            ))}
           </div>
-          {filteredTickets.length === 0 ? (
-            <div className="empty-state">{t.hints.ticketEmpty}</div>
-          ) : null}
-        </article>
-      )}
-      <DispatchWorkspace />
+        ) : (
+          <article className="mvp-card">
+            <div className="mvp-table-wrap">
+              <ResponsiveTable className="mvp-table">
+                <thead>
+                  <tr>
+                    <th>№</th>
+                    <th>{t.fields.title}</th>
+                    <th>{t.fields.tenant}</th>
+                    <th>{t.fields.priority}</th>
+                    <th>{t.fields.status}</th>
+                    <th>SLA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredTickets.map((ticket) => (
+                    <tr
+                      key={ticket.id}
+                      onClick={() => openTicketDetail(ticket.id)}
+                    >
+                      <td>{ticket.number}</td>
+                      <td>
+                        <strong>{ticket.title}</strong>
+                        <small>
+                          {ticket.propertyName ?? "—"} ·{" "}
+                          {ticket.unitNumber ?? "—"}
+                        </small>
+                      </td>
+                      <td>{ticket.tenantName ?? "—"}</td>
+                      <td>
+                        {
+                          t.ticketPriorities[
+                            ticket.priority as keyof typeof t.ticketPriorities
+                          ]
+                        }
+                      </td>
+                      <td>
+                        {
+                          t.ticketStatuses[
+                            ticket.status as keyof typeof t.ticketStatuses
+                          ]
+                        }
+                      </td>
+                      <td>
+                        <span
+                          className={`status-pill status-pill--${getSlaState(ticket, locale).tone}`}
+                        >
+                          {getSlaState(ticket, locale).label}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </ResponsiveTable>
+            </div>
+            {filteredTickets.length === 0 ? (
+              <div className="empty-state">{t.hints.ticketEmpty}</div>
+            ) : null}
+          </article>
+        )}
+      </div>
+      <div
+        hidden={workspaceMode !== "dispatch"}
+        role="tabpanel"
+        id="ticket-list-panel-dispatch"
+        aria-labelledby="ticket-list-tab-dispatch"
+      >
+        <DispatchWorkspace />
+      </div>
     </section>
   );
 }

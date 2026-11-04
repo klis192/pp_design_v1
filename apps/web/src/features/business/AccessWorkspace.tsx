@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import type { Assignment } from "../../../../../packages/contracts/src/access";
 import { businessRolePermissions } from "../../../../../packages/contracts/src/access";
 import {
@@ -16,7 +16,10 @@ import {
   Textarea,
 } from "../../ui";
 import { ActionIcon } from "./ActionIcon";
-import { Disclosure, Feedback, Register, date, useResource } from "./shared";
+import { Feedback, Register, date, useResource } from "./shared";
+import { SidePanel } from "../../ui/SidePanel";
+import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
+import { useWorkspaceViewState } from "../../ui/useWorkspaceViewState";
 import type { AccountingWorkspace } from "../../../../../packages/contracts/src/accounting";
 type Participant = {
   id: string;
@@ -50,8 +53,6 @@ function scopePermissions(
   );
 }
 export function AccessWorkspace() {
-  const formPanel = useRef<HTMLElement>(null),
-    revokePanel = useRef<HTMLFormElement>(null);
   const { session, overview, operations } = useWorkspace(),
     { token } = session;
   const resource = useResource<{ items: Assignment[] }>(
@@ -78,18 +79,14 @@ export function AccessWorkspace() {
       ...businessRolePermissions.tenant,
     ]),
     [revoke, setRevoke] = useState("");
-  useEffect(() => {
-    if (showForm) {
-      formPanel.current?.focus();
-      formPanel.current?.scrollIntoView({ block: "start" });
-    }
-  }, [showForm, edit]);
-  useEffect(() => {
-    if (revoke) {
-      revokePanel.current?.focus();
-      revokePanel.current?.scrollIntoView({ block: "start" });
-    }
-  }, [revoke]);
+  const [view, setView] = useWorkspaceViewState(
+    `wirehouse.access.view:${session.user.id}`,
+    "assignments",
+    ["assignments", "participants"] as const,
+  );
+  const [addingParticipant, setAddingParticipant] = useState(false),
+    [formDirty, setFormDirty] = useState(false),
+    [participantDirty, setParticipantDirty] = useState(false);
   const users = [
     ...people.data.items,
     ...(operations?.users ?? []).map((u) => ({
@@ -143,10 +140,12 @@ export function AccessWorkspace() {
         },
       });
       setShowForm(false);
+      setFormDirty(false);
       setEdit(null);
     });
   };
   const openEdit = (a: Assignment) => {
+    setFormDirty(false);
     setEdit(a);
     setRole(a.businessRole);
     setScope(a.scopeType);
@@ -157,123 +156,221 @@ export function AccessWorkspace() {
     <div className="business-stack">
       <Feedback {...resource} />
       <Feedback error={people.error || accounts.error} />
-      <Register
-        title="Контекстные права"
-        rows={resource.data.items}
-        searchText={(a) =>
-          `${users.find((u) => u.id === a.userId)?.full_name} ${roles[a.businessRole]} ${scopeLabel(a)} ${a.reason}`
+      <WorkspaceTabs
+        label="Доступ и участники"
+        idPrefix="access-views"
+        value={view}
+        onChange={(next) =>
+          setView(next === "participants" ? "participants" : "assignments")
         }
-        action={
-          <Button
-            variant="primary"
-            onClick={() => {
-              setEdit(null);
-              setRole("tenant");
-              setScope("lease");
-              setPermissions([...businessRolePermissions.tenant]);
-              setShowForm(!showForm);
-            }}
-          >
-            Назначить доступ
-          </Button>
-        }
-        columns={[
+        items={[
           {
-            key: "user",
-            label: "Пользователь",
-            render: (a) =>
-              users.find((u) => u.id === a.userId)?.full_name ??
-              "Учетная запись",
+            id: "assignments",
+            label: "Назначения",
+            count: resource.data.items.length,
           },
           {
-            key: "role",
-            label: "Бизнес-роль",
-            render: (a) => roles[a.businessRole],
-          },
-          {
-            key: "scope",
-            label: "Область",
-            render: (a) => (
-              <>
-                {scopeNames[a.scopeType]} · {scopeLabel(a) ?? a.scopeId}
-              </>
-            ),
-          },
-          {
-            key: "period",
-            label: "Срок",
-            render: (a) => (
-              <>
-                {date(a.validFrom)} —{" "}
-                {a.validTo ? date(a.validTo) : "бессрочно"}
-                <small>
-                  {a.revokedAt
-                    ? "Доступ отозван"
-                    : a.validFrom > new Date().toISOString().slice(0, 10)
-                      ? "Еще не начался"
-                      : a.validTo &&
-                          a.validTo < new Date().toISOString().slice(0, 10)
-                        ? a.retainHistory
-                          ? "Только история"
-                          : "Завершен"
-                        : "Действует"}
-                </small>
-              </>
-            ),
-          },
-          {
-            key: "actions",
-            label: "Действия",
-            render: (a) =>
-              !a.revokedAt ? (
-                <div className="mvp-actions">
-                  <IconButton label="Изменить" onClick={() => openEdit(a)}>
-                    <ActionIcon name="edit" />
-                  </IconButton>
-                  <Button variant="text" onClick={() => setRevoke(a.id)}>
-                    Отозвать
-                  </Button>
-                </div>
-              ) : (
-                "—"
-              ),
+            id: "participants",
+            label: "Участники",
+            count: people.data.items.length,
           },
         ]}
       />
+      <div
+        hidden={view !== "assignments"}
+        role="tabpanel"
+        id="access-views-panel-assignments"
+        aria-labelledby="access-views-tab-assignments"
+      >
+        <Register
+          title="Контекстные права"
+          rows={resource.data.items}
+          searchText={(a) =>
+            `${users.find((u) => u.id === a.userId)?.full_name} ${roles[a.businessRole]} ${scopeLabel(a)} ${a.reason}`
+          }
+          action={
+            <IconButton
+              label="Назначить доступ"
+              variant="primary"
+              onClick={() => {
+                setEdit(null);
+                setFormDirty(false);
+                setRole("tenant");
+                setScope("lease");
+                setPermissions([...businessRolePermissions.tenant]);
+                setShowForm(!showForm);
+              }}
+            >
+              <ActionIcon name="plus" />
+            </IconButton>
+          }
+          columns={[
+            {
+              key: "user",
+              label: "Пользователь",
+              render: (a) =>
+                users.find((u) => u.id === a.userId)?.full_name ??
+                "Учетная запись",
+            },
+            {
+              key: "role",
+              label: "Бизнес-роль",
+              render: (a) => roles[a.businessRole],
+            },
+            {
+              key: "scope",
+              label: "Область",
+              render: (a) => (
+                <>
+                  {scopeNames[a.scopeType]} · {scopeLabel(a) ?? a.scopeId}
+                </>
+              ),
+            },
+            {
+              key: "period",
+              label: "Срок",
+              render: (a) => (
+                <>
+                  {date(a.validFrom)} —{" "}
+                  {a.validTo ? date(a.validTo) : "бессрочно"}
+                  <small>
+                    {a.revokedAt
+                      ? "Доступ отозван"
+                      : a.validFrom > new Date().toISOString().slice(0, 10)
+                        ? "Еще не начался"
+                        : a.validTo &&
+                            a.validTo < new Date().toISOString().slice(0, 10)
+                          ? a.retainHistory
+                            ? "Только история"
+                            : "Завершен"
+                          : "Действует"}
+                  </small>
+                </>
+              ),
+            },
+            {
+              key: "actions",
+              label: "Действия",
+              render: (a) =>
+                !a.revokedAt ? (
+                  <div className="mvp-actions">
+                    <IconButton label="Изменить" onClick={() => openEdit(a)}>
+                      <ActionIcon name="edit" />
+                    </IconButton>
+                    <IconButton
+                      label="Отозвать доступ"
+                      onClick={() => setRevoke(a.id)}
+                    >
+                      <ActionIcon name="close" />
+                    </IconButton>
+                  </div>
+                ) : (
+                  "—"
+                ),
+            },
+          ]}
+        />
+      </div>
+      <div
+        hidden={view !== "participants"}
+        role="tabpanel"
+        id="access-views-panel-participants"
+        aria-labelledby="access-views-tab-participants"
+      >
+        <Register
+          title="Участники"
+          rows={people.data.items}
+          searchText={(person) => `${person.full_name} ${person.email ?? ""}`}
+          action={
+            <IconButton
+              label="Добавить участника"
+              variant="primary"
+              onClick={() => {
+                setParticipantDirty(false);
+                setAddingParticipant(true);
+              }}
+            >
+              <ActionIcon name="plus" />
+            </IconButton>
+          }
+          columns={[
+            {
+              key: "name",
+              label: "Имя",
+              render: (person) => <strong>{person.full_name}</strong>,
+            },
+            {
+              key: "email",
+              label: "Почта",
+              render: (person) => person.email ?? "—",
+            },
+            {
+              key: "role",
+              label: "Тип учётной записи",
+              render: (person) =>
+                person.role === "tenant"
+                  ? "Клиент"
+                  : person.role === "worker"
+                    ? "Исполнитель"
+                    : person.role === "admin"
+                      ? "Администратор"
+                      : "Сотрудник",
+            },
+          ]}
+        />
+      </div>
       {revoke && (
-        <form
-          ref={revokePanel}
-          tabIndex={-1}
-          className="form-grid business-detail"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const v = new FormData(e.currentTarget);
-            void resource.run(async () => {
-              await apiRequest(`/api/access/assignments/${revoke}/revoke`, {
-                token,
-                method: "POST",
-                body: { reason: v.get("reason") },
-              });
-              setRevoke("");
-            }, "Доступ отозван");
-          }}
+        <SidePanel
+          title="Отозвать доступ"
+          onClose={() => setRevoke("")}
+          busy={resource.busy}
         >
-          <label>
-            Причина отзыва
-            <Input name="reason" required maxLength={10000} />
-          </label>
-          <div className="mvp-actions">
-            <Button variant="danger" type="submit" busy={resource.busy}>
-              Отозвать доступ
-            </Button>
-            <Button onClick={() => setRevoke("")}>Отмена</Button>
-          </div>
-        </form>
+          <Feedback {...resource} />
+          <form
+            className="form-grid business-detail"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const v = new FormData(e.currentTarget);
+              void resource.run(async () => {
+                await apiRequest(`/api/access/assignments/${revoke}/revoke`, {
+                  token,
+                  method: "POST",
+                  body: { reason: v.get("reason") },
+                });
+                setRevoke("");
+              }, "Доступ отозван");
+            }}
+          >
+            <label>
+              Причина отзыва
+              <Input name="reason" required maxLength={10000} />
+            </label>
+            <div className="mvp-actions">
+              <Button variant="danger" type="submit" busy={resource.busy}>
+                Отозвать доступ
+              </Button>
+              <Button onClick={() => setRevoke("")}>Отмена</Button>
+            </div>
+          </form>
+        </SidePanel>
       )}
       {showForm && (
-        <section className="business-detail" ref={formPanel} tabIndex={-1}>
-          <h3>{edit ? "Изменить назначение" : "Назначить доступ"}</h3>
-          <form className="form-grid" key={edit?.id ?? "new"} onSubmit={submit}>
+        <SidePanel
+          title={edit ? "Изменить назначение" : "Назначить доступ"}
+          onClose={() => {
+            setShowForm(false);
+            setFormDirty(false);
+          }}
+          busy={resource.busy}
+          dirty={formDirty}
+        >
+          <Feedback {...resource} />
+          <form
+            className="form-grid"
+            key={edit?.id ?? "new"}
+            onSubmit={submit}
+            onChange={() => setFormDirty(true)}
+          >
             {edit && (
               <>
                 <Input type="hidden" name="userId" value={edit.userId} />
@@ -440,58 +537,72 @@ export function AccessWorkspace() {
               <Button onClick={() => setShowForm(false)}>Отмена</Button>
             </div>
           </form>
-        </section>
+        </SidePanel>
       )}
-      <Disclosure title="Добавить участника: собственник или арендатор">
-        <form
-          className="form-grid"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const form = e.currentTarget,
-              v = new FormData(form);
-            void resource.run(async () => {
-              await apiRequest("/api/access/participants", {
-                token,
-                method: "POST",
-                body: {
-                  fullName: v.get("fullName"),
-                  email: v.get("email"),
-                  phone: v.get("phone"),
-                  password: v.get("password"),
-                },
-              });
-              await people.load();
-              form.reset();
-            }, "Участник добавлен. Назначьте ему доступ к нужному контексту.");
+      {addingParticipant && (
+        <SidePanel
+          title="Добавить участника"
+          onClose={() => {
+            setAddingParticipant(false);
+            setParticipantDirty(false);
           }}
+          busy={resource.busy}
+          dirty={participantDirty}
         >
-          <label>
-            ФИО
-            <Input name="fullName" required maxLength={300} />
-          </label>
-          <label>
-            Почта
-            <Input name="email" type="email" required />
-          </label>
-          <label>
-            Телефон
-            <Input name="phone" type="tel" required />
-          </label>
-          <label>
-            Начальный пароль
-            <Input
-              name="password"
-              type="password"
-              required
-              minLength={10}
-              autoComplete="new-password"
-            />
-          </label>
-          <Button variant="primary" type="submit" busy={resource.busy}>
-            Добавить участника
-          </Button>
-        </form>
-      </Disclosure>
+          <Feedback {...resource} />
+          <form
+            className="form-grid"
+            onChange={() => setParticipantDirty(true)}
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.currentTarget,
+                v = new FormData(form);
+              void resource.run(async () => {
+                await apiRequest("/api/access/participants", {
+                  token,
+                  method: "POST",
+                  body: {
+                    fullName: v.get("fullName"),
+                    email: v.get("email"),
+                    phone: v.get("phone"),
+                    password: v.get("password"),
+                  },
+                });
+                await people.load();
+                form.reset();
+                setParticipantDirty(false);
+                setAddingParticipant(false);
+              }, "Участник добавлен. Назначьте ему доступ к нужному контексту.");
+            }}
+          >
+            <label>
+              ФИО
+              <Input name="fullName" required maxLength={300} />
+            </label>
+            <label>
+              Почта
+              <Input name="email" type="email" required />
+            </label>
+            <label>
+              Телефон
+              <Input name="phone" type="tel" required />
+            </label>
+            <label>
+              Начальный пароль
+              <Input
+                name="password"
+                type="password"
+                required
+                minLength={10}
+                autoComplete="new-password"
+              />
+            </label>
+            <Button variant="primary" type="submit" busy={resource.busy}>
+              Добавить участника
+            </Button>
+          </form>
+        </SidePanel>
+      )}
     </div>
   );
 }

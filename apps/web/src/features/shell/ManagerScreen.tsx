@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { Agenda } from "../../Agenda";
+import { requestBillingView } from "../billing/billing-view";
 import { useWorkspace } from "../../app/WorkspaceContext";
 const Operations = lazy(() =>
   import("../operations/Operations").then((module) => ({
@@ -132,7 +133,10 @@ export function ManagerScreen() {
           setOperationsRoute(target);
           setManagerScreen("operations");
         }}
-        onBilling={() => setManagerScreen("billing")}
+        onBilling={() => {
+          requestBillingView(session.user.id, "invoices");
+          setManagerScreen("billing");
+        }}
       />
     );
   if (managerScreen === "operations")

@@ -23,6 +23,7 @@ export function useNavigationActions(
     | "setTenantDetailTab"
     | "setSelectedUnitId"
     | "setSelectedTicketId"
+    | "setServiceRecordId"
     | "isManagerShell"
     | "session"
     | "setOverview"
@@ -44,6 +45,7 @@ export function useNavigationActions(
     setTenantDetailTab,
     setSelectedUnitId,
     setSelectedTicketId,
+    setServiceRecordId,
     isManagerShell,
     session,
     setOverview,
@@ -97,6 +99,7 @@ export function useNavigationActions(
       return;
     }
 
+    setServiceRecordId(ticketId);
     setSelectedSection("service");
   };
 

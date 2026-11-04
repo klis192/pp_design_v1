@@ -30,6 +30,7 @@ export function useTicketsActions(
     | "setManagerScreen"
     | "setTicketFrom"
     | "setSelectedSection"
+    | "setServiceRecordId"
     | "isTenant"
     | "paymentProofForm"
     | "locale"
@@ -45,7 +46,6 @@ export function useTicketsActions(
     | "setCommentForm"
     | "setTicketComments"
     | "setTicketAttachments"
-    | "documentUploadCategory"
     | "selectedChatTargetTicket"
     | "chatDraft"
     | "managerUi"
@@ -69,6 +69,7 @@ export function useTicketsActions(
     setManagerScreen,
     setTicketFrom,
     setSelectedSection,
+    setServiceRecordId,
     refreshWorkspace,
     isTenant,
     paymentProofForm,
@@ -85,7 +86,6 @@ export function useTicketsActions(
     setCommentForm,
     setTicketComments,
     setTicketAttachments,
-    documentUploadCategory,
     openAuthenticatedFile,
     selectedChatTargetTicket,
     chatDraft,
@@ -132,6 +132,7 @@ export function useTicketsActions(
         setTicketFrom("tickets");
         setManagerScreen("ticket-detail");
       } else {
+        setServiceRecordId(result.item.id);
         setSelectedSection("service");
       }
       await refreshWorkspace(result.item.id);
@@ -421,7 +422,6 @@ export function useTicketsActions(
         token: session.token,
         body: {
           fileName: file.name,
-          category: documentUploadCategory,
           mimeType: file.type || "application/octet-stream",
           contentBase64: arrayBufferToBase64(buffer),
         },

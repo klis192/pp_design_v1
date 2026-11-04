@@ -1,11 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ActionIcon, Register } from "../business/shared";
-import { Disclosure } from "../business/shared";
+import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
+import { SidePanel } from "../../ui/SidePanel";
+import "./workspace.css";
+import { useSurfaceView } from "./useSurfaceView";
 import { AccessWorkspace } from "../business/AccessWorkspace";
 import { ReadingsWorkspace } from "../business/ReadingsWorkspace";
 import { MaintenanceProgress } from "../business/MaintenanceProgress";
 import { MaintenanceImport } from "../platform/MaintenanceImport";
-import { Button, IconButton, Input, Select } from "../../ui";
+import { Button, IconButton, Select } from "../../ui";
 import { OperationCard } from "./OperationCard";
 import { OperationEditor } from "./OperationEditor";
 import {
@@ -39,7 +42,11 @@ export function Operations(props: Props) {
     else setLocalSelectedRow(recordId);
   };
   const [meterView, setMeterView] = useState("meters");
-  const detail = useRef<HTMLDivElement>(null);
+  const [planView, setPlanView] = useSurfaceView(
+    `wirehouse.view.operations-plan:${props.user.id}`,
+    "schedule",
+    ["schedule", "progress", "import"] as const,
+  );
   const {
     initialTab,
     user,
@@ -59,21 +66,11 @@ export function Operations(props: Props) {
     create,
     draft,
     save,
-    input,
-    select,
-    check,
-    units,
-    workers,
-    area,
-    change,
     data,
     busy,
     readingMeter,
     setReadingMeter,
-    onUnit,
     unitName,
-    tickets,
-    onTicket,
     token,
   } = model;
   const group = ["plans", "templates"].includes(tab)
@@ -99,15 +96,40 @@ export function Operations(props: Props) {
     (r) => r.id === selectedRow && (!property || r.propertyId === property),
   );
   useEffect(() => {
-    if (!selectedRecord) return;
-    const frame = requestAnimationFrame(() => {
-      detail.current?.scrollIntoView({ block: "nearest", behavior: "instant" });
-      detail.current
-        ?.querySelector<HTMLHeadingElement>("h3")
-        ?.focus({ preventScroll: true });
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [selectedRecord?.id, tab]);
+    if (readingMeter) setSelectedRow("");
+  }, [readingMeter]);
+  const mainTabs = Object.entries(tabs)
+    .filter(
+      ([key]) =>
+        (initialTab === "users"
+          ? ["users", "access", "audit"].includes(key)
+          : ![
+              "users",
+              "access",
+              "audit",
+              "templates",
+              "materials",
+              "contractors",
+            ].includes(key)) &&
+        (key !== "audit" || hasPermission(user, "audit.read")) &&
+        (key !== "access" || hasPermission(user, "permissions.manage")),
+    )
+    .map(([id, label]) => ({ id, label, disabled: busy }));
+  const activePlanView = selectedRow && tab === "plans" ? "schedule" : planView;
+  const showRegister =
+    ![
+      "access",
+      "audit",
+      "estimates",
+      "templates",
+      "materials",
+      "contractors",
+    ].includes(tab) &&
+    !(
+      tab === "meters" &&
+      (meterView === "readings" || Boolean(readingMeter))
+    ) &&
+    !(tab === "plans" && activePlanView !== "schedule");
   if (routeError)
     return (
       <section className="mvp-page operations-page">
@@ -139,246 +161,240 @@ export function Operations(props: Props) {
           </h2>
         </div>
       </div>
-      <div className="mvp-tabs operations-nav">
-        {Object.entries(tabs)
-          .filter(
-            ([key]) =>
-              (initialTab === "users"
-                ? ["users", "access", "audit"].includes(key)
-                : ![
-                    "users",
-                    "access",
-                    "audit",
-                    "templates",
-                    "materials",
-                    "contractors",
-                  ].includes(key)) &&
-              (key !== "audit" || hasPermission(user, "audit.read")) &&
-              (key !== "access" || hasPermission(user, "permissions.manage")),
-          )
-          .map(([key, label]) => (
-            <Button
-              variant="plain"
-              type="button"
-              className={`mvp-tab ${group === key ? "mvp-tab--active" : ""}`}
-              key={key}
-              disabled={busy}
-              onClick={() => switchTab(key)}
-            >
-              {label}
-            </Button>
-          ))}
-      </div>
-      <label className="operations-mobile-nav">
-        Раздел
-        <Select value={tab} onChange={(e) => switchTab(e.target.value)}>
-          {Object.entries(tabs)
-            .filter(
-              ([key]) =>
-                (initialTab === "users"
-                  ? ["users", "access", "audit"].includes(key)
-                  : !["users", "access", "audit"].includes(key)) &&
-                (key !== "audit" || hasPermission(user, "audit.read")) &&
-                (key !== "access" || hasPermission(user, "permissions.manage")),
-            )
-            .map(([key, label]) => (
-              <option key={key} value={key}>
-                {label}
-              </option>
-            ))}
-        </Select>
-      </label>
-      {["plans", "services"].includes(group) && (
-        <div className="mvp-actions operations-subnav">
-          {(group === "plans"
-            ? ["plans", "templates"]
-            : ["services", "materials", "contractors"]
-          ).map((key) => (
-            <Button
-              key={key}
-              aria-pressed={tab === key}
-              variant={tab === key ? "secondary" : "text"}
-              onClick={() => switchTab(key)}
-            >
-              {tabs[key]}
-            </Button>
-          ))}
-        </div>
-      )}
-      {error && (
-        <div className="notice notice--error" role="alert">
-          {error}
-        </div>
-      )}
-      {notice && (
-        <div className="notice" role="status">
-          {notice}
-        </div>
-      )}
-      {tab === "meters" && (
-        <div className="business-tabs" aria-label="Учет приборов">
-          <Button
-            aria-pressed={meterView === "meters" && !readingMeter}
-            onClick={() => {
-              setMeterView("meters");
-              setReadingMeter("");
-            }}
-          >
-            Приборы
-          </Button>
-          <Button
-            aria-pressed={meterView === "readings" || Boolean(readingMeter)}
-            onClick={() => setMeterView("readings")}
-          >
-            Показания
-          </Button>
-        </div>
-      )}
-      {tab === "plans" && <MaintenanceProgress />}
-      {tab === "plans" &&
-        hasPermission(user, "maintenance.write") &&
-        hasPermission(user, "imports.write") && (
-          <MaintenanceImport
-            token={token}
-            onImported={async () => {
-              await model.load();
-              await model.onRefresh();
+      <WorkspaceTabs
+        idPrefix="operations-main"
+        label={
+          initialTab === "users"
+            ? "Пользователи и доступ"
+            : "Разделы эксплуатации"
+        }
+        items={mainTabs}
+        value={group}
+        onChange={(id) => {
+          setPlanView("schedule");
+          switchTab(id);
+        }}
+      />
+      <div
+        className="workspace-pane"
+        role="tabpanel"
+        id={`operations-main-panel-${group}`}
+        aria-labelledby={`operations-main-tab-${group}`}
+      >
+        {group === "plans" && (
+          <WorkspaceTabs
+            label="ППР: представление"
+            items={[
+              { id: "schedule", label: "Графики" },
+              { id: "progress", label: "План и факт" },
+              { id: "templates", label: "Регламенты" },
+              ...(hasPermission(user, "maintenance.write") &&
+              hasPermission(user, "imports.write")
+                ? [{ id: "import", label: "Импорт" }]
+                : []),
+            ]}
+            value={tab === "templates" ? "templates" : activePlanView}
+            onChange={(id) => {
+              if (id === "templates") switchTab("templates");
+              else {
+                setSelectedRow("");
+                setPlanView(id as "schedule" | "progress" | "import");
+                if (tab !== "plans") switchTab("plans");
+              }
             }}
           />
         )}
-      {tab === "access" ? (
-        <AccessWorkspace />
-      ) : tab === "meters" &&
-        (meterView === "readings" || Boolean(readingMeter)) ? (
-        <ReadingsWorkspace initialMeterId={readingMeter} />
-      ) : tab === "audit" ? (
-        <AuditLog token={token} />
-      ) : tab === "estimates" ? (
-        <Estimates {...props} services={data.services} />
-      ) : ["templates", "materials", "contractors"].includes(tab) ? (
-        <Catalog
-          key={tab}
-          kind={tab as "templates" | "materials" | "contractors"}
-          {...props}
-        />
-      ) : (
-        <>
-          <div className="mvp-actions">
-            {tab !== "audit" && tab !== "users" && (
-              <Select
-                aria-label="Объект"
-                value={property}
-                onChange={(e) => setProperty(e.target.value)}
-              >
-                <option value="">Все объекты</option>
-                {overview.properties.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </Select>
-            )}
-            <span>Найдено: {rows.length}</span>
-            {tabPermission[tab] && hasPermission(user, tabPermission[tab]) && (
-              <Button
-                variant="primary"
-                className="primary-button"
-                type="button"
-                onClick={tab === "users" ? onCreateUser : create}
-                disabled={busy || (tab === "users" && !onCreateUser)}
-              >
-                Добавить
-              </Button>
-            )}
-          </div>
-          {tab === "users" && (
-            <p className="field-hint">
-              Роль задает доступные действия. Контекстные назначения определяют
-              объекты, помещения, договоры и ЛС, к которым эти действия
-              применимы. Блокировка отзывает доступ немедленно.
-            </p>
-          )}
-          {draft && <OperationEditor model={model} />}
-          <Register
-            title={tabs[tab] ?? "Записи"}
-            rows={rows}
-            selectedId={selectedRow}
-            onSelect={(r) => setSelectedRow(r.id)}
-            searchText={(r) =>
-              `${r.name ?? r.fullName} ${r.serialNumber ?? ""}`
-            }
-            columns={[
-              {
-                key: "name",
-                label: "Название",
-                render: (r) => <strong>{r.name ?? r.fullName}</strong>,
-              },
-              {
-                key: "property",
-                label: "Объект",
-                render: (r) =>
-                  overview.properties.find((p) => p.id === r.propertyId)
-                    ?.name ?? "—",
-                optional: true,
-              },
-              {
-                key: "context",
-                label: "Контекст",
-                render: (r) =>
-                  r.unitId
-                    ? `Помещение ${unitName(r.unitId)}`
-                    : r.role
-                      ? roleNames[String(r.role)]
-                      : (r.category ??
-                        (r.resource ? resourceNames[String(r.resource)] : "—")),
-                optional: true,
-              },
-              {
-                key: "status",
-                label: "Состояние",
-                render: (r) =>
-                  tab === "plans"
-                    ? `${r.active ? "По расписанию" : "Приостановлен"} · ${r.nextDate}`
-                    : tab === "users"
-                      ? r.isActive
-                        ? "Активен"
-                        : "Заблокирован"
-                      : r.status
-                        ? (statusNames[String(r.status)] ?? "Другой статус")
-                        : r.active === false
-                          ? "Отключено"
-                          : "Действует",
-              },
+        {group === "services" && (
+          <WorkspaceTabs
+            label="Услуги: представление"
+            items={[
+              { id: "services", label: "Каталог" },
+              { id: "materials", label: "Материалы" },
+              { id: "contractors", label: "Подрядчики" },
             ]}
+            value={tab}
+            onChange={switchTab}
           />
-          {selectedRecord && (
-            <div className="business-detail operation-detail" ref={detail}>
-              <div className="register-heading">
-                <h3 tabIndex={-1}>Детали записи</h3>
-                <IconButton
-                  label="Закрыть детали"
-                  onClick={() => setSelectedRow("")}
+        )}
+        {error && (
+          <div className="notice notice--error" role="alert">
+            {error}
+          </div>
+        )}
+        {notice && (
+          <div className="notice" role="status">
+            {notice}
+          </div>
+        )}
+        {tab === "meters" && (
+          <WorkspaceTabs
+            label="Учёт приборов"
+            items={[
+              { id: "meters", label: "Приборы" },
+              { id: "readings", label: "Показания" },
+            ]}
+            value={readingMeter ? "readings" : meterView}
+            onChange={(id) => {
+              if (id === "meters") {
+                setMeterView("meters");
+                setReadingMeter("");
+              } else setMeterView("readings");
+            }}
+          />
+        )}
+        {tab === "plans" && activePlanView === "progress" && (
+          <MaintenanceProgress />
+        )}
+        {tab === "plans" &&
+          activePlanView === "import" &&
+          hasPermission(user, "maintenance.write") &&
+          hasPermission(user, "imports.write") && (
+            <MaintenanceImport
+              token={token}
+              onImported={async () => {
+                await model.load();
+                await model.onRefresh();
+              }}
+            />
+          )}
+        {tab === "access" ? (
+          <AccessWorkspace />
+        ) : tab === "meters" &&
+          (meterView === "readings" || Boolean(readingMeter)) ? (
+          <ReadingsWorkspace initialMeterId={readingMeter} />
+        ) : tab === "audit" ? (
+          <AuditLog token={token} />
+        ) : tab === "estimates" ? (
+          <Estimates {...props} services={data.services} />
+        ) : ["templates", "materials", "contractors"].includes(tab) ? (
+          <Catalog
+            key={tab}
+            kind={tab as "templates" | "materials" | "contractors"}
+            {...props}
+          />
+        ) : showRegister ? (
+          <>
+            <div className="workspace-toolbar-row">
+              {tab !== "audit" && tab !== "users" && (
+                <Select
+                  aria-label="Объект"
+                  value={property}
+                  onChange={(e) => setProperty(e.target.value)}
                 >
-                  <ActionIcon name="close" />
-                </IconButton>
+                  <option value="">Все объекты</option>
+                  {overview.properties.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </Select>
+              )}
+              <span>Найдено: {rows.length}</span>
+              {tabPermission[tab] &&
+                hasPermission(user, tabPermission[tab]) && (
+                  <IconButton
+                    label={`Добавить: ${tabs[tab] ?? "запись"}`}
+                    variant="primary"
+                    type="button"
+                    onClick={tab === "users" ? onCreateUser : create}
+                    disabled={busy || (tab === "users" && !onCreateUser)}
+                  >
+                    <ActionIcon name="plus" />
+                  </IconButton>
+                )}
+            </div>
+            {tab === "users" && (
+              <p className="field-hint">
+                Роль задает доступные действия. Контекстные назначения
+                определяют объекты, помещения, договоры и ЛС, к которым эти
+                действия применимы. Блокировка отзывает доступ немедленно.
+              </p>
+            )}
+            <Register
+              title={tabs[tab] ?? "Записи"}
+              rows={rows}
+              selectedId={selectedRow}
+              onSelect={(r) => setSelectedRow(r.id)}
+              searchText={(r) =>
+                `${r.name ?? r.fullName} ${r.serialNumber ?? ""}`
+              }
+              columns={[
+                {
+                  key: "name",
+                  label: "Название",
+                  render: (r) => <strong>{r.name ?? r.fullName}</strong>,
+                },
+                {
+                  key: "property",
+                  label: "Объект",
+                  render: (r) =>
+                    overview.properties.find((p) => p.id === r.propertyId)
+                      ?.name ?? "—",
+                  optional: true,
+                },
+                {
+                  key: "context",
+                  label: "Контекст",
+                  render: (r) =>
+                    r.unitId
+                      ? `Помещение ${unitName(r.unitId)}`
+                      : r.role
+                        ? roleNames[String(r.role)]
+                        : (r.category ??
+                          (r.resource
+                            ? resourceNames[String(r.resource)]
+                            : "—")),
+                  optional: true,
+                },
+                {
+                  key: "status",
+                  label: "Состояние",
+                  render: (r) =>
+                    tab === "plans"
+                      ? `${r.active ? "По расписанию" : "Приостановлен"} · ${r.nextDate}`
+                      : tab === "users"
+                        ? r.isActive
+                          ? "Активен"
+                          : "Заблокирован"
+                        : r.status
+                          ? (statusNames[String(r.status)] ?? "Другой статус")
+                          : r.active === false
+                            ? "Отключено"
+                            : "Действует",
+                },
+              ]}
+            />
+            {selectedRecord && !draft && (
+              <SidePanel
+                title={
+                  selectedRecord.name ||
+                  selectedRecord.fullName ||
+                  "Детали записи"
+                }
+                onClose={() => {
+                  if (tab === "plans") setPlanView("schedule");
+                  setSelectedRow("");
+                }}
+              >
+                <OperationCard row={selectedRecord} model={model} />
+              </SidePanel>
+            )}
+            {selectedRow && model.loaded && !error && !selectedRecord && (
+              <p className="notice" role="status">
+                Запись не найдена или недоступна в выбранном контексте.
+              </p>
+            )}
+            {!rows.length && (
+              <div className="mvp-card empty-state">
+                {tab === "audit"
+                  ? "Изменений пока нет."
+                  : "Записей пока нет. Добавьте первую запись или измените фильтр."}
               </div>
-              <OperationCard row={selectedRecord} model={model} />
-            </div>
-          )}
-          {selectedRow && model.loaded && !error && !selectedRecord && (
-            <p className="notice" role="status">
-              Запись не найдена или недоступна в выбранном контексте.
-            </p>
-          )}
-          {!rows.length && (
-            <div className="mvp-card empty-state">
-              {tab === "audit"
-                ? "Изменений пока нет."
-                : "Записей пока нет. Добавьте первую запись или измените фильтр."}
-            </div>
-          )}
-        </>
-      )}
+            )}
+          </>
+        ) : null}
+        {draft && <OperationEditor model={model} />}
+      </div>
     </section>
   );
 }

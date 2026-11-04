@@ -1,12 +1,21 @@
 import { useWorkspace } from "../../app/WorkspaceContext";
+import { useRef } from "react";
+import { ActionIcon } from "../business/ActionIcon";
 import {
   formatDateTime,
   formatFileSize,
   supportedFileHint,
 } from "../../shared/format";
 import { type Ticket } from "../../shared/types";
-import { Button, Input } from "../../ui";
-export function TicketAttachmentBlock({ ticket }: { ticket: Ticket }) {
+import { IconButton, Input } from "../../ui";
+export function TicketAttachmentBlock({
+  ticket,
+  title,
+}: {
+  ticket: Ticket;
+  title?: string;
+}) {
+  const uploadInput = useRef<HTMLInputElement>(null);
   const {
     locale,
     ticketAttachments,
@@ -21,7 +30,10 @@ export function TicketAttachmentBlock({ ticket }: { ticket: Ticket }) {
     <div className="attachment-block">
       <div className="attachment-head">
         <div>
-          <h4>{locale === "ru" ? "Фото и файлы заявки" : "Ticket files"}</h4>
+          <h3>
+            {title ??
+              (locale === "ru" ? "Фото и файлы заявки" : "Ticket files")}
+          </h3>
           <span>
             {ticketAttachments.length} ·{" "}
             {formatFileSize(
@@ -36,9 +48,18 @@ export function TicketAttachmentBlock({ ticket }: { ticket: Ticket }) {
             {supportedFileHint(locale)} · до 100 МБ на файл
           </small>
         </div>
-        <label className="secondary-button secondary-button--compact attachment-upload">
-          {locale === "ru" ? "Прикрепить" : "Attach"}
+        <div className="attachment-upload">
+          <IconButton
+            label={locale === "ru" ? "Прикрепить файл" : "Attach file"}
+            disabled={busyAction === `ticket-attachment-upload-${ticket.id}`}
+            onClick={() => uploadInput.current?.click()}
+          >
+            <ActionIcon name="upload" />
+          </IconButton>
           <Input
+            hidden
+            ref={uploadInput}
+            className="ticket-hidden-file"
             accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx"
             disabled={busyAction === `ticket-attachment-upload-${ticket.id}`}
             onChange={(event) => {
@@ -48,7 +69,7 @@ export function TicketAttachmentBlock({ ticket }: { ticket: Ticket }) {
             }}
             type="file"
           />
-        </label>
+        </div>
       </div>
       {ticketAttachments.length > 0 ? (
         <div className="attachment-grid">
@@ -57,20 +78,14 @@ export function TicketAttachmentBlock({ ticket }: { ticket: Ticket }) {
               className={`attachment-card attachment-card--${item.mediaType}`}
               key={item.id}
             >
-              <Button
-                variant="plain"
+              <IconButton
+                label={`${locale === "ru" ? "Открыть файл" : "Open file"} ${item.fileName}`}
                 className="attachment-preview"
                 onClick={() => void openTicketAttachment(ticket.id, item)}
                 type="button"
               >
-                <span>
-                  {item.mediaType === "image"
-                    ? "IMG"
-                    : item.mediaType === "video"
-                      ? "VID"
-                      : "FILE"}
-                </span>
-              </Button>
+                <ActionIcon name="document" />
+              </IconButton>
               <div>
                 <strong>{item.fileName}</strong>
                 <small>
@@ -82,16 +97,16 @@ export function TicketAttachmentBlock({ ticket }: { ticket: Ticket }) {
               {session &&
               (["admin", "manager"].includes(session.user.role) ||
                 item.uploadedBy === session.user.id) ? (
-                <Button
-                  variant="text"
+                <IconButton
+                  label={`${t.actions.delete}: ${item.fileName}`}
                   className="text-button text-button--danger"
                   onClick={() =>
                     void deleteTicketAttachment(ticket.id, item.id)
                   }
                   type="button"
                 >
-                  {t.actions.delete}
-                </Button>
+                  <ActionIcon name="delete" />
+                </IconButton>
               ) : null}
             </article>
           ))}

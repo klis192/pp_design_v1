@@ -8,9 +8,9 @@ import type {
 import type { AccountingWorkspace } from "../../../../../packages/contracts/src/accounting";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { apiRequest } from "../../api/client";
-import { Button, Input, Textarea } from "../../ui";
+import { Button, IconButton, Input, Textarea } from "../../ui";
+import { ActionIcon } from "./ActionIcon";
 import {
-  Disclosure,
   Feedback,
   date,
   downloadDocument,
@@ -46,7 +46,10 @@ const actions: Record<string, string> = {
   close: "Заявка закрыта",
   refuse: "Исполнитель отказался от задания",
 };
-export function TicketWorkflowPanel({ ticketId }: { ticketId: string }) {
+export type TicketWorkflowSection =
+  "all" | "work" | "conditions" | "photos" | "history";
+
+export function useTicketWorkflowModel(ticketId: string) {
   const { session, tickets, refreshWorkspace } = useWorkspace(),
     { token, user } = session,
     ticket = tickets.find((t) => t.id === ticketId);
@@ -116,268 +119,390 @@ export function TicketWorkflowPanel({ ticketId }: { ticketId: string }) {
     }, "Фотография прикреплена");
   const worker = resource.data.capabilities.execute,
     review = resource.data.capabilities.accept;
+  return {
+    ticketId,
+    token,
+    user,
+    ticket,
+    resource,
+    accounts,
+    docs,
+    termsRevision,
+    reasonAction,
+    setReasonAction,
+    w,
+    execute,
+    terms,
+    upload,
+    worker,
+    review,
+    refreshWorkspace,
+  };
+}
+
+type WorkflowModel = ReturnType<typeof useTicketWorkflowModel>;
+
+export function TicketWorkflowPanel({
+  ticketId,
+  section = "all",
+}: {
+  ticketId: string;
+  section?: TicketWorkflowSection;
+}) {
+  const model = useTicketWorkflowModel(ticketId);
+  return <TicketWorkflowView model={model} section={section} />;
+}
+
+export function TicketWorkflowView({
+  model,
+  section,
+}: {
+  model: WorkflowModel;
+  section: TicketWorkflowSection;
+}) {
+  const {
+    ticketId,
+    token,
+    user,
+    ticket,
+    resource,
+    accounts,
+    docs,
+    termsRevision,
+    reasonAction,
+    setReasonAction,
+    w,
+    execute,
+    terms,
+    upload,
+    worker,
+    review,
+    refreshWorkspace,
+  } = model;
+  const shows = (value: TicketWorkflowSection) =>
+    section === "all" || section === value;
   return (
     <section className="ticket-workflow">
       <Feedback {...resource} />
       {w && (
         <>
-          <div className="register-heading">
-            <h3>{states[w.state]}</h3>
-            {w.paid && (
-              <strong>
-                {w.amount === null
-                  ? "Стоимость доступна согласующему"
-                  : money(w.amount)}
-              </strong>
-            )}
-          </div>
-          {w.pauseReason && <p>Причина паузы: {w.pauseReason}</p>}
-          {w.teamId && <p>Служба: {w.teamName ?? "Назначена диспетчером"}</p>}
-          {w.reviewerId && (
-            <p>Принимающий: {w.reviewerName ?? "Назначен диспетчером"}</p>
-          )}
-          <dl className="business-stats">
-            <div>
-              <dt>Работа</dt>
-              <dd>{w.paid ? "Платная" : "Без оплаты"}</dd>
-            </div>
-            {w.paid && (
-              <div>
-                <dt>Согласование</dt>
-                <dd>
-                  {w.approvedVersion === w.termsVersion
-                    ? "Получено"
-                    : "Требуется"}
-                </dd>
-              </div>
-            )}
-            <div>
-              <dt>Фото до / после</dt>
-              <dd>
-                {w.requireBeforePhoto ? "Обязательно" : "По необходимости"} /{" "}
-                {w.requireAfterPhoto ? "Обязательно" : "По необходимости"}
-              </dd>
-            </div>
-          </dl>
-          <div className="mvp-actions">
-            {w.state === "awaiting_approval" &&
-              resource.data.capabilities.approve && (
-                <>
-                  <Button
-                    variant="primary"
-                    busy={resource.busy}
-                    disabled={!w.accountId}
-                    onClick={() => execute("approve")}
-                  >
-                    Согласовать{" "}
+          {shows("work") && (
+            <>
+              <div className="register-heading">
+                <h3>{states[w.state]}</h3>
+                {w.paid && (
+                  <strong>
                     {w.amount === null
                       ? "Стоимость доступна согласующему"
                       : money(w.amount)}
-                  </Button>
-                  <Button onClick={() => setReasonAction("decline")}>
-                    Отклонить стоимость
-                  </Button>
-                </>
-              )}
-            {["registered", "assigned"].includes(w.state) && worker && (
-              <Button
-                variant="primary"
-                busy={resource.busy}
-                onClick={() => execute("start")}
-              >
-                Начать работу
-              </Button>
-            )}
-            {["registered", "assigned", "awaiting_approval"].includes(
-              w.state,
-            ) &&
-              worker &&
-              ticket?.assignedTo === user.id && (
-                <Button
-                  busy={resource.busy}
-                  onClick={() => setReasonAction("refuse")}
-                >
-                  Отказаться от задания
-                </Button>
-              )}
-            {w.state === "in_progress" && worker && (
-              <>
-                <Button
-                  variant="primary"
-                  busy={resource.busy}
-                  onClick={() => execute("submit")}
-                >
-                  Передать на приемку
-                </Button>
-                <Button onClick={() => setReasonAction("pause")}>
-                  Приостановить
-                </Button>
-              </>
-            )}
-            {w.state === "paused" && worker && (
-              <Button
-                variant="primary"
-                busy={resource.busy}
-                onClick={() => execute("resume")}
-              >
-                Продолжить работу
-              </Button>
-            )}
-            {w.state === "awaiting_acceptance" && review && (
-              <>
-                <Button
-                  variant="primary"
-                  busy={resource.busy}
-                  onClick={() => execute("accept")}
-                >
-                  Принять результат
-                </Button>
-                <Button onClick={() => setReasonAction("return")}>
-                  Вернуть с замечанием
-                </Button>
-              </>
-            )}
-            {w.state === "accepted" && worker && (
-              <Button
-                variant="primary"
-                busy={resource.busy}
-                onClick={() => execute("close")}
-              >
-                Закрыть заявку
-              </Button>
-            )}
-          </div>
-          {w.state === "awaiting_approval" && !w.accountId && (
-            <p className="field-hint">
-              Управляющему нужно выбрать ЛС в условиях работы.
-            </p>
-          )}
-          {reasonAction && (
-            <form
-              className="form-grid"
-              onSubmit={(e) => {
-                e.preventDefault();
-                execute(
-                  reasonAction,
-                  String(new FormData(e.currentTarget).get("reason")),
-                );
-              }}
-            >
-              <label>
-                Причина
-                <Textarea name="reason" required maxLength={10000} />
-              </label>
-              <div className="mvp-actions">
-                <Button variant="primary" type="submit" busy={resource.busy}>
-                  {reasonAction === "refuse"
-                    ? "Подтвердить отказ"
-                    : reasonAction === "return"
-                      ? "Вернуть в работу"
-                      : reasonAction === "pause"
-                        ? "Приостановить работу"
-                        : "Отклонить стоимость"}
-                </Button>
-                <Button onClick={() => setReasonAction("")}>Отмена</Button>
+                  </strong>
+                )}
               </div>
-            </form>
-          )}
-          <Feedback
-            error={
-              docs.error ||
-              (resource.data.capabilities.terms ? accounts.error : "")
-            }
-          />
-          <TicketWorkPhotos
-            workflow={w}
-            documents={docs.data.items}
-            canUpload={worker}
-            busy={resource.busy}
-            onUpload={upload}
-            onDownload={(document) =>
-              void resource.run(
-                () => downloadDocument(token, document.id, document.name),
-                "Фотография скачана",
-              )
-            }
-          />
-          {resource.data.capabilities.terms &&
-            [
-              "registered",
-              "assigned",
-              "awaiting_approval",
-              "rejected",
-            ].includes(w.state) && (
-              <Disclosure title="Условия работы">
-                <TicketWorkTerms
-                  key={`${ticketId}:${termsRevision}`}
-                  workflow={w}
-                  leaseId={ticket?.leaseId}
-                  accounts={accounts.data}
-                  busy={resource.busy}
-                  onSave={terms}
-                />
-              </Disclosure>
-            )}
-          {worker && ticket?.maintenancePlanId && (
-            <Disclosure title="Техническое замечание ППР">
-              <form
-                className="form-grid"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  const form = e.currentTarget,
-                    v = new FormData(form);
-                  void resource.run(async () => {
-                    await apiRequest(
-                      `/api/maintenance/tickets/${ticketId}/change`,
-                      {
-                        token,
-                        method: "POST",
-                        body: {
-                          updatedAt: ticket.updatedAt,
-                          toDate: null,
-                          reason: v.get("reason"),
-                          remark: v.get("remark"),
-                        },
-                      },
+              {w.pauseReason && <p>Причина паузы: {w.pauseReason}</p>}
+              {w.teamId && (
+                <p>Служба: {w.teamName ?? "Назначена диспетчером"}</p>
+              )}
+              {w.reviewerId && (
+                <p>Принимающий: {w.reviewerName ?? "Назначен диспетчером"}</p>
+              )}
+              <dl className="business-stats">
+                <div>
+                  <dt>Работа</dt>
+                  <dd>{w.paid ? "Платная" : "Без оплаты"}</dd>
+                </div>
+                {w.paid && (
+                  <div>
+                    <dt>Согласование</dt>
+                    <dd>
+                      {w.approvedVersion === w.termsVersion
+                        ? "Получено"
+                        : "Требуется"}
+                    </dd>
+                  </div>
+                )}
+                <div>
+                  <dt>Фото до / после</dt>
+                  <dd>
+                    {w.requireBeforePhoto ? "Обязательно" : "По необходимости"}{" "}
+                    / {w.requireAfterPhoto ? "Обязательно" : "По необходимости"}
+                  </dd>
+                </div>
+              </dl>
+              <div className="mvp-actions">
+                {w.state === "awaiting_approval" &&
+                  resource.data.capabilities.approve && (
+                    <>
+                      <Button
+                        variant="primary"
+                        busy={resource.busy}
+                        disabled={!w.accountId}
+                        onClick={() => execute("approve")}
+                      >
+                        Согласовать{" "}
+                        {w.amount === null
+                          ? "Стоимость доступна согласующему"
+                          : money(w.amount)}
+                      </Button>
+                      <Button onClick={() => setReasonAction("decline")}>
+                        Отклонить стоимость
+                      </Button>
+                    </>
+                  )}
+                {["registered", "assigned"].includes(w.state) && worker && (
+                  <Button
+                    variant="primary"
+                    busy={resource.busy}
+                    onClick={() => execute("start")}
+                  >
+                    Начать работу
+                  </Button>
+                )}
+                {["registered", "assigned", "awaiting_approval"].includes(
+                  w.state,
+                ) &&
+                  worker &&
+                  ticket?.assignedTo === user.id && (
+                    <Button
+                      busy={resource.busy}
+                      onClick={() => setReasonAction("refuse")}
+                    >
+                      Отказаться от задания
+                    </Button>
+                  )}
+                {w.state === "in_progress" && worker && (
+                  <>
+                    <Button
+                      variant="primary"
+                      busy={resource.busy}
+                      onClick={() => execute("submit")}
+                    >
+                      Передать на приемку
+                    </Button>
+                    <Button onClick={() => setReasonAction("pause")}>
+                      Приостановить
+                    </Button>
+                  </>
+                )}
+                {w.state === "paused" && worker && (
+                  <Button
+                    variant="primary"
+                    busy={resource.busy}
+                    onClick={() => execute("resume")}
+                  >
+                    Продолжить работу
+                  </Button>
+                )}
+                {w.state === "awaiting_acceptance" && review && (
+                  <>
+                    <Button
+                      variant="primary"
+                      busy={resource.busy}
+                      onClick={() => execute("accept")}
+                    >
+                      Принять результат
+                    </Button>
+                    <Button onClick={() => setReasonAction("return")}>
+                      Вернуть с замечанием
+                    </Button>
+                  </>
+                )}
+                {w.state === "accepted" && worker && (
+                  <Button
+                    variant="primary"
+                    busy={resource.busy}
+                    onClick={() => execute("close")}
+                  >
+                    Закрыть заявку
+                  </Button>
+                )}
+              </div>
+              {w.state === "awaiting_approval" && !w.accountId && (
+                <p className="field-hint">
+                  Управляющему нужно выбрать ЛС в условиях работы.
+                </p>
+              )}
+              {reasonAction && (
+                <form
+                  className="form-grid"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    execute(
+                      reasonAction,
+                      String(new FormData(e.currentTarget).get("reason")),
                     );
-                    await refreshWorkspace();
-                    form.reset();
-                  }, "Замечание сохранено");
-                }}
-              >
-                <label>
-                  Причина / тема
-                  <Input name="reason" required maxLength={10000} />
-                </label>
-                <label>
-                  Техническое замечание
-                  <Textarea name="remark" required maxLength={10000} />
-                </label>
-                <Button type="submit" busy={resource.busy}>
-                  Сохранить замечание
-                </Button>
-              </form>
-            </Disclosure>
+                  }}
+                >
+                  <label>
+                    Причина
+                    <Textarea name="reason" required maxLength={10000} />
+                  </label>
+                  <div className="mvp-actions">
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      busy={resource.busy}
+                    >
+                      {reasonAction === "refuse"
+                        ? "Подтвердить отказ"
+                        : reasonAction === "return"
+                          ? "Вернуть в работу"
+                          : reasonAction === "pause"
+                            ? "Приостановить работу"
+                            : "Отклонить стоимость"}
+                    </Button>
+                    <IconButton
+                      label="Отмена"
+                      onClick={() => setReasonAction("")}
+                    >
+                      <ActionIcon name="close" />
+                    </IconButton>
+                  </div>
+                </form>
+              )}
+            </>
           )}
-          <Disclosure
-            title={`История решений · ${resource.data.decisions.length}`}
-          >
-            <ol className="record-timeline">
-              {resource.data.decisions.map((d) => (
-                <li key={d.id}>
-                  {actions[d.action] ?? d.action}
-                  {d.reason ? ` · ${d.reason}` : ""}
-                  <small>
-                    {date(d.createdAt)} · условия v{d.termsVersion}, результат v
-                    {d.resultVersion}
-                  </small>
-                </li>
-              ))}
-            </ol>
-            {!resource.data.decisions.length && (
-              <p className="field-hint">Решений пока нет.</p>
-            )}
-          </Disclosure>
+          {shows("photos") && (
+            <>
+              <Feedback
+                error={
+                  docs.error ||
+                  (resource.data.capabilities.terms ? accounts.error : "")
+                }
+              />
+              <TicketWorkPhotos
+                workflow={w}
+                documents={docs.data.items}
+                canUpload={worker}
+                busy={resource.busy}
+                onUpload={upload}
+                onDownload={(document) =>
+                  void resource.run(
+                    () => downloadDocument(token, document.id, document.name),
+                    "Фотография скачана",
+                  )
+                }
+              />
+            </>
+          )}
+          {shows("conditions") && (
+            <>
+              <h3>Условия работы</h3>
+              <dl className="business-stats">
+                <div>
+                  <dt>Оплата</dt>
+                  <dd>
+                    {w.paid
+                      ? w.amount === null
+                        ? "Стоимость доступна согласующему"
+                        : money(w.amount)
+                      : "Без оплаты"}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Фото до начала</dt>
+                  <dd>
+                    {w.requireBeforePhoto ? "Обязательно" : "По необходимости"}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Фото результата</dt>
+                  <dd>
+                    {w.requireAfterPhoto ? "Обязательно" : "По необходимости"}
+                  </dd>
+                </div>
+              </dl>
+              <Feedback
+                error={resource.data.capabilities.terms ? accounts.error : ""}
+              />
+              {resource.data.capabilities.terms &&
+                [
+                  "registered",
+                  "assigned",
+                  "awaiting_approval",
+                  "rejected",
+                ].includes(w.state) && (
+                  <div className="ticket-workspace-form">
+                    <TicketWorkTerms
+                      key={`${ticketId}:${termsRevision}`}
+                      workflow={w}
+                      leaseId={ticket?.leaseId}
+                      accounts={accounts.data}
+                      busy={resource.busy}
+                      onSave={terms}
+                    />
+                  </div>
+                )}
+            </>
+          )}
+          {shows("work") && (
+            <>
+              {worker && ticket?.maintenancePlanId && (
+                <section className="ticket-maintenance-remark">
+                  <h3>Техническое замечание ППР</h3>
+                  <form
+                    className="form-grid"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const form = e.currentTarget,
+                        v = new FormData(form);
+                      void resource.run(async () => {
+                        await apiRequest(
+                          `/api/maintenance/tickets/${ticketId}/change`,
+                          {
+                            token,
+                            method: "POST",
+                            body: {
+                              updatedAt: ticket.updatedAt,
+                              toDate: null,
+                              reason: v.get("reason"),
+                              remark: v.get("remark"),
+                            },
+                          },
+                        );
+                        await refreshWorkspace();
+                        form.reset();
+                      }, "Замечание сохранено");
+                    }}
+                  >
+                    <label>
+                      Причина / тема
+                      <Input name="reason" required maxLength={10000} />
+                    </label>
+                    <label>
+                      Техническое замечание
+                      <Textarea name="remark" required maxLength={10000} />
+                    </label>
+                    <Button type="submit" busy={resource.busy}>
+                      Сохранить замечание
+                    </Button>
+                  </form>
+                </section>
+              )}
+            </>
+          )}
+          {shows("history") && (
+            <section className="ticket-decision-history">
+              <h3>
+                Решения по работе{" "}
+                <small>{resource.data.decisions.length}</small>
+              </h3>
+              <ol className="record-timeline">
+                {resource.data.decisions.map((d) => (
+                  <li key={d.id}>
+                    {actions[d.action] ?? d.action}
+                    {d.reason ? ` · ${d.reason}` : ""}
+                    <small>
+                      {date(d.createdAt)} · условия v{d.termsVersion}, результат
+                      v{d.resultVersion}
+                    </small>
+                  </li>
+                ))}
+              </ol>
+              {!resource.data.decisions.length && (
+                <p className="field-hint">Решений пока нет.</p>
+              )}
+            </section>
+          )}
         </>
       )}
     </section>

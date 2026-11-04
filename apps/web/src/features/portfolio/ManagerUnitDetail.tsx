@@ -3,6 +3,8 @@ import { useWorkspace } from "../../app/WorkspaceContext";
 import { ResponsiveTable } from "../../ResponsiveTable";
 import { formatArea, formatDate } from "../../shared/format";
 import { Button, IconButton, Input } from "../../ui";
+import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
+import { useWorkspaceViewState } from "../../ui/useWorkspaceViewState";
 export function ManagerUnitDetail() {
   const {
     setManagerScreen,
@@ -25,7 +27,19 @@ export function ManagerUnitDetail() {
     busyAction,
     selectedUnitTickets,
     openTicketDetail,
+    session,
   } = useWorkspace();
+  const views = [
+    { id: "overview", label: "Помещение" },
+    { id: "leases", label: "Договоры", count: selectedUnitLeases.length },
+    { id: "tickets", label: "Заявки", count: selectedUnitTickets.length },
+    ...(canManagePortfolio ? [{ id: "split", label: "Разделение" }] : []),
+  ];
+  const [view, setView] = useWorkspaceViewState(
+    `wirehouse.unit.view:${session.user.id}:${selectedUnit?.id ?? ""}`,
+    "overview",
+    views.map((item) => item.id),
+  );
   return (
     <section className="mvp-page">
       <div className="mvp-detail-head">
@@ -47,14 +61,13 @@ export function ManagerUnitDetail() {
         </div>
         {selectedUnit ? (
           <div className="mvp-actions">
-            <Button
-              variant="secondary"
-              className="secondary-button"
+            <IconButton
+              label={unitExportLabel}
               onClick={() => void downloadUnitExport(selectedUnit)}
               type="button"
             >
-              {unitExportLabel}
-            </Button>
+              <ActionIcon name="download" />
+            </IconButton>
             <IconButton
               label={adminEditLabel}
               onClick={() => openManagerUnitEdit(selectedUnit)}
@@ -79,8 +92,21 @@ export function ManagerUnitDetail() {
       </div>
 
       {selectedUnit ? (
-        <div className="mvp-grid">
-          <article className="mvp-card">
+        <div className="workspace-pane">
+          <WorkspaceTabs
+            label="Карточка помещения"
+            idPrefix="unit-record"
+            value={view}
+            onChange={setView}
+            items={views}
+          />
+          <article
+            className="mvp-card"
+            hidden={view !== "overview"}
+            role="tabpanel"
+            id="unit-record-panel-overview"
+            aria-labelledby="unit-record-tab-overview"
+          >
             <div className="mvp-card-head">
               <div>
                 <h3>{selectedUnit.number}</h3>
@@ -129,7 +155,13 @@ export function ManagerUnitDetail() {
           </article>
 
           {canManagePortfolio ? (
-            <article className="mvp-card">
+            <article
+              className="mvp-card"
+              hidden={view !== "split"}
+              role="tabpanel"
+              id="unit-record-panel-split"
+              aria-labelledby="unit-record-tab-split"
+            >
               <div className="mvp-card-head">
                 <div>
                   <h3>
@@ -217,7 +249,13 @@ export function ManagerUnitDetail() {
             </article>
           ) : null}
 
-          <article className="mvp-card">
+          <article
+            className="mvp-card"
+            hidden={view !== "leases"}
+            role="tabpanel"
+            id="unit-record-panel-leases"
+            aria-labelledby="unit-record-tab-leases"
+          >
             <div className="mvp-card-head">
               <div>
                 <h3>{managerUi.leaseHistory}</h3>
@@ -249,7 +287,13 @@ export function ManagerUnitDetail() {
             </div>
           </article>
 
-          <article className="mvp-card mvp-card--wide">
+          <article
+            className="mvp-card"
+            hidden={view !== "tickets"}
+            role="tabpanel"
+            id="unit-record-panel-tickets"
+            aria-labelledby="unit-record-tab-tickets"
+          >
             <div className="mvp-card-head">
               <div>
                 <h3>{managerUi.linkedTickets}</h3>

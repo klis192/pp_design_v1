@@ -1,43 +1,99 @@
-import { ActionIcon } from "./ActionIcon";
 import { useState, type FormEvent } from "react";
 import { ExchangeJournal } from "./ExchangeJournal";
-import type { AccountingWorkspace as Data } from "../../../../../packages/contracts/src/accounting";
+import type {
+  AccountingWorkspace as Data,
+  AccountingSource,
+} from "../../../../../packages/contracts/src/accounting";
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { apiRequest } from "../../api/client";
 import { Button, IconButton, Input, Select } from "../../ui";
+import { SidePanel } from "../../ui/SidePanel";
 import {
-  Disclosure,
+  ActionIcon,
   Feedback,
   Register,
   date,
   money,
   useResource,
 } from "./shared";
-const initial: Data = {
-  sources: [],
-  accounts: [],
-  statements: [],
-  links: [],
+
+export type AccountingView = "accounts" | "sources" | "links" | "exchange";
+const initial: Data = { sources: [], accounts: [], statements: [], links: [] };
+const entityNames: Record<string, string> = {
+  properties: "Объект",
+  units: "Помещение",
+  tenants: "Контрагент",
+  leases: "Договор",
+  meters: "Прибор учёта",
+  personal_accounts: "Лицевой счёт",
 };
-export function AccountingWorkspace() {
-  const { session, overview } = useWorkspace(),
-    { token, user } = session;
-  const resource = useResource(token, "/api/accounting", initial),
-    { data, busy, run } = resource;
-  const [selected, setSelected] = useState(""),
-    [sourceFilter, setSourceFilter] = useState(""),
-    [status, setStatus] = useState(""),
-    [secret, setSecret] = useState("");
-  const account = data.accounts.find((a) => a.id === selected),
-    sourceName = (id: string) =>
-      data.sources.find((s) => s.id === id)?.name ?? "Источник удален";
+type Panel =
+  | "account"
+  | "account-create"
+  | "source-create"
+  | "source-key"
+  | "link-create"
+  | null;
+
+export function AccountingWorkspace({
+  view = "accounts",
+}: {
+  view?: AccountingView;
+}) {
+  const { session, overview, operations } = useWorkspace();
+  const { token, user } = session;
+  const resource = useResource(token, "/api/accounting", initial);
+  const { data, busy, run } = resource;
+  const [selected, setSelected] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("");
+  const [status, setStatus] = useState("");
+  const [secret, setSecret] = useState("");
+  const [panel, setPanel] = useState<Panel>(null);
+  const [dirty, setDirty] = useState(false);
+  const [keySource, setKeySource] = useState("");
   const canManage = hasPermission(user, "accounting.manage");
-  const createSource = (e: FormEvent<HTMLFormElement>) => {
+  const canJournal =
+    canManage &&
+    user.role === "admin" &&
+    hasPermission(user, "exchange.manage");
+  const account = data.accounts.find((a) => a.id === selected);
+  const sourceName = (id: string) =>
+    data.sources.find((s) => s.id === id)?.name ?? "Источник удалён";
+  const selectedSource = data.sources.find((s) => s.id === keySource);
+  const openPanel = (next: Panel) => {
+    setDirty(false);
+    resource.setError("");
+    setPanel(next);
+  };
+  const closePanel = () => {
+    setPanel(null);
+    setDirty(false);
+    setSecret("");
+    resource.setError("");
+  };
+  function localLabel(type: string, id: string) {
+    if (type === "properties")
+      return overview.properties.find((r) => r.id === id)?.name ?? id;
+    if (type === "units") {
+      const unit = overview.units.find((r) => r.id === id);
+      return unit ? `${unit.propertyName ?? ""} · ${unit.number}` : id;
+    }
+    if (type === "tenants")
+      return overview.tenants.find((r) => r.id === id)?.name ?? id;
+    if (type === "leases")
+      return overview.leases.find((r) => r.id === id)?.contractNumber ?? id;
+    if (type === "meters")
+      return operations?.meters.find((r) => r.id === id)?.name ?? id;
+    if (type === "personal_accounts")
+      return data.accounts.find((r) => r.id === id)?.number ?? id;
+    return id;
+  }
+  async function createSource(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget,
       v = new FormData(form);
-    void run(async () => {
+    const saved = await run(async () => {
       await apiRequest("/api/accounting/sources", {
         token,
         method: "POST",
@@ -49,12 +105,13 @@ export function AccountingWorkspace() {
       });
       form.reset();
     });
-  };
-  const createAccount = (e: FormEvent<HTMLFormElement>) => {
+    if (saved) closePanel();
+  }
+  async function createAccount(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget,
       v = new FormData(form);
-    void run(async () => {
+    const saved = await run(async () => {
       await apiRequest("/api/accounting/accounts", {
         token,
         method: "POST",
@@ -70,11 +127,12 @@ export function AccountingWorkspace() {
       });
       form.reset();
     });
-  };
-  const mapExternal = (e: FormEvent<HTMLFormElement>) => {
+    if (saved) closePanel();
+  }
+  async function mapExternal(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const v = new FormData(e.currentTarget);
-    void run(() =>
+    const saved = await run(() =>
       apiRequest("/api/accounting/links", {
         token,
         method: "POST",
@@ -87,102 +145,288 @@ export function AccountingWorkspace() {
         },
       }),
     );
-  };
+    if (saved) closePanel();
+  }
+  function toggleSource(source: AccountingSource) {
+    void run(
+      () =>
+        apiRequest(`/api/accounting/sources/${source.id}`, {
+          token,
+          method: "PUT",
+          body: {
+            name: source.name,
+            environment: source.environment,
+            active: !source.active,
+            updatedAt: source.updatedAt,
+          },
+        }),
+      source.active ? "Источник отключён" : "Источник включён",
+    );
+  }
+  function sourceFilters() {
+    return (
+      <label>
+        Источник
+        <Select
+          value={sourceFilter}
+          onChange={(e) => setSourceFilter(e.target.value)}
+        >
+          <option value="">Все источники</option>
+          {data.sources.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.name}
+            </option>
+          ))}
+        </Select>
+      </label>
+    );
+  }
+  if (
+    ((view === "sources" || view === "links") && !canManage) ||
+    (view === "exchange" && !canJournal)
+  )
+    return <p className="ui-empty">Доступ к разделу ограничен.</p>;
   return (
-    <div className="business-stack">
-      <Feedback {...resource} />
-      <Register
-        title="Лицевые счета"
-        rows={data.accounts.filter(
-          (a) =>
-            (!sourceFilter || a.sourceId === sourceFilter) &&
-            (!status || a.status === status),
-        )}
-        selectedId={selected}
-        onSelect={(a) => setSelected(a.id)}
-        searchText={(a) =>
-          `${a.number} ${a.externalId} ${sourceName(a.sourceId)}`
-        }
-        columns={[
-          {
-            key: "number",
-            label: "ЛС",
-            render: (a) => <strong>{a.number}</strong>,
-          },
-          {
-            key: "source",
-            label: "Источник учета",
-            render: (a) => sourceName(a.sourceId),
-          },
-          {
-            key: "lease",
-            label: "Договор",
-            render: (a) =>
-              overview.leases.find((l) => l.id === a.leaseId)?.contractNumber ??
-              a.leaseId,
-            optional: true,
-          },
-          {
-            key: "status",
-            label: "Статус",
-            render: (a) => (a.status === "active" ? "Действует" : "Закрыт"),
-          },
-          {
-            key: "period",
-            label: "Период ЛС",
-            render: (a) =>
-              `${date(a.validFrom)} — ${a.validTo ? date(a.validTo) : "бессрочно"}`,
-            optional: true,
-          },
-        ]}
-        filters={
-          <>
-            <label>
-              Источник
-              <Select
-                value={sourceFilter}
-                onChange={(e) => setSourceFilter(e.target.value)}
+    <div className="business-stack accounting-view">
+      <Feedback {...resource} error={panel ? "" : resource.error} />
+      {view === "accounts" && (
+        <Register
+          title="Лицевые счета"
+          rows={data.accounts.filter(
+            (a) =>
+              (!sourceFilter || a.sourceId === sourceFilter) &&
+              (!status || a.status === status),
+          )}
+          loading={resource.loading}
+          selectedId={selected}
+          onSelect={(a) => {
+            setSelected(a.id);
+            openPanel("account");
+          }}
+          searchText={(a) =>
+            `${a.number} ${a.externalId} ${sourceName(a.sourceId)}`
+          }
+          action={
+            hasPermission(user, "leases.write") ? (
+              <IconButton
+                label="Добавить лицевой счёт"
+                onClick={() => openPanel("account-create")}
               >
-                <option value="">Все источники</option>
-                {data.sources.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name}
-                  </option>
-                ))}
-              </Select>
-            </label>
-            <label>
-              Статус
-              <Select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-              >
-                <option value="">Все</option>
-                <option value="active">Действующие</option>
-                <option value="closed">Закрытые</option>
-              </Select>
-            </label>
-          </>
-        }
-      />
-      {account && (
-        <section className="business-detail">
-          <div className="register-heading">
-            <h3>
-              ЛС {account.number} · {sourceName(account.sourceId)}
-            </h3>
-            <IconButton label="Закрыть детали" onClick={() => setSelected("")}>
-              <ActionIcon name="close" />
+                <ActionIcon name="plus" />
+              </IconButton>
+            ) : undefined
+          }
+          columns={[
+            {
+              key: "number",
+              label: "ЛС",
+              render: (a) => <strong>{a.number}</strong>,
+            },
+            {
+              key: "source",
+              label: "Источник учёта",
+              render: (a) => sourceName(a.sourceId),
+            },
+            {
+              key: "lease",
+              label: "Договор",
+              render: (a) =>
+                overview.leases.find((l) => l.id === a.leaseId)
+                  ?.contractNumber ?? a.leaseId,
+              optional: true,
+            },
+            {
+              key: "status",
+              label: "Статус",
+              render: (a) => (a.status === "active" ? "Действует" : "Закрыт"),
+            },
+            {
+              key: "period",
+              label: "Период ЛС",
+              render: (a) =>
+                `${date(a.validFrom)} — ${a.validTo ? date(a.validTo) : "бессрочно"}`,
+              optional: true,
+            },
+          ]}
+          filters={
+            <>
+              {sourceFilters()}
+              <label>
+                Статус
+                <Select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  <option value="">Все</option>
+                  <option value="active">Действующие</option>
+                  <option value="closed">Закрытые</option>
+                </Select>
+              </label>
+            </>
+          }
+        />
+      )}
+      {view === "sources" && (
+        <Register
+          title="Источники учёта"
+          rows={data.sources}
+          loading={resource.loading}
+          searchText={(source) => source.name}
+          action={
+            <IconButton
+              label="Добавить источник"
+              onClick={() => openPanel("source-create")}
+            >
+              <ActionIcon name="plus" />
             </IconButton>
-          </div>
-          <p className="field-hint">
-            Внешний ID: {account.externalId}. Данные этого источника не
-            объединяются с другими базами.
-          </p>
+          }
+          columns={[
+            {
+              key: "name",
+              label: "Название",
+              render: (source) => <strong>{source.name}</strong>,
+            },
+            {
+              key: "environment",
+              label: "Среда",
+              render: (source) =>
+                source.environment === "test" ? "Тестовая" : "Рабочая",
+            },
+            {
+              key: "active",
+              label: "Состояние",
+              render: (source) => (source.active ? "Включён" : "Отключён"),
+            },
+            {
+              key: "connection",
+              label: "Обмен с 1С",
+              render: (source) => (
+                <>
+                  {source.lastError
+                    ? "Ошибка обмена"
+                    : source.lastSuccessfulAt
+                      ? "Последний проход успешен"
+                      : "Нет подтверждённых запусков"}
+                  {source.lastSeenAt && (
+                    <small>
+                      {new Date(source.lastSeenAt).toLocaleString("ru-RU")}
+                    </small>
+                  )}
+                </>
+              ),
+            },
+            {
+              key: "actions",
+              label: "Действия",
+              render: (source) => (
+                <div className="mvp-actions">
+                  <IconButton
+                    label={
+                      source.active ? "Отключить источник" : "Включить источник"
+                    }
+                    busy={busy}
+                    onClick={() => toggleSource(source)}
+                  >
+                    <ActionIcon name="power" />
+                  </IconButton>
+                  <IconButton
+                    label={
+                      source.tokenConfigured ? "Заменить ключ" : "Создать ключ"
+                    }
+                    disabled={busy}
+                    onClick={() => {
+                      setKeySource(source.id);
+                      setSecret("");
+                      openPanel("source-key");
+                    }}
+                  >
+                    <ActionIcon name="key" />
+                  </IconButton>
+                </div>
+              ),
+            },
+          ]}
+        />
+      )}
+      {view === "links" && (
+        <Register
+          title="Сопоставления"
+          rows={data.links.filter(
+            (link) => !sourceFilter || link.sourceId === sourceFilter,
+          )}
+          loading={resource.loading}
+          searchText={(link) =>
+            `${sourceName(link.sourceId)} ${link.externalId} ${localLabel(link.entityType, link.localId)}`
+          }
+          action={
+            <IconButton
+              label="Сопоставить записи"
+              onClick={() => openPanel("link-create")}
+            >
+              <ActionIcon name="plus" />
+            </IconButton>
+          }
+          filters={sourceFilters()}
+          columns={[
+            {
+              key: "source",
+              label: "Источник",
+              render: (link) => sourceName(link.sourceId),
+            },
+            {
+              key: "type",
+              label: "Тип записи",
+              render: (link) => entityNames[link.entityType] ?? "Запись",
+            },
+            {
+              key: "local",
+              label: "Запись на сайте",
+              render: (link) => (
+                <strong>{localLabel(link.entityType, link.localId)}</strong>
+              ),
+            },
+            {
+              key: "external",
+              label: "Внешний ID",
+              render: (link) => link.externalId,
+            },
+          ]}
+          empty="Сопоставлений пока нет."
+        />
+      )}
+      {view === "exchange" && (
+        <ExchangeJournal token={token} sources={data.sources} />
+      )}
+      {panel === "account" && account && (
+        <SidePanel title={`ЛС ${account.number}`} onClose={closePanel}>
+          <dl className="billing-invoice-summary">
+            <div>
+              <dt>Источник</dt>
+              <dd>{sourceName(account.sourceId)}</dd>
+            </div>
+            <div>
+              <dt>Договор</dt>
+              <dd>
+                {overview.leases.find((l) => l.id === account.leaseId)
+                  ?.contractNumber ?? account.leaseId}
+              </dd>
+            </div>
+            <div>
+              <dt>Внешний ID</dt>
+              <dd>{account.externalId}</dd>
+            </div>
+            <div>
+              <dt>Период</dt>
+              <dd>
+                {date(account.validFrom)} —{" "}
+                {account.validTo ? date(account.validTo) : "бессрочно"}
+              </dd>
+            </div>
+          </dl>
           <Register
             title="Начисления и оплаты"
             rows={data.statements.filter((s) => s.accountId === account.id)}
-            searchText={(s) => s.period}
+            searchText={(statement) => statement.period}
             columns={[
               { key: "period", label: "Месяц", render: (s) => s.period },
               {
@@ -209,17 +453,27 @@ export function AccountingWorkspace() {
                 optional: true,
               },
             ]}
-            empty="Источник еще не передал начисления по этому ЛС."
+            empty="Источник ещё не передал начисления по этому ЛС."
           />
-        </section>
+        </SidePanel>
       )}
-      {hasPermission(user, "leases.write") && (
-        <Disclosure title="Добавить лицевой счет">
-          <form className="form-grid" onSubmit={createAccount}>
+      {panel === "account-create" && hasPermission(user, "leases.write") && (
+        <SidePanel
+          title="Добавить лицевой счёт"
+          onClose={closePanel}
+          busy={busy}
+          dirty={dirty}
+        >
+          <Feedback error={resource.error} />
+          <form
+            className="form-grid"
+            onSubmit={createAccount}
+            onChange={() => setDirty(true)}
+          >
             <label>
               Источник
               <Select required name="sourceId">
-                <option value="">Выберите</option>
+                <option value="">Выберите источник</option>
                 {data.sources
                   .filter((s) => s.active)
                   .map((s) => (
@@ -232,7 +486,7 @@ export function AccountingWorkspace() {
             <label>
               Договор
               <Select required name="leaseId">
-                <option value="">Выберите</option>
+                <option value="">Выберите договор</option>
                 {overview.leases.map((l) => (
                   <option key={l.id} value={l.id}>
                     {l.contractNumber} · {l.unitNumber}
@@ -262,196 +516,182 @@ export function AccountingWorkspace() {
                 defaultValue={new Date().toISOString().slice(0, 10)}
               />
             </label>
-            <Button variant="primary" type="submit" busy={busy}>
+            <Button
+              className="form-wide"
+              variant="primary"
+              type="submit"
+              busy={busy}
+            >
               Добавить ЛС
             </Button>
           </form>
-        </Disclosure>
+        </SidePanel>
       )}
-      {canManage && (
-        <Disclosure title="Источники учета и обмен">
-          <p className="field-hint">
-            Каждая база 1С подключается отдельно. Среда источника должна
-            совпадать со средой сервера.
-          </p>
-          {secret && (
-            <div className="business-detail">
+      {panel === "source-create" && canManage && (
+        <SidePanel
+          title="Добавить источник"
+          onClose={closePanel}
+          busy={busy}
+          dirty={dirty}
+        >
+          <Feedback error={resource.error} />
+          <form
+            className="form-grid"
+            onSubmit={createSource}
+            onChange={() => setDirty(true)}
+          >
+            <label>
+              Название
+              <Input name="name" required maxLength={300} />
+            </label>
+            <label>
+              Среда
+              <Select name="environment" defaultValue="production">
+                <option value="production">Рабочая</option>
+                <option value="test">Тестовая</option>
+              </Select>
+            </label>
+            <Button
+              className="form-wide"
+              variant="primary"
+              type="submit"
+              busy={busy}
+            >
+              Добавить источник
+            </Button>
+          </form>
+        </SidePanel>
+      )}
+      {panel === "link-create" && canManage && (
+        <SidePanel
+          title="Сопоставить записи"
+          onClose={closePanel}
+          busy={busy}
+          dirty={dirty}
+        >
+          <Feedback error={resource.error} />
+          <form
+            className="form-grid"
+            onSubmit={mapExternal}
+            onChange={() => setDirty(true)}
+          >
+            <label>
+              Источник
+              <Select name="sourceId" required>
+                <option value="">Выберите источник</option>
+                {data.sources.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            <label>
+              Тип записи
+              <Select name="entityType">
+                {Object.entries(entityNames).map(([id, label]) => (
+                  <option key={id} value={id}>
+                    {label}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            <label>
+              Внешний ID
+              <Input
+                name="externalId"
+                required
+                maxLength={100}
+                pattern="[a-zA-Z0-9-]+"
+              />
+            </label>
+            <label>
+              ID записи на сайте
+              <Input
+                name="localId"
+                required
+                maxLength={100}
+                pattern="[a-zA-Z0-9-]+"
+              />
+            </label>
+            <Button
+              className="form-wide"
+              variant="primary"
+              type="submit"
+              busy={busy}
+            >
+              Сохранить связь
+            </Button>
+          </form>
+        </SidePanel>
+      )}
+      {panel === "source-key" && selectedSource && canManage && (
+        <SidePanel
+          title={`Подключение: ${selectedSource.name}`}
+          onClose={closePanel}
+          busy={busy}
+        >
+          <Feedback error={resource.error} />
+          <dl className="billing-invoice-summary">
+            <div>
+              <dt>Идентификатор источника</dt>
+              <dd>{selectedSource.id}</dd>
+            </div>
+            <div>
+              <dt>Среда</dt>
+              <dd>
+                {selectedSource.environment === "test" ? "Тестовая" : "Рабочая"}
+              </dd>
+            </div>
+            {selectedSource.lastError && (
+              <div>
+                <dt>Последняя ошибка обмена</dt>
+                <dd>{selectedSource.lastError}</dd>
+              </div>
+            )}
+          </dl>
+          {secret ? (
+            <div className="billing-key-panel">
               <label>
-                Ключ подключения — сохраните сейчас
+                Новый ключ — сохраните его сейчас
                 <Input
                   readOnly
                   value={secret}
                   aria-label="Новый ключ источника"
                 />
               </label>
-              <Button onClick={() => setSecret("")}>
-                Ключ сохранен, скрыть
+              <Button variant="primary" onClick={closePanel}>
+                Ключ сохранён
+              </Button>
+            </div>
+          ) : (
+            <div className="billing-key-panel">
+              {selectedSource.tokenConfigured && (
+                <p>
+                  Новый ключ заменит действующий. Обновите подключение в 1С
+                  после замены.
+                </p>
+              )}
+              <Button
+                variant="primary"
+                busy={busy}
+                onClick={() =>
+                  void run(async () => {
+                    const result = await apiRequest<{ token: string }>(
+                      `/api/accounting/sources/${selectedSource.id}/token`,
+                      { token, method: "POST", body: {} },
+                    );
+                    setSecret(result.token);
+                  }, "Ключ создан.")
+                }
+              >
+                {selectedSource.tokenConfigured
+                  ? "Заменить ключ"
+                  : "Создать ключ"}
               </Button>
             </div>
           )}
-          <Register
-            title="Источники"
-            rows={data.sources}
-            searchText={(s) => s.name}
-            columns={[
-              {
-                key: "name",
-                label: "Название",
-                render: (s) => (
-                  <>
-                    {s.name}
-                    <small>ID: {s.id}</small>
-                  </>
-                ),
-              },
-              {
-                key: "env",
-                label: "Среда",
-                render: (s) =>
-                  s.environment === "test" ? "Тестовая" : "Рабочая",
-              },
-              {
-                key: "state",
-                label: "Состояние",
-                render: (s) => (
-                  <Button
-                    busy={busy}
-                    onClick={() =>
-                      void run(
-                        () =>
-                          apiRequest(`/api/accounting/sources/${s.id}`, {
-                            token,
-                            method: "PUT",
-                            body: {
-                              name: s.name,
-                              environment: s.environment,
-                              active: !s.active,
-                              updatedAt: s.updatedAt,
-                            },
-                          }),
-                        s.active ? "Источник отключен" : "Источник включен",
-                      )
-                    }
-                  >
-                    {s.active ? "Отключить" : "Включить"}
-                  </Button>
-                ),
-              },
-              {
-                key: "connection",
-                label: "Обмен с 1С",
-                render: (s) => (
-                  <>
-                    {s.lastError
-                      ? `Ошибка: ${s.lastError}`
-                      : s.lastSuccessfulAt
-                        ? "Последний проход успешен"
-                        : "Нет подтвержденных запусков"}
-                    {s.lastSeenAt && (
-                      <small>
-                        Проверка:{" "}
-                        {new Date(s.lastSeenAt).toLocaleString("ru-RU")}
-                      </small>
-                    )}
-                  </>
-                ),
-              },
-              {
-                key: "token",
-                label: "Подключение",
-                render: (s) => (
-                  <Button
-                    busy={busy}
-                    onClick={() =>
-                      void run(async () => {
-                        const result = await apiRequest<{ token: string }>(
-                          `/api/accounting/sources/${s.id}/token`,
-                          { token, method: "POST", body: {} },
-                        );
-                        setSecret(result.token);
-                      }, "Ключ создан. Предыдущий ключ больше не действует.")
-                    }
-                  >
-                    {s.tokenConfigured ? "Заменить ключ" : "Создать ключ"}
-                  </Button>
-                ),
-              },
-            ]}
-          />
-          <Disclosure title="Добавить источник">
-            <form className="form-grid" onSubmit={createSource}>
-              <label>
-                Название
-                <Input name="name" required maxLength={300} />
-              </label>
-              <label>
-                Среда
-                <Select name="environment" defaultValue="production">
-                  <option value="production">Рабочая</option>
-                  <option value="test">Тестовая</option>
-                </Select>
-              </label>
-              <Button variant="primary" type="submit" busy={busy}>
-                Добавить источник
-              </Button>
-            </form>
-          </Disclosure>
-          <Disclosure title="Сопоставить внешние идентификаторы">
-            <form className="form-grid" onSubmit={mapExternal}>
-              <label>
-                Источник
-                <Select name="sourceId" required>
-                  <option value="">Выберите</option>
-                  {data.sources.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name}
-                    </option>
-                  ))}
-                </Select>
-              </label>
-              <label>
-                Тип записи
-                <Select name="entityType">
-                  <option value="leases">Договор</option>
-                  <option value="meters">Прибор учета</option>
-                  <option value="units">Помещение</option>
-                  <option value="properties">Объект</option>
-                  <option value="tenants">Контрагент</option>
-                </Select>
-              </label>
-              <label>
-                Внешний ID
-                <Input
-                  name="externalId"
-                  required
-                  maxLength={100}
-                  pattern="[a-zA-Z0-9-]+"
-                />
-              </label>
-              <label>
-                ID записи на сайте
-                <Input
-                  name="localId"
-                  required
-                  maxLength={100}
-                  pattern="[a-zA-Z0-9-]+"
-                />
-              </label>
-              <Button variant="primary" type="submit" busy={busy}>
-                Сохранить связь
-              </Button>
-            </form>
-            <p className="field-hint">
-              ID записи можно скопировать из адреса ее карточки или реестра.
-              Автоматического сопоставления по имени нет.
-            </p>
-          </Disclosure>
-          {user.role === "admin" && hasPermission(user, "exchange.manage") && (
-            <Disclosure title="Журнал обмена">
-              <ExchangeJournal token={token} sources={data.sources} />
-            </Disclosure>
-          )}
-        </Disclosure>
+        </SidePanel>
       )}
     </div>
   );

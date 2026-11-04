@@ -71,17 +71,16 @@ export function ManagerTenants() {
               </option>
             ))}
           </Select>
-          <Button
-            variant="secondary"
-            className="secondary-button"
+          <IconButton
+            label={managerUi.import}
             onClick={() => setManagerScreen("import")}
             type="button"
           >
-            {managerUi.import}
-          </Button>
-          <Button
+            <ActionIcon name="upload" />
+          </IconButton>
+          <IconButton
+            label="Добавить арендатора"
             variant="primary"
-            className="primary-button"
             onClick={() => {
               cancelAdminEdit("tenant");
               setAdminPanel("tenant");
@@ -89,8 +88,8 @@ export function ManagerTenants() {
             }}
             type="button"
           >
-            Добавить арендатора
-          </Button>
+            <ActionIcon name="plus" />
+          </IconButton>
         </div>
       </div>
 

@@ -7,7 +7,10 @@ import {
   hasPermission,
 } from "../../../../../packages/contracts/src/permissions";
 import { TemplateSelect } from "../platform/TemplateSelect";
+import { SidePanel } from "../../ui/SidePanel";
+import { useState } from "react";
 export function OperationEditor({ model }: { model: OperationsModel }) {
+  const [initialDraft] = useState(() => JSON.stringify(model.draft));
   const {
     draft,
     tab,
@@ -28,10 +31,17 @@ export function OperationEditor({ model }: { model: OperationsModel }) {
   } = model;
   if (!draft) return null;
   return (
-    <article className="mvp-card">
-      <h3>
-        {draft.id ? "Редактирование" : "Новая запись"} · {tabs[tab]}
-      </h3>
+    <SidePanel
+      title={`${draft.id ? "Редактирование" : "Новая запись"} · ${tabs[tab]}`}
+      onClose={() => setDraft(null)}
+      busy={busy}
+      dirty={JSON.stringify(draft) !== initialDraft}
+    >
+      {model.error && (
+        <p className="notice notice--error" role="alert">
+          {model.error}
+        </p>
+      )}
       <form className="form-grid" onSubmit={save}>
         {tab === "users" ? (
           <>
@@ -336,6 +346,6 @@ export function OperationEditor({ model }: { model: OperationsModel }) {
           </Button>
         </div>
       </form>
-    </article>
+    </SidePanel>
   );
 }

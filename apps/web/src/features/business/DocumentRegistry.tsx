@@ -5,8 +5,8 @@ import type { AccountingWorkspace } from "../../../../../packages/contracts/src/
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
 import { useWorkspace } from "../../app/WorkspaceContext";
 import { Button, IconButton, Input, Select } from "../../ui";
+import { SidePanel } from "../../ui/SidePanel";
 import {
-  Disclosure,
   Feedback,
   Register,
   date,
@@ -63,6 +63,13 @@ export function DocumentRegistry({
       { entityType: keyof typeof entities; entityId: string }[]
     >(entityType && entityId ? [{ entityType, entityId }] : []),
     [selected, setSelected] = useState("");
+  const [adding, setAdding] = useState(false),
+    [dirty, setDirty] = useState(false);
+  const closeAdding = () => {
+    setAdding(false);
+    setDirty(false);
+    setLinks(entityType && entityId ? [{ entityType, entityId }] : []);
+  };
   const choices = (kind: keyof typeof entities) =>
     kind === "properties"
       ? overview.properties.map((r) => ({ id: r.id, label: r.name }))
@@ -111,6 +118,8 @@ export function DocumentRegistry({
     void resource.run(async () => {
       await uploadDocument(token, file, links, String(v.get("category")));
       form.reset();
+      setDirty(false);
+      setAdding(false);
     }, "Документ добавлен");
   };
   return (
@@ -118,6 +127,17 @@ export function DocumentRegistry({
       <Feedback {...resource} />
       <Register
         title="Документы"
+        action={
+          hasPermission(user, "documents.write") && (
+            <IconButton
+              label="Добавить документ"
+              variant="primary"
+              onClick={() => setAdding(true)}
+            >
+              <ActionIcon name="plus" />
+            </IconButton>
+          )
+        }
         rows={resource.data.items.filter(
           (d) => !category || d.category === category,
         )}
@@ -168,19 +188,14 @@ export function DocumentRegistry({
         }
       />
       {doc && (
-        <section className="business-detail">
-          <div className="register-heading">
-            <h3>{doc.name}</h3>
-            <IconButton label="Закрыть детали" onClick={() => setSelected("")}>
-              <ActionIcon name="close" />
-            </IconButton>
-          </div>
+        <SidePanel title={doc.name} onClose={() => setSelected("")}>
           <p>{doc.links.map(linkLabel).join("; ")}</p>
           <p className="field-hint">
             {doc.sizeBytes ? `${(doc.sizeBytes / 1024).toFixed(1)} КБ · ` : ""}
             {date(doc.createdAt)}
           </p>
-          <Button
+          <IconButton
+            label="Скачать файл"
             busy={resource.busy}
             onClick={() =>
               void resource.run(
@@ -189,13 +204,23 @@ export function DocumentRegistry({
               )
             }
           >
-            Скачать файл
-          </Button>
-        </section>
+            <ActionIcon name="download" />
+          </IconButton>
+        </SidePanel>
       )}
-      {hasPermission(user, "documents.write") && (
-        <Disclosure title="Добавить документ">
-          <form className="form-grid" onSubmit={submit}>
+      {hasPermission(user, "documents.write") && adding && (
+        <SidePanel
+          title="Добавить документ"
+          onClose={closeAdding}
+          busy={resource.busy}
+          dirty={dirty}
+        >
+          <Feedback {...resource} />
+          <form
+            className="form-grid"
+            onSubmit={submit}
+            onChange={() => setDirty(true)}
+          >
             {!entityType && (
               <>
                 <label>
@@ -247,12 +272,12 @@ export function DocumentRegistry({
                 <div className="mvp-actions" key={l.entityType + l.entityId}>
                   <span>{linkLabel(l)}</span>
                   {!entityType && (
-                    <Button
-                      variant="text"
+                    <IconButton
+                      label="Убрать связь"
                       onClick={() => setLinks(links.filter((_, j) => i !== j))}
                     >
-                      Убрать связь
-                    </Button>
+                      <ActionIcon name="close" />
+                    </IconButton>
                   )}
                 </div>
               ))}
@@ -285,7 +310,7 @@ export function DocumentRegistry({
               Добавить документ
             </Button>
           </form>
-        </Disclosure>
+        </SidePanel>
       )}
     </div>
   );

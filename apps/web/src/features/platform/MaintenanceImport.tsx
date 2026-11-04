@@ -1,8 +1,10 @@
-import { Disclosure } from "../../ui/Disclosure";
+import { SidePanel } from "../../ui/SidePanel";
+import { ActionIcon } from "../business/ActionIcon";
 import { useState } from "react";
-import { Button, Input } from "../../ui";
+import { Button, IconButton, Input } from "../../ui";
 import { ResponsiveTable } from "../../ResponsiveTable";
 import { apiRequest, runtimeApiBase } from "../../api/client";
+import { normalizeRequestError } from "../../api/read-errors";
 import type {
   MaintenanceImportFile,
   MaintenanceImportPreview,
@@ -25,6 +27,7 @@ export function MaintenanceImport({
   token: string;
   onImported: () => Promise<void>;
 }) {
+  const [helpOpen, setHelpOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [checked, setChecked] = useState<{
     body: MaintenanceImportFile;
@@ -41,7 +44,7 @@ export function MaintenanceImport({
     try {
       await work();
     } catch (e) {
-      setError((e as Error).message);
+      setError((normalizeRequestError(e) as Error).message);
     } finally {
       setBusy(false);
     }
@@ -102,9 +105,9 @@ export function MaintenanceImport({
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     });
   return (
-    <Disclosure
-      title="Импорт графика ППР"
-      className="mvp-card maintenance-import"
+    <section
+      className="workspace-pane maintenance-import"
+      aria-label="Импорт графика ППР"
     >
       <div className="platform-section">
         <p>
@@ -112,31 +115,47 @@ export function MaintenanceImport({
           строк. Проверка покажет ошибки до создания графиков.
         </p>
         <div className="mvp-actions">
-          <Button disabled={busy} onClick={template}>
-            Скачать шаблон ППР
-          </Button>
+          <IconButton
+            label="Скачать шаблон ППР"
+            disabled={busy}
+            onClick={template}
+          >
+            <ActionIcon name="download" />
+          </IconButton>
+          <IconButton
+            label="Как заполнить таблицу"
+            onClick={() => setHelpOpen(true)}
+          >
+            <ActionIcon name="help" />
+          </IconButton>
         </div>
-        <Disclosure title="Как заполнить таблицу">
-          <p>
-            Одна строка — один график. Постоянный код графика уникален внутри
-            объекта. Повторная загрузка пропустит этот код; изменения вносите в
-            карточке ППР.
-          </p>
-          <p>
-            Объект — ID или точное название; помещение — ID или номер с
-            корпусом, подъездом и этажом при совпадениях. Оборудование — ID,
-            название или серийный номер. Ответственный — ID, имя или email.
-          </p>
-          <p>
-            Периодичность: дни, недели, месяцы, годы. Интервал — целое число.
-            Даты — ГГГГ-ММ-ДД или ДД.ММ.ГГГГ. Пункты чек-листа разделяйте знаком
-            | или переносом строки внутри ячейки.
-          </p>
-          <p>
-            Графики с прошедшей датой создадут пропущенные задания. Календарную
-            сетку с месяцами по колонкам сначала преобразуйте в строки графиков.
-          </p>
-        </Disclosure>
+        {helpOpen && (
+          <SidePanel
+            title="Как заполнить таблицу"
+            onClose={() => setHelpOpen(false)}
+          >
+            <p>
+              Одна строка — один график. Постоянный код графика уникален внутри
+              объекта. Повторная загрузка пропустит этот код; изменения вносите
+              в карточке ППР.
+            </p>
+            <p>
+              Объект — ID или точное название; помещение — ID или номер с
+              корпусом, подъездом и этажом при совпадениях. Оборудование — ID,
+              название или серийный номер. Ответственный — ID, имя или email.
+            </p>
+            <p>
+              Периодичность: дни, недели, месяцы, годы. Интервал — целое число.
+              Даты — ГГГГ-ММ-ДД или ДД.ММ.ГГГГ. Пункты чек-листа разделяйте
+              знаком | или переносом строки внутри ячейки.
+            </p>
+            <p>
+              Графики с прошедшей датой создадут пропущенные задания.
+              Календарную сетку с месяцами по колонкам сначала преобразуйте в
+              строки графиков.
+            </p>
+          </SidePanel>
+        )}
         <label>
           Файл графика ППР
           <Input
@@ -241,6 +260,6 @@ export function MaintenanceImport({
           </>
         )}
       </div>
-    </Disclosure>
+    </section>
   );
 }

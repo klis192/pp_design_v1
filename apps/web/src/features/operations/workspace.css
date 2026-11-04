@@ -1,0 +1,51 @@
+.operations-page .workspace-toolbar-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.operations-page .workspace-toolbar-row > .ui-control {
+  flex: 0 1 320px;
+  width: auto;
+}
+
+.operations-page .workspace-toolbar-row > span {
+  margin-right: auto;
+  color: var(--ui-muted);
+  font-size: 13px;
+}
+
+.operation-card {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.operation-card .mvp-card-head {
+  margin: 0;
+}
+
+.operation-card p {
+  margin: 0;
+}
+
+.estimate-workspace-form .estimate-line {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.estimate-workspace-form .estimate-description {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 480px) {
+  .estimate-workspace-form .estimate-line {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .operations-page .workspace-toolbar-row > .ui-control {
+    flex: 1 1 160px;
+  }
+}

@@ -71,6 +71,9 @@ export function useWorkspaceState() {
   const [selectedTicketId, setSelectedTicketId] = useState(
     initialRoute.ticket || "",
   );
+  const [serviceRecordId, setServiceRecordId] = useState(
+    initialRoute.serviceTicket || "",
+  );
   const [ticketFrom, setTicketFrom] = useState(() =>
     parseTicketFrom(initialRoute.ticketFrom),
   );
@@ -310,6 +313,8 @@ export function useWorkspaceState() {
     setSelectedUnitId,
     selectedTicketId,
     setSelectedTicketId,
+    serviceRecordId,
+    setServiceRecordId,
     ticketFrom,
     setTicketFrom,
     selectedChatTicketId,

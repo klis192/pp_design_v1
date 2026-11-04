@@ -2,8 +2,9 @@ import type {
   EntityDocument,
   TicketWorkflow,
 } from "../../../../../packages/contracts/src/business-workflows";
-import { Button, Input } from "../../ui";
-import { ActionIcon, Disclosure } from "./shared";
+import { useRef } from "react";
+import { IconButton, Input } from "../../ui";
+import { ActionIcon } from "./shared";
 export function TicketWorkPhotos({
   workflow: w,
   documents,
@@ -19,7 +20,17 @@ export function TicketWorkPhotos({
   onUpload: (file: File, phase: string) => void;
   onDownload: (document: EntityDocument) => void;
 }) {
-  const photos = documents.filter((d) => d.category === "photo"),
+  const fileInputs = useRef<Record<string, HTMLInputElement | null>>({});
+  const photos = documents.filter(
+      (d) =>
+        d.category === "photo" &&
+        d.links.some(
+          (link) =>
+            link.entityType === "tickets" &&
+            link.entityId === w.ticketId &&
+            ["before", "after"].includes(link.phase ?? ""),
+        ),
+    ),
     open = [
       "registered",
       "assigned",
@@ -41,24 +52,24 @@ export function TicketWorkPhotos({
   const files = (items: EntityDocument[]) => (
     <div className="work-proof-files">
       {items.map((d) => (
-        <Button
-          key={d.id}
-          variant="text"
-          disabled={busy}
-          onClick={() => onDownload(d)}
-        >
-          <ActionIcon name="download" />
-          {d.name}
-        </Button>
+        <div className="work-proof-file" key={d.id}>
+          <span>{d.name}</span>
+          <IconButton
+            label={`Скачать ${d.name}`}
+            disabled={busy}
+            onClick={() => onDownload(d)}
+          >
+            <ActionIcon name="download" />
+          </IconButton>
+        </div>
       ))}
     </div>
   );
-  if (!photos.length && !(canUpload && open)) return null;
   return (
-    <Disclosure
-      title={`Фотографии работ · ${photos.length}`}
-      open={w.state === "awaiting_acceptance"}
-    >
+    <section className="ticket-work-photos">
+      <h3>
+        Фотографии работ <small>{photos.length}</small>
+      </h3>
       <div className="work-proof-grid">
         {["before", "after"].map((phase) => {
           const items = photos.filter((d) => current(d, phase)),
@@ -78,10 +89,25 @@ export function TicketWorkPhotos({
                 <p className="field-hint">Фотографий пока нет.</p>
               )}
               {upload && (
-                <label className="business-file">
-                  Добавить фото
+                <div className="work-proof-upload">
+                  <IconButton
+                    label={
+                      phase === "before"
+                        ? "Добавить фото до начала работ"
+                        : "Добавить фото результата"
+                    }
+                    disabled={busy}
+                    onClick={() => fileInputs.current[phase]?.click()}
+                  >
+                    <ActionIcon name="upload" />
+                  </IconButton>
                   <Input
                     type="file"
+                    hidden
+                    className="ticket-hidden-file"
+                    ref={(element) => {
+                      fileInputs.current[phase] = element;
+                    }}
                     accept="image/jpeg,image/png,image/webp"
                     capture="environment"
                     disabled={busy}
@@ -91,17 +117,20 @@ export function TicketWorkPhotos({
                       e.currentTarget.value = "";
                     }}
                   />
-                </label>
+                </div>
               )}
             </section>
           );
         })}
       </div>
       {older.length > 0 && (
-        <Disclosure title={`Другие фотографии · ${older.length}`}>
+        <section className="ticket-older-photos">
+          <h4>
+            Предыдущие фотографии <small>{older.length}</small>
+          </h4>
           {files(older)}
-        </Disclosure>
+        </section>
       )}
-    </Disclosure>
+    </section>
   );
 }

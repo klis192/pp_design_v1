@@ -1,0 +1,53 @@
+{
+  "status": "published",
+  "sourceRevision": "8060b64491c8dab8d373768e858fcc89233d978a",
+  "releasedAt": "2026-11-04T17:28:46.664776+00:00",
+  "postflightAt": "2026-11-04T17:29:45.389844+00:00",
+  "publicOrigin": "https://sklad-kontur.92.118.115.96.nip.io",
+  "apiImageId": "sha256:79f6f978c87154a173f5c9e29c72471c97c494fe0ea82e6137eb0e7b890bedc7",
+  "apiSourceIdentity": "ed4cafb2a29f1f55c30553b6e468a3e33d88552d762cf10dbfe550c43635e5d4",
+  "migrationCount": 16,
+  "canonicalSquareGeometryVerified": true,
+  "defaultPlans": {
+    "properties": 3,
+    "buildings": 3
+  },
+  "publicFilesShaVerified": 51,
+  "publicLoginViewports": [
+    1440,
+    390
+  ],
+  "publicBrowserErrors": 0,
+  "publicBrowserWrites": 0,
+  "assets": {
+    "total": 451,
+    "previousPreserved": 410
+  },
+  "downloadsPreserved": 7,
+  "neighborContainersUnchanged": true,
+  "runtimeConfigurationPreservedExceptReleaseTag": true,
+  "persistedReleaseTagVerified": true,
+  "backup": {
+    "databaseSha256": "1e78e2d5aa1109a3cff5cb54a21c2b907968e89acd124c893f2547d48a513649",
+    "databaseBytes": 318854,
+    "uploadsSha256": "1ec8bf08115ebef9290b4c767c22d7c1df2a60774eee94ca1c181709052f8860",
+    "uploadsBytes": 282891,
+    "uploadFiles": 12,
+    "quiescent": true,
+    "oldApiStopped": true
+  },
+  "localBackupCopyVerified": true,
+  "health": {
+    "status": "ok",
+    "service": "warehouse-api",
+    "databaseBackend": "postgres",
+    "databaseSchema": "relational-v3",
+    "fileStorage": "local",
+    "volatileStore": "postgres"
+  },
+  "boundaries": [
+    "Public read-only HTTP/browser checks. Authenticated feature tests ran on the final built bundle against the isolated test API.",
+    "Historical row/sequence comparisons were performed while the owned API was stopped, before restarting background workers.",
+    "No production authentication bypass, demonstration writes or 1C changes."
+  ]
+}

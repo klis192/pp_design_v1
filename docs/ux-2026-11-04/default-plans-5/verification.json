@@ -1,0 +1,598 @@
+{
+  "capturedAt": "2026-11-04T17:21:16.300666+00:00",
+  "scope": "Default property/building plans, persisted scope validation, card viewer and editor refinement",
+  "distIndexSha256": "0a31d79d3395b88ccd6c1e078fe081b06b2e6472708e654b6f90aed9f15e0cb9",
+  "distFiles": {
+    "assets/AccountingWorkspace-Ct77b_q_.js": {
+      "bytes": 16288,
+      "sha256": "3bfab2cff2641a47262864cc60a42ecb0fa612199a277198b678169170b88227"
+    },
+    "assets/Admin-CDpV98yT.js": {
+      "bytes": 5130,
+      "sha256": "3bdf8004085ce44dd9291b15fb447596f7d8c2c388c373cf9af22b18bcdc3017"
+    },
+    "assets/DocumentRegistry-BgtiAVvz.js": {
+      "bytes": 5251,
+      "sha256": "5c30b24924b515d02296df4c0cb1b359f14ea0c8ca9858385335a3065989fd38"
+    },
+    "assets/FilterBar-UbJvtYGV.js": {
+      "bytes": 2002,
+      "sha256": "ba4b224fb494d70f4b00fc07a6908a9ae2c200eca04b7d824a4bfbf2b374b602"
+    },
+    "assets/index-BQSyKngz.js": {
+      "bytes": 239165,
+      "sha256": "8ff173ee821331669cdeed6337378119ba25a761b044eb7faa83d0525d9873c5"
+    },
+    "assets/index-DlChOj7n.css": {
+      "bytes": 104153,
+      "sha256": "85fc1314a950472f155f8702cc4eaa6f124c2c19836b2a1f45c29bd5bc874025"
+    },
+    "assets/iso-CyLnQ4BE.js": {
+      "bytes": 85134,
+      "sha256": "e2a102a2c55dc00520d5406f3b044e5c1898c0dec56b922d8e3df2429c06f870"
+    },
+    "assets/Leases-B0kFDWRe.js": {
+      "bytes": 7900,
+      "sha256": "183d13fa72903f771aaf2d372f025d16c8b9171838bf766a8d9d5ac3d3f81d89"
+    },
+    "assets/ManagerBilling-Ca6IqPL5.css": {
+      "bytes": 3472,
+      "sha256": "f063a69fbfa8c7da8f001c325a09c3de41b3022296f545464a9967451b3b64db"
+    },
+    "assets/ManagerBilling-Cj1Pr3xv.js": {
+      "bytes": 13593,
+      "sha256": "de47f75de797c914e34e09c6da53255d9d72c1b6bf184f24cc4734bbd98bfadb"
+    },
+    "assets/ManagerChat-CVECjooc.css": {
+      "bytes": 2769,
+      "sha256": "ea19aa9fcc0d19df421241c63d1e6a4c451042dd1b8e08c2ec8872406331d733"
+    },
+    "assets/ManagerChat-DE7ZQGjI.js": {
+      "bytes": 3264,
+      "sha256": "63f2c255e865537902d4817814bfcaad3985c8b3607c977df816090629f2f716"
+    },
+    "assets/ManagerDashboard-C_wjSkUA.js": {
+      "bytes": 6050,
+      "sha256": "43b983f08be6635b30778fdb242a9cb0e49693fe88c28614501f4094d0a6c308"
+    },
+    "assets/ManagerImport-BRTaezcX.js": {
+      "bytes": 10358,
+      "sha256": "f07f849ac1c7ba5a26588f13d94f0481219a3fbc9a5317eed019ae3fe5af36f8"
+    },
+    "assets/ManagerLeases-BSt9rI0s.js": {
+      "bytes": 3435,
+      "sha256": "72e9a08062b1f1fd8f80662bb06d13fe31bd8c9151c8e1812102071f00449668"
+    },
+    "assets/ManagerNotifications-1jVnC1Nl.js": {
+      "bytes": 1379,
+      "sha256": "c00a8bf8418de918de6253172da7dd69f8f3420cc76abe2ae0388ec9da3f8292"
+    },
+    "assets/ManagerObjectLaunch-ppFntvvl.js": {
+      "bytes": 5823,
+      "sha256": "5176e72e200b0e2dce3f062144c8197ff9cc22965c77b8698cda2bef4f540438"
+    },
+    "assets/ManagerObjects-CZc7vZsr.js": {
+      "bytes": 5017,
+      "sha256": "2a6c5fe2b32e6298d12fc3110248002cd6560adc2cb7c6deab7b66cb26590b26"
+    },
+    "assets/ManagerProfile-Bjnie5tB.js": {
+      "bytes": 4491,
+      "sha256": "97b58d9614329756282fe04077ed707655d6d88184cbeeb4cb172ed906d0a4ed"
+    },
+    "assets/ManagerStaff-BBuXJWWh.js": {
+      "bytes": 427,
+      "sha256": "7164638e3bf6afac1aee370a4f1e146f012a04152585d5812d646b56e096bc46"
+    },
+    "assets/ManagerStaffCreate-CLTwx1wn.js": {
+      "bytes": 2285,
+      "sha256": "0466db274dacd0152ddf916ba6face9a478d49f0e4171c212a174e5103f1eb4c"
+    },
+    "assets/ManagerTenantDetail-B9oMJAdS.js": {
+      "bytes": 13197,
+      "sha256": "25b44c68373e406ba6df034739cc3a5f0b7b1e2f953feabd916225080699ac63"
+    },
+    "assets/ManagerTenants-DECHkZAg.js": {
+      "bytes": 3292,
+      "sha256": "14c29c41d7a5e1cbb19b06c2429176d18f137ae43330f6659eed7cf84ac3b51e"
+    },
+    "assets/ManagerTicketCreate-CCOVvVz9.js": {
+      "bytes": 1010,
+      "sha256": "84802e6dbc5bce0a4a127579663eb8f07885ec69eb82b7b2a02839600075b9dd"
+    },
+    "assets/ManagerTicketDetail-CNowLONJ.js": {
+      "bytes": 31994,
+      "sha256": "01c59a43e838e83db595e8fcc73ab967a03c15832940ae8be4cea0a25a5dc1d9"
+    },
+    "assets/ManagerTickets-i_vyCmLp.js": {
+      "bytes": 13110,
+      "sha256": "6209ff743a62007fde23576fe258828245de8ce87afbadf6b7cb541b3442875e"
+    },
+    "assets/ManagerUnitDetail-PRqTQhgo.js": {
+      "bytes": 7125,
+      "sha256": "0a316f230a7ab4eebbd9df7f7efade6ce97af2c289fccab5924b60ff61a4d69d"
+    },
+    "assets/ManagerUnits-bD8ednUu.js": {
+      "bytes": 4973,
+      "sha256": "063c9cca8af35b068e44d6106205fb196bc26289baf7d92607a62d37a1f47bcd"
+    },
+    "assets/Operations-BWWEtOhW.css": {
+      "bytes": 1081,
+      "sha256": "43cdf8eb01abe07937a9f2c398046fbb42fc808a02d39c2f4004041246adf509"
+    },
+    "assets/Operations-Cldp8sde.js": {
+      "bytes": 72638,
+      "sha256": "a15737e45780318a1c49bf7f01ecb54c963c6096ef06768500ffc47448b3ccc9"
+    },
+    "assets/Overview-Ba-Wh7wt.js": {
+      "bytes": 12749,
+      "sha256": "689c0d1e40d88ef293cee494adb96d1af15f4f3b615ded4fd6a52fbed86f74fb"
+    },
+    "assets/permissions-BLscaukU.js": {
+      "bytes": 2192,
+      "sha256": "c5e3d0d4266106d8bdfb78545befed2e9c1c34f16db29d66f2825cfb3d6b980e"
+    },
+    "assets/Portfolio-DOXCav-P.js": {
+      "bytes": 7235,
+      "sha256": "1804778bb9feafa0ee06ca374c82a7662c0b5a68987c03af0494b1d3ebed6b70"
+    },
+    "assets/ReadingsWorkspace-BltAcP-q.js": {
+      "bytes": 11365,
+      "sha256": "46446638cbc4fe073515d14e96a24ef0dd9202fc8597b6589b9b912ef409e7d4"
+    },
+    "assets/ResponsiveTable-CPVDGSeP.js": {
+      "bytes": 1128,
+      "sha256": "39caac34994813397dd251619790c134fee5471fcdf9a27dc074f48993090ce1"
+    },
+    "assets/Service-oiSx2lj5.js": {
+      "bytes": 5392,
+      "sha256": "6a13cc2152bce3645a91a82132e6a245244929452d2027656dec07b86243980e"
+    },
+    "assets/shared-CSs8WunF.js": {
+      "bytes": 6682,
+      "sha256": "dbdb055cda645a161fe586f8144b5660a6a934f3c744a1a1d8bd8f5ae9c71b06"
+    },
+    "assets/shared-vFIZpQPK.js": {
+      "bytes": 1817,
+      "sha256": "2f9e6d0c2db690043355afbfad71f64dd9c28552d28b3a1e2a77120a6c583cfc"
+    },
+    "assets/StructureWorkspace-Bclcbxph.js": {
+      "bytes": 37954,
+      "sha256": "36775b1c7cd96281f5a3105cb9f11b91c12b261aceb37b9823ee83f86d76603a"
+    },
+    "assets/StructureWorkspace-DE7j60qO.css": {
+      "bytes": 6762,
+      "sha256": "8e10ff4f581ddbf994308ca911150866cf27e1a6ebebab418ad8b2c060a91bc5"
+    },
+    "assets/TenantChat-DNFOfMAJ.js": {
+      "bytes": 2627,
+      "sha256": "799a5b3e87802b385b192d33090ee5492057807a6e4a86fe2d7636c540b49021"
+    },
+    "assets/TenantServices-DWvAyMde.js": {
+      "bytes": 1197,
+      "sha256": "8593f04e03fdf1bf2c078c3491dc247575bdd29e5897f83086547614786e55cb"
+    },
+    "assets/ticket-search-LK6TsXg5.js": {
+      "bytes": 696,
+      "sha256": "cad88e3afbab0a629e136ddde804f5cf03c0acc137df5584239d5847ee8efebb"
+    },
+    "assets/TicketCreateFields-3-YjVGAE.js": {
+      "bytes": 1751,
+      "sha256": "dc9bc6eb9ece53680121550081115498b5b140fd4306d345f1460721b090e451"
+    },
+    "assets/usePagedResource-Com-GwCJ.js": {
+      "bytes": 705,
+      "sha256": "699b7ab072d08526cecb79203b3b2702a4113630f12a0d1b601c6891034e67ec"
+    },
+    "assets/useSurfaceView--ase9Tuf.js": {
+      "bytes": 643,
+      "sha256": "b9823a0d5e672f66b4e433afc9976be173d5e59ec3b00c09137bc95799072185"
+    },
+    "assets/useWorkspaceViewState-DXT-6vdT.js": {
+      "bytes": 427,
+      "sha256": "32d72a94e7e37d9951247c51ff32ce9da3c94e38930320c23af27a88f8a21294"
+    },
+    "assets/workspace-C_zf7ieP.css": {
+      "bytes": 10515,
+      "sha256": "6789aa220572ffa6a9710b397048f7bed4d79aa341c0000c0ce933eed60b8d9f"
+    },
+    "assets/WorkspaceContext-DbZpUIEU.js": {
+      "bytes": 110170,
+      "sha256": "c2f0421ed52ad754121d0ad928845de1440c76700e056688b6b1a5ae7865d99c"
+    },
+    "assets/WorkspaceContext-DiQoCVUR.css": {
+      "bytes": 12673,
+      "sha256": "22b4998881d5ace5bb22ba0ac4264297606aadc30034c04fdae0d107c4e46569"
+    },
+    "index.html": {
+      "bytes": 584,
+      "sha256": "0a31d79d3395b88ccd6c1e078fe081b06b2e6472708e654b6f90aed9f15e0cb9"
+    }
+  },
+  "sourceFiles": {
+    "apps/api/package.json": "2e6c2e7ad3a0fe1faed8b8a97bd21b6f0618e612fbe8f7bce71629626c9cd6fe",
+    "apps/api/src/agenda.js": "295ebc4c1502dd9c38ece92c15ac844f7035306fc5461ba03a2bbaa5e9e41e89",
+    "apps/api/src/auth.js": "b6f83c38c30452475aacb9dd204db434cfa6481e921385f09620e43b42df524e",
+    "apps/api/src/bot-links.js": "0dd0f9dab724e055ce1c888278857980a6cebcbb2411d96b502907750215443c",
+    "apps/api/src/config.js": "2e6f0c40eac7c217d1ffd73f67bcbd7f72933be5cf9857a46b3055ad158916ef",
+    "apps/api/src/database.js": "88c9145520cbf8957b9b0e256ba7b479be2c2252bb907ce0f0b9142541094cd8",
+    "apps/api/src/database/auth.js": "4ffc658365779b76ac25afe80982b11f6a76b3a7018c8da478e567d8f77d2bdb",
+    "apps/api/src/database/base.js": "8be8d7a9b69a6e9def73986296f2ef65c4c25d623e3247542aad4f5b802e9d1c",
+    "apps/api/src/database/billing.js": "e64aa0267f18dbb110b0320a57cf0b8b8e115de620fa345d5de1213e67ec724e",
+    "apps/api/src/database/constants.js": "a35491f001b716a2e6d1426b1ef7b005a2a32b1f7c62db23cdbd949056f2b89e",
+    "apps/api/src/database/index.js": "6ff05a5b5ba8dd277772231503552b75b43db24f888d541b04a4c7846c6184de",
+    "apps/api/src/database/leases.js": "66549ac6023097b1ed860bbd231816537c49aa3f7dd472b92f21186cf3e260b0",
+    "apps/api/src/database/notifications.js": "4868b3f3509f5c3722ad258fb7ee889b456c99e9484da67e9ef9aa36c634e6cf",
+    "apps/api/src/database/portfolio.js": "b34ffc3a8acfc52e90e00f18eef63da9e9ea1b0e0108543cf06d9f5cf03cf432",
+    "apps/api/src/database/tenants.js": "e879744f26b99bda8f304a132c847b92ce6fa7d7b6c0b5c71ecb8551ae6dc203",
+    "apps/api/src/database/tickets.js": "a29edb3a10242d76cc3006fdf36f68307da7c4788f8e85b3ec5a80f7b0872ecb",
+    "apps/api/src/domain/accounting.js": "7215db4e47564e24307cfb67663041c4dba503cf73a076384eb141a7f9c5cdb1",
+    "apps/api/src/domain/cad.js": "41dae751b5f1e464a0043e962beb55aaa11b743f75d82197fd49b87654de8fce",
+    "apps/api/src/domain/context-access.js": "926eed753b28f8e81a780b1ad09655881f2ba6ba5059f1b81f1bf3673cb9064b",
+    "apps/api/src/domain/default-floor-plans.js": "56ba8591afc11f5a8b602681f0a6ceec894d0a02cc317ba625a8aad268c33fa9",
+    "apps/api/src/domain/dispatch.js": "498f14d389799624bd74edf347f994ff0c87a7beaa1cde846da033514924ed82",
+    "apps/api/src/domain/documents.js": "9c67f45f6a1634db92bbce868cb55f0b78c2f4823d3c6d97732c0a0ec4331754",
+    "apps/api/src/domain/estimates.js": "e964fadb26ee6055e10dccdee27ac809ccf7dcc892ce3087cc7692f5b2d374af",
+    "apps/api/src/domain/exchange-worker.js": "f35b0b15199b2f2f98488a81fb0abe42bfbaf069042e8d604dcd0bdc5718eb0c",
+    "apps/api/src/domain/financial-access.js": "5d003799affb107dd5bf40a013904274cb003701d8e066bb90e38657fdecd65f",
+    "apps/api/src/domain/integrity.js": "064d31b3409dbf35df68128460d23ce77cd3e6759f782c454e4d47894906c77e",
+    "apps/api/src/domain/maintenance-progress.js": "d5570464b9ac15abe287b543cfb84232e5ae20cc45749be31d210784e749c3c0",
+    "apps/api/src/domain/maintenance.js": "a9a187eee04d96e09fba648cda03e6f77cbb842db2689ce8dd0410cb6bc67244",
+    "apps/api/src/domain/plan-location-scope.js": "fc84b4b8909c0403f0a7ea7d48e0a96f42033bfa9f3c260042765e7f10834418",
+    "apps/api/src/domain/readings.js": "2bc6b5cb561b082e7ce49f6862778e96e53c048580403276bebd1db6635e1bc2",
+    "apps/api/src/domain/structure.js": "d61c53b80d6b0655043e31fc518e9a6b9c70fc555c706440821c871acda7cd42",
+    "apps/api/src/domain/ticket-search.js": "a05fc5c60641b8c2964f202dfe2488fbc580a3e47f1a8051dfc19f62027a5dda",
+    "apps/api/src/domain/ticket-view.js": "cdd7ea1009ee96ffc1645ae218520e83713ffa963b603714651026b3877fa0d2",
+    "apps/api/src/domain/ticket-workflow.js": "1d3583e626921b1e922ee3ef569d8eb2805e2eca2b7a0b93a6175f433348281b",
+    "apps/api/src/domain/version-time.js": "1393e366ca62765ad5c416ed9f5d5ed5a80ecf25cd7792c07c6dcb935d9f2291",
+    "apps/api/src/file-storage.js": "83d26988bfbe24c52ea463cd02776f7b82deb2e41fad48c4ee7c0e52c0434d80",
+    "apps/api/src/http/body.js": "e926aef819c41a668229c7cf16e8637faa8156e269e2a1740a4a5d301748dfb5",
+    "apps/api/src/http/buffered-response.js": "cdb93cd30e948a2ccd83465a3f0a165cdf01b22653643e731dc957c20168f9b0",
+    "apps/api/src/index.js": "dbfb17b9475f12370993726149ace82bf2ab03e076f43b4e413d1e404ef528eb",
+    "apps/api/src/infrastructure/postgres-ttl-store.js": "fefe9296e23fe8c800bf2fc8d617ebc7443678d78a3b0b40570890f60c4ee64d",
+    "apps/api/src/infrastructure/ttl-store.js": "b945c76ace14430c245ca9d234c69f4e759ce2cbfca60137f1cf35b3fd87907a",
+    "apps/api/src/operations.js": "1419589c0701502cf7ff84c899d31452dfd900a0f429d8c4317dc7b7fed572c0",
+    "apps/api/src/persistence/audit.js": "76929552e2b0c728b67fdb801a6d1e687c47dc5ba8d77a0a99f4916b98b0b423",
+    "apps/api/src/persistence/business-schema.js": "e3e7c6492d5682648a311543dc2fc696329c144f1e9808b17caf8b97995d2249",
+    "apps/api/src/persistence/cli.js": "0e241e7151b83660b71fe69fecdf3324ab25f94c1e76d8c89723966ec303861c",
+    "apps/api/src/persistence/database.js": "e94f5567d1be8e65687e65fdd53ff20a82c086b5b6ffaa4b25bc93976783085f",
+    "apps/api/src/persistence/exchange-page.js": "d80fcde8f000ff4c58fe1cb6dadcca66508dcd579aee78143e3eb2b68bb42c7e",
+    "apps/api/src/persistence/migrate.js": "37d24acd3013731e6c1b1f1e83fbb11cdb4e6dc53ff3eaac87507c4580e84433",
+    "apps/api/src/persistence/migrations/001-relational.sql": "1341f9c8e1e919b2f0cc658dba5ccc71f62e342eaeec71c893154d993623c345",
+    "apps/api/src/persistence/migrations/002-remove-legacy-state.sql": "0a756ee1568dd5ff1fda708b72fa5ffd442d86a77b7ebcedac2d9bdd3d3eb094",
+    "apps/api/src/persistence/migrations/003-operations-platform.sql": "662ee13846c822ea7a7ba8288e205a16b3b878a86e95b180833d48e5b521c929",
+    "apps/api/src/persistence/migrations/004-maintenance-import.sql": "ef29237fbd4a2531d969dc3dd2aebbf914a0d7e82ecb910958dc5de63e37c021",
+    "apps/api/src/persistence/migrations/005-business-workflows.sql": "4299522eabc734224f760d8502e8d1032d2ef92c6563b489765df1bfb6fe4c85",
+    "apps/api/src/persistence/migrations/006-context-assignments.sql": "48f3f4e54b88a1bd7592a27f4d9244425dd6c5143fe5a6605f8f657af8e485d8",
+    "apps/api/src/persistence/migrations/007-existing-business-records.sql": "f5490daf8e53648b48c4944298a18099dc3f1775d8847faac240ce189e2c7a4f",
+    "apps/api/src/persistence/migrations/008-work-estimate-binding.sql": "ca1719736b5177b12e48ad9dfa126c4400bf3426f31e9106053ed95312cb0975",
+    "apps/api/src/persistence/migrations/009-exchange-page-indexes.sql": "3a24e78b0bf62771f966d81df51f5fd8213237c6fd098b52d54600c2b48136bd",
+    "apps/api/src/persistence/migrations/010-realtime-state.sql": "090f5e8a86e38868ab41ecca2a81ea0a00a9bc62aaf7528a1e2fbd9f9ffeed9a",
+    "apps/api/src/persistence/migrations/011-catalog-import.sql": "8dfe17ba99e42441c7b25fc88ea4cf96053d2632720acce2fc13efd0e08a87ae",
+    "apps/api/src/persistence/migrations/012-accounting-contacts.sql": "a5637e964c3e9e0b14a550b0100530d60dc80495eeea2914a731df153ba96197",
+    "apps/api/src/persistence/migrations/013-accounting-status.sql": "75974260d1ae71bc11ad5769877ca1c21f940ad8a6c202714debe1bc69e8afda",
+    "apps/api/src/persistence/migrations/014-executor-refusal.sql": "f58a130df52c335eb6ffdcad7a94ddcfd074f1507860c42f7eb3bc112ba70603",
+    "apps/api/src/persistence/migrations/015-dispatch.sql": "a7b59fcf3011e4c597d0e19044353e97ab55c740c9c3fe9f3092a7f9b5b576d2",
+    "apps/api/src/persistence/migrations/016-default-building-plans.sql": "ff753273eba94c5374bc05b165bd6b7ce6eb647cac5b60d8155ce9e66ca49e5b",
+    "apps/api/src/persistence/pool.js": "d0f510fc213298f9fc162cec9f2fa22fa209c7d80bbbd8a60fc29a14171e4477",
+    "apps/api/src/persistence/read-profiles.js": "6688f5a4cef9162836901cc536cf8d16547e38f97a03f6124cdc4e13eca28952",
+    "apps/api/src/persistence/rows.js": "95adc9dfc92ee6d099e66a55a6581887aa73b706c6fdb3139daa1988644ed29a",
+    "apps/api/src/persistence/schema-table.js": "5c3376b3f49435ce0e2bd6ff5b0febd95629e3829271c3f567d8663b8e2cbd07",
+    "apps/api/src/persistence/schema.js": "e57a16add36192361fa7d9f0d4eeab63a420a1880dc048e95d11f4256a81b4b6",
+    "apps/api/src/persistence/search.js": "6ab9717201706acbe4e45a4c5ca6a63795f58d50a9d1ff102d65caac9fb0e80e",
+    "apps/api/src/realtime/pg-listener.js": "83711794d48086da5ea6348b1ed1b0f4eca00e38157081baefe91a23b47f6718",
+    "apps/api/src/realtime/server.js": "650aff7b564acd4825d0cefb166eff7abcb67d8685c83a5133198b7403e013df",
+    "apps/api/src/realtime/topics.js": "6490555b1cf75b406a69d5145b983df77805346ef9ffa62df468cc9441297c88",
+    "apps/api/src/routes/accounting.js": "d6d7916c84bb3df290061b7bdf8a0b41b3cda4bf9c88814279aa794eb62de404",
+    "apps/api/src/routes/agenda.js": "67c41c25b761b35ce9e0fa54f2975ce85a59ae2501664058005663f639f75764",
+    "apps/api/src/routes/auth.js": "28bb9a11f496ce44c399223cdccb89a25c06247109c2e25d99ae80d5c7bfd867",
+    "apps/api/src/routes/billing.js": "b97e04a82f6060bf7203fe28ebd8c3c833843c0ffdf1ce6bd3299c22c262c0dd",
+    "apps/api/src/routes/business-workflows.js": "fc04206923a25faf51386cda11c27391c314d75ed7dc5a8f7e340645eb421168",
+    "apps/api/src/routes/context-access.js": "a146bb1b93b15ced35cf80da6813edfe5061250981c5875d97a204ba7efddc95",
+    "apps/api/src/routes/dashboard.js": "5ed7d480d4ef2934d283ebb5061680e4b3e7b46d71ed02f3398bcc103b7b448c",
+    "apps/api/src/routes/documents-registry.js": "b4a604cd4c239c21ed832ff2fd1590f00d1fdc7ec6b5d3ef5fc059b3016198e9",
+    "apps/api/src/routes/exports.js": "741b0784c8a97a76cdc0cf9da28db6efffd27f131e5d1dce0d2ab1e1adb95494",
+    "apps/api/src/routes/imports.js": "fbb96ce21b63197c74de651e355ddfbddedd034c9df2371d0f2ba8ec6d68ed22",
+    "apps/api/src/routes/leases.js": "36938b550e3c6954bbbe3fd951948237cbb05fffdaaeddce7b13faa6f113d78a",
+    "apps/api/src/routes/maintenance-import.js": "6bffac729eaf58df4464eaf11bca9a71b558f2ee967c2f69050bd352c3f35d1c",
+    "apps/api/src/routes/operations.js": "4df98cc68747860b90f117f902ef3913599bc862f2c84d88a98d6fcb116413b5",
+    "apps/api/src/routes/platform.js": "acef829284756c67c337383b1dc1a7c300e6a5d20348fa0b2ca7c68cce16065c",
+    "apps/api/src/routes/properties.js": "4e775bd9a997f1bfc75885c5f8ff768e3395081220f8606e4ade4b9120ad8c5a",
+    "apps/api/src/routes/system.js": "20189ff8606de0dedef864e09ff7bf5b9349733193c9509a29cf1553bb3d6b73",
+    "apps/api/src/routes/tenants.js": "37f4c30207c06b84732f9f77376853c6f6fa105dd4fa9711f66f5c82e4f25ed9",
+    "apps/api/src/routes/tickets.js": "e2506bc1997e7dfcbbc0ab77fb0eb444ff84a082f33d71aa350e4bfe574e432b",
+    "apps/api/src/routes/units.js": "6b89f1cab013115af06bbe79df9010424afefc32170b47be27e711519fe8db09",
+    "apps/api/src/routes/users.js": "afed23f218703f78f8c4329c33d81c1fb0406cf394ec87219e96d16965dbab3d",
+    "apps/api/src/services/access.js": "e8e0ff4d7331e2238863756ffdf58e7e5b6cf91ce68fd060521669a9ead5c058",
+    "apps/api/src/services/bots.js": "f874b9e9902f3d3b5187e7f700f6d247973395126b98c3af875fe198545afbd5",
+    "apps/api/src/services/bots/context.js": "0491ce82c43686c13627a936bde9f552a887066517a59166e0bbb2834b0da643",
+    "apps/api/src/services/bots/media.js": "93daed2c774cc44beb377193be4bc50ae1956ce7f43c5c05049b54b1aecbe45d",
+    "apps/api/src/services/bots/telegram.js": "bf39b70ce10b31831099ae0e0d440046e27c80615272a764a11ef47883941d88",
+    "apps/api/src/services/bots/vk.js": "d372eec87b9f3fc265630cf77d97b2e4f78f24312281f7032a53ed7aa911eb9a",
+    "apps/api/src/services/delivery.js": "77e76096c907dc69b44be495828eae2f8823e7832b0258f7da3a348e02b52059",
+    "apps/api/src/services/documents.js": "8a16329dceb2c7b95d8167b7547a645694e9733e70ef8f44c12ec805766fd44d",
+    "apps/api/src/services/domain-utils.js": "93e37e3e531309aa6b9caa84ae3d49443793291b4d81a870d842b87ea8ce34f3",
+    "apps/api/src/services/exports.js": "9cdd74fb0543bf9eff4c036cebe57dbe04f96c95bb15af1cb6a44dba671e0ff9",
+    "apps/api/src/services/imports.js": "9474db81e9c9b9674cb5f6df169f545f3fcb5607bbd22a127cdfc112a5e6d049",
+    "apps/api/src/services/maintenance-import.js": "06de31b15f7d6f076e807813b72c2ae7e66e5fa5ab3e2436fd9f524fe3abd430",
+    "apps/api/src/services/maintenance-sheet.js": "f0b9077c74e04a6900af730a189db0cd79d6eaf8dc82d0cd69568db705ab1d32",
+    "apps/api/src/services/normalizers.js": "da87aa4b4430487c592fe6538a1b757ef698117f8a2c7233fe943dfe0040d32d",
+    "apps/api/src/services/notifications.js": "34d1f491edf2922b42cd6bf720048acedbaff555f46342e5fea1d632c337e363",
+    "apps/api/src/services/permissions.js": "5b298dceea4420deafa2ebe57cc784484ad09fde873eb8a2e54208fda641fbbc",
+    "apps/api/src/services/queries.js": "bd1e8b412b61adc3f057fc8a143e679c201762c44b1bb3baa10576920c00fa98",
+    "apps/api/src/services/queries/finance.js": "4d62f6ee765a743c8a53ff9f69a612390cb4d57f9fb9eb4524a3357be727b6f4",
+    "apps/api/src/services/queries/tenant.js": "60f68b9f31e64cc5b896e72f6a728734d818394caab19ad255277aff5a5914cd",
+    "apps/api/src/services/queries/workspace.js": "4bef2749256a200f97153d7cc03c5c63a9e3d63f4170ba8deb47b313b42ed460",
+    "apps/api/src/services/spreadsheet.js": "3131d89fbcc37107fcb26137d4a59496b81bafae35148cbd1a4f9f1d856bd8f4",
+    "apps/api/src/services/storage-utils.js": "1b8624e1ae28db6deb0b03afa6ff8a64bbdffdfb20d312780dfce920494d7a5b",
+    "apps/api/tsconfig.modules.json": "1cd5ed761b1ec3a29cf3bbe03e009e25c6a1c01301e4f0e387b2aeca751f45c6",
+    "apps/web/package.json": "99fe134677b5f479979220be8b01365426ad1c157a335eba12f8b5935252b5f6",
+    "apps/web/src/Agenda.tsx": "26a7279e475eacd08d8f8636fd9779df95746e6f0dcd80b92dc1e13897d3242b",
+    "apps/web/src/App.tsx": "8ac764d2f37d21139ced5c52e5d33a522b6df367a6da7652ff533aac99459210",
+    "apps/web/src/ForecastChart.tsx": "f4180b05ea8acb4ac4d00ce9ce6cafac5d16c6d7b80e616c018ed58f4386715d",
+    "apps/web/src/MessengerButtons.tsx": "b920248b6d194661bdaaf210d6cfa4ce563ea6d194a8f41beda746b8d3409dd6",
+    "apps/web/src/ResponsiveTable.tsx": "fde0a637eeefe7db4adb753f4bcf1780633dff85736856dab5eb7ca860065e32",
+    "apps/web/src/agenda.css": "eef6df78eda2ccb2f82911fa1aabcb38162c90b92fc09eba51d29af53362e684",
+    "apps/web/src/api/client.ts": "a30d4e44f465383d014c6dd4293b8e8972988fb9c491b04435ff79f261131836",
+    "apps/web/src/api/operation-form.ts": "7d8bb1daaf31b858231d73ac3f66f586964b4932cf66f65e39816d62cd6b3478",
+    "apps/web/src/api/read-errors.ts": "d25cb2b0d0167a3d944419d84d35feb4da9ac96f809ad521c62c32ad3464356d",
+    "apps/web/src/app/PageBoundary.tsx": "a8913fe6e062997ea3c1c80d7f6ddc6355a99b10bf32ce05a63f66fef5d8bf69",
+    "apps/web/src/app/WorkspaceContext.tsx": "0aeb3f0f22e3cc32b28a671321fac74dd9392b23ec90d240d9770a307c6c4b23",
+    "apps/web/src/app/WorkspaceRouter.tsx": "0b79b307a93067978393d6b77aac6bfd3f5c2d14ff26a54fc38bb44e8aa0b435",
+    "apps/web/src/features/administration/Admin.tsx": "ed27a07e986f362227eb91aa0de5a80202b8c3ddfddf81de97b40f8817f4becf",
+    "apps/web/src/features/administration/AdminForm.tsx": "4d6a2b01bff86b230e9ad26f0135d9f86f6ae2602448ec5577759996feb7db58",
+    "apps/web/src/features/administration/AdminRegistry.tsx": "d3ea7cdc822cf4dab4c270eab3464b5c69ce0868f8c9a2bd9b265f3cbaaa37df",
+    "apps/web/src/features/administration/ManagerProfile.tsx": "1b67d10329d24a0550b8c82fb49690498eae3169f31cab280c0215e9ca1065c4",
+    "apps/web/src/features/administration/ManagerStaff.tsx": "dfeac0a57054064cc8177cbd321bcc7a00735677a151028e4b818601dd21b1ce",
+    "apps/web/src/features/administration/ManagerStaffCreate.tsx": "df37e8aa60c228b514f4831ebe8b97a15398dcc8a8c3d3a586aef8a7d218da1f",
+    "apps/web/src/features/auth/LoginPage.tsx": "99eaf5fa78c99730b03f4f4fc07f38c1c557995a3032f6890c19dd9effb4c090",
+    "apps/web/src/features/billing/BillingForecast.tsx": "461a234515bbc593c94852effaeacafb382e8432aa4e97b34414738920b36dae",
+    "apps/web/src/features/billing/ManagerBilling.tsx": "1b4afab817df47c3e94f36759eaf38617b6dc661ff78dc895eb8c090fb62239c",
+    "apps/web/src/features/billing/billing-view.ts": "08a8b8573367c040d814f1dc2ce95e2ca505fd16cb938a5d7e4217f51495fe2d",
+    "apps/web/src/features/billing/format.ts": "cb0721e35459c6b9c1de2e83a3d4d3354290df51628210b9c599c3b7cf5ca1c3",
+    "apps/web/src/features/billing/workspace.css": "7ceee5affe105502009fb3ea8aed3c2489f25e6ff24764bfea5d0532a22c1648",
+    "apps/web/src/features/business/AccessWorkspace.tsx": "c32298759c263a019af169c6e58ebba592e5913f9a560e66b10b61697d9a2baf",
+    "apps/web/src/features/business/AccountingWorkspace.tsx": "52f7b0c8abb60a1528577a1c3baef166b1a23d6875fca31dc8a590c841d1c3b4",
+    "apps/web/src/features/business/ActionIcon.tsx": "e3dc30c9af3cef87d3dfb4c91daffce8a6a6673569f20b82c88f3866d28c504b",
+    "apps/web/src/features/business/DispatchWorkspace.tsx": "e157ceca05f624a6245967f925d608107b1e64afba8b0658de52237eebc7c316",
+    "apps/web/src/features/business/DocumentRegistry.tsx": "5f3ec33c54c91d97bd0b6996b1a0ee0886c797d298988f28b3858ca2697569fd",
+    "apps/web/src/features/business/ExchangeJournal.tsx": "90ff54703bf5ec40d0214c7648a540fbed228d2f22c53db475c22d801bfd7fa1",
+    "apps/web/src/features/business/FilterBar.tsx": "b8793b5863b52334d9bf24c58ae5a6726be796c8f38e26f668d9a235f04d2c2d",
+    "apps/web/src/features/business/MaintenanceProgress.tsx": "9c34ec5c39fec97e3d46a77b5485c666bf5e75ee003b38282f93743cbaf43c12",
+    "apps/web/src/features/business/ReadingsWorkspace.tsx": "75fea03b7dbc8e34fd06b85f431b10b006bb76872d7732ac5eb870194c41fa5c",
+    "apps/web/src/features/business/Register.tsx": "7cd3d75a03524b1435fba03aa4159c5f5c30334d37af818df05dd404e2ef5bbf",
+    "apps/web/src/features/business/TicketWorkPhotos.tsx": "2b055bdc432431f71e296693e6b4675cd8466658e8c90d5d472fd597deaf93fa",
+    "apps/web/src/features/business/TicketWorkTerms.tsx": "12a7d2f1d0e8f16c1a5ba933f4c2e4a70380b20fe49eb489446cd9be2bf982f5",
+    "apps/web/src/features/business/TicketWorkflowPanel.tsx": "5a5bcf8fc9e7e36ce2c0cfce0b96a722a68b6f391ed05f4455fd10c645234063",
+    "apps/web/src/features/business/register-preferences.ts": "2082b8b7f4acf0a5b6de65c337fff0e0f5e49cc7de07b446ce5db27cfcd98bc0",
+    "apps/web/src/features/business/shared.tsx": "8c214453590cf2daa7fd42a7855c03b6a21a3a5c2a952f8e298c91921f0f2129",
+    "apps/web/src/features/business/usePagedResource.ts": "fe3e639531390c0c147652bc7c1ca55dd20fcae02b6f066c18702639f2ca7ef3",
+    "apps/web/src/features/chat/ManagerChat.tsx": "d8203adaaca0b162f89a400ec1b8958585a5c2c4b3be95378a8a8875d18a748c",
+    "apps/web/src/features/chat/workspace.css": "b9054e927b26923c4919c49d1e61f95f556dfe6328549fce0582aafa686994cc",
+    "apps/web/src/features/dashboard/ManagerDashboard.tsx": "3e3b0da1fdddaaf1367a831a6604d0d0d54e53c5b3fca1a7869db5abfcb459c7",
+    "apps/web/src/features/dashboard/ManagerNotifications.tsx": "f911f37dd8c70224f2b25e886cba6f8c30b442833271943f3d66bd42a1a809e3",
+    "apps/web/src/features/dashboard/Overview.tsx": "da8ebf22971ceb0a6102d7d0d2ff593366701e5d6bb22dd57825e80be2ee5f5a",
+    "apps/web/src/features/imports/ManagerImport.tsx": "3bc1cb5edaa07758ecf8f403d24cc16057ac0c686c0835fb631179096dcd5cb4",
+    "apps/web/src/features/leases/DocumentPanel.tsx": "6b65c4aa04b877b83e843249a285303fd1b2a6f278cd0822d09224c4ad3290a0",
+    "apps/web/src/features/leases/Leases.tsx": "ecc558c6fc249af5d0213688f118cbbff207e22437070fd2a215edd0ea198da2",
+    "apps/web/src/features/leases/ManagerLeases.tsx": "751ef1601eba05efa1f7585ca5b9942e8571558d17155c41ce11ca7d428c382a",
+    "apps/web/src/features/operations/OperationCard.tsx": "b4240f457e73f689c9efce7d1e4498c626b08e2567bfd8a3ccee19b6aacb2d60",
+    "apps/web/src/features/operations/OperationEditor.tsx": "e6acb3f1f65557a35ba1ccc60544da773931db053766b04c151a258075a1fa03",
+    "apps/web/src/features/operations/Operations.tsx": "cb836aa25eba494aaab8a1689c87c24a1be58a77d591bdb855c57b28cc4f22c8",
+    "apps/web/src/features/operations/TenantServices.tsx": "c145b396e44709abc20e829334d6f3c34bc080a732a860845ca56f80e827b61d",
+    "apps/web/src/features/operations/TicketOperations.tsx": "bc541dd99186537a33a40e8ee8dcaa3d53d48a991b9410c7d5772abbbc1694a1",
+    "apps/web/src/features/operations/WorkerMeters.tsx": "fcd887da32852dab745777ff6593145eebd51de7354aa54fab38accfe901f57e",
+    "apps/web/src/features/operations/shared.ts": "a8cfb431ba24fff74f61107403977eb785ad38b1d2b67994840786004dbcc44d",
+    "apps/web/src/features/operations/useOperationsModel.tsx": "cbde46f9685dbba40f78ebd6833021d4c68abdcc574bbeb9b850ab372b41bfd6",
+    "apps/web/src/features/operations/useSurfaceView.ts": "52f1e6b63163f787aa9540e62e75df1e7b4be6a10e4ddae71bfbcf0585eda600",
+    "apps/web/src/features/operations/workspace.css": "ac11a92fed25b9ea75e02dcce84fbdbcf65c5d36994551f3521450aca57343d0",
+    "apps/web/src/features/platform/AuditEventDetails.tsx": "5a3a7ff9936c58f4d62c9fcf33d12ef914097f14b65920175c9c73fc5f01ea52",
+    "apps/web/src/features/platform/AuditLog.tsx": "a71873b38ab90499acffc9299ce7ab7860564a281b7befd004223106ef902ec3",
+    "apps/web/src/features/platform/Catalog.tsx": "3ff26b79507da5fbb17985a53d9aad0a9449be652da6ee8d2faecf0e4e50670d",
+    "apps/web/src/features/platform/EstimateLines.tsx": "f154ff09cd819768a52fcb003119de1c80a56181d038e3e7d7888d0940ca5af2",
+    "apps/web/src/features/platform/Estimates.tsx": "5f394a234899d83614281ed912befaea192c0bc2244fc12d3eac5d390711285b",
+    "apps/web/src/features/platform/FloorSelect.tsx": "d9719106ba6e6d005c1f1d513757f28e97c29cc1757f2a842c9bc38a9c5b2f0d",
+    "apps/web/src/features/platform/MaintenanceImport.tsx": "c639d6dcd695599a413bf5b45b6e319943db5397f644c4e48f19e0c6ee0f43ff",
+    "apps/web/src/features/platform/StructureWorkspace.tsx": "714e03d60f93bfdaee0cda8a7db7e95675fd029536bc60e29fea85d5a84d9c6d",
+    "apps/web/src/features/platform/TemplateSelect.tsx": "3dc965eaa133f85f526acfa83e5012d4bf2bd0ab1d7efb96becddeda9c484f6e",
+    "apps/web/src/features/platform/plans/PlanCanvas.tsx": "bae5f07cfd07c175fa73c919ca35ac7e860a8dc0ce80d3ac710290110b6c3667",
+    "apps/web/src/features/platform/plans/PlanEditor.tsx": "efe4eed37ebc78ff2a2abf4842e4562b66cc2e2b69ab1c175afc4b601b453879",
+    "apps/web/src/features/platform/plans/geometry.ts": "0b91a26aae41e1365b0bd05900d4380bffa24ec334cf3f135f4158df031f132c",
+    "apps/web/src/features/platform/plans/plan-editor.css": "47e7473f7a0b9089bcaa6af8ffe4b03c29bb63166ac639596d83021fe15bc0a2",
+    "apps/web/src/features/platform/plans/usePlanEditor.ts": "a3a20906b6bd400a6ad7960d1173f19f78c6c1324a8f5b88111d4342bedd1164",
+    "apps/web/src/features/platform/plans/viewer/BuildingPlanCard.tsx": "39b726003b2c9d9a80885f70a537cae0ca951efc7f21b486c16cb4197a83a1b6",
+    "apps/web/src/features/platform/plans/viewer/plan-label.ts": "0333a34d7b72f16726e0d9c3e0c71e627b254f00930565006af05f3b4d2e2f02",
+    "apps/web/src/features/platform/plans/viewer/plan-viewer.css": "114cd4ed9de043fd2ad10c6c917c1db55a3cdb3e3dd834a042db6058633e1c39",
+    "apps/web/src/features/platform/usePlatform.ts": "2f003493339e13a7ad7f093f3c0818e584a1e112db1a11545cc9c4bc25336d62",
+    "apps/web/src/features/portfolio/ManagerObjectLaunch.tsx": "0fd9d310f9db2f41c311044af689ac77d934d0f0e52b77e7ebb397c2b7bfec83",
+    "apps/web/src/features/portfolio/ManagerObjects.tsx": "e919a17493985ce368e93dfea0f2c7a896cdd9723ebb956d7c37e5df335cf0fb",
+    "apps/web/src/features/portfolio/ManagerUnitDetail.tsx": "6c41535790fb54e1c626e59ad02fbbefea9e603eab3af5b9d08fa2566bf2bba9",
+    "apps/web/src/features/portfolio/ManagerUnits.tsx": "b924846167881f789837e5397e7c18fdd5cd87e952ce45549825b002516ae4bf",
+    "apps/web/src/features/portfolio/Portfolio.tsx": "8e54f940f0e6838e1382205ed66f93e4bb08193ff190a698789c7fe4b7655593",
+    "apps/web/src/features/portfolio/workspace.css": "2a59fda517b9122fbc105f034a23fa84041c46c6a7179766163f12585e20e002",
+    "apps/web/src/features/shell/ManagerFormScreen.tsx": "0e624e18a02139ca231b5c1793d3d3c7e22e3c3024298ed8ffca591627f2fd00",
+    "apps/web/src/features/shell/ManagerScreen.tsx": "60c31863e6830d5e50703630e42bc138db35c0e5d4c147b80a1e9bda49334502",
+    "apps/web/src/features/shell/ManagerShell.tsx": "ca079aa48c0ee59ceafb55237aa06b089ca42090cc80408bed9f59e5621bb906",
+    "apps/web/src/features/shell/NavigationIcon.tsx": "f3aa8e7f23e34305c24598c26a6143459be11a34de46099360b9eb5b30406912",
+    "apps/web/src/features/shell/Section.tsx": "d805ea55ee88451f6b553d7c05dc6ea170a70d03700a227423746453b42e935e",
+    "apps/web/src/features/shell/WorkspaceQuickActions.tsx": "c81b3fc2cd864298103b8fa1905435d700ae7b0abe288bb39ec58cce28c058fa",
+    "apps/web/src/features/tenants/ManagerTenantDetail.tsx": "aa5bc6fb0912c6bd87de5f0a4e7fb7b33f12e2c41b24fad33ea315c30e01a79b",
+    "apps/web/src/features/tenants/ManagerTenants.tsx": "21d32c523c0f2743033c1517682f56d828ad31336b7aa576ebab6c3e60f8cf3f",
+    "apps/web/src/features/tenants/TenantChat.tsx": "ffd674ccbdf49cb1c57d8863bd7e3950a6e3499a3b47b455ebbb9326cc99a3dd",
+    "apps/web/src/features/tenants/components/TenantContractsTab.tsx": "37fa494371a2222063944266970c2c52b59cb61a418fb2d7be1ccb273957e17c",
+    "apps/web/src/features/tenants/components/TenantInfoTab.tsx": "3357206f9e462f9abbf0153fad0b4a9dd7ac9acd15d7e33b18761682d9d74f1a",
+    "apps/web/src/features/tenants/components/TenantMetersTab.tsx": "36516b78f6fe74e952426051801b3971ce7efcb008c81eaf9f2b5115b103850b",
+    "apps/web/src/features/tenants/components/TenantNotesTab.tsx": "885c90f4189244dc90e61266d16d52991913179f3645bbee7c20f8b309d57b2e",
+    "apps/web/src/features/tenants/components/TenantPaymentsTab.tsx": "ec2e0d150d2de05a55f08deef32ba0d0c816eee7d24733bf1748dc43e6f5a3a0",
+    "apps/web/src/features/tenants/components/TenantRisksTab.tsx": "c283273d1684481195160c8b0d683f4efd9db111840e3283721bef0f0beac8e0",
+    "apps/web/src/features/tenants/components/TenantTicketsTab.tsx": "25682024e3b9f73a87c19f06be2492fe500067a67b4568f6878c42dce5ad7282",
+    "apps/web/src/features/tickets/ManagerTicketCreate.tsx": "05c538db5c3ef452d5bd17d0b5990b795cfb66bfdd3df40c5943e7dd152e15fb",
+    "apps/web/src/features/tickets/ManagerTicketDetail.tsx": "ea2fadd0bc980d99b3d850ecb87adcd4e9ea4b07be76ddd5bd30333f14274d09",
+    "apps/web/src/features/tickets/ManagerTickets.tsx": "c1b1374b83d753594287eec20d4a7b0468df2b3936b8e99f3ccb62ba757a90d9",
+    "apps/web/src/features/tickets/Service.tsx": "3f3c226f67b51c118c702a486578d05aff9eadec5e47accc62fab619b00b03c3",
+    "apps/web/src/features/tickets/TicketAttachmentBlock.tsx": "b54a46036bb788bdecb02ebabcfc0154aa631a2f13b6d5b104059fac9703c3fd",
+    "apps/web/src/features/tickets/TicketCreateFields.tsx": "7758e2e0662c9523f8d2e3e1e507d57d56b710491f6cace3ac352706eef9f174",
+    "apps/web/src/features/tickets/TicketOperationsBlock.tsx": "3fa8d225fa3a65c1c3f0b5e8a02324437cd3085175dce306f238ae248025ea5a",
+    "apps/web/src/features/tickets/workspace.css": "7896c0ca9bbae589a398372f773984545842f73bb8bbae37801a95deef608363",
+    "apps/web/src/main.tsx": "a0d8cf21a990ece4cf836c1a252e0e63e1ffc326ee7f87efce1725b63ef7c8e7",
+    "apps/web/src/mobile-product.ts": "afd5bba7b0cf249cfd77fa722e262b0eef1bf268fca21118f52402aa4019c338",
+    "apps/web/src/navigation.ts": "f63845d43df275aac512fadf33f43383faec39603571fdf47509add976522cdc",
+    "apps/web/src/projectData.ts": "ff97e4cffcb13451d01e075475548496acc7904fbf33dd7183e9a00af451e9cf",
+    "apps/web/src/realtime/RealtimeContext.tsx": "7b9b32aa107302754fd370b4bef9bc6970848cd99fc5514e1ee08c71878732bc",
+    "apps/web/src/realtime/connection.ts": "eb3044fa04d5ee921e55476fccaa1809c227048cb6b080511b7719ea8e9c090c",
+    "apps/web/src/realtime/query-client.ts": "300eaaf731fe8605e9e99ae9c24a4a011b6d16670ca87c8170d5e104df4944e4",
+    "apps/web/src/shared/agenda-route.ts": "4467ac1492d1e8ca25cc3effa30b7e673fd6cf79b395c6ee6d3be038920975c8",
+    "apps/web/src/shared/copy.ts": "08b4aa85125d540b2d7333dd6dc9a75855a9e3a0ec4efec936c06ba01a58452e",
+    "apps/web/src/shared/format.ts": "b898c655167cc4dea74f57fd4e9cfef5d2cbdf24c293dac7963af3027970807b",
+    "apps/web/src/shared/navigation.ts": "bbb36dc7292babcae7f951fb98041475bf16375a1a267096313832255b676988",
+    "apps/web/src/shared/operations-route.ts": "53751e115216f9dd82e0ddfa6f4603b516d15fe192dc139b31bcb12ef04cf787",
+    "apps/web/src/shared/ticket-route.ts": "c980f828b049b2f3903ba0f71dafdb9a817165f898943dd887bb16b84a941852",
+    "apps/web/src/shared/types.ts": "e712f401fd7f373e4f127eacff9bf0e880cb63ef6c401868ccf8c81e87bf8d30",
+    "apps/web/src/state/actions/auth.ts": "1b6d9b8ac2f70ed6f70b188b9752b6c722bd00e3104521b6ce378462e9bc585b",
+    "apps/web/src/state/actions/billing.ts": "f20ab65d841620b06c24c6338bc7d1ff031848c2d18f157b74596d0a97167f30",
+    "apps/web/src/state/actions/data.ts": "ca53607dd527d3d094058baf93ed97e65ef6aaf2dd7468bba72da6cd041ea918",
+    "apps/web/src/state/actions/documents.ts": "1ea943184b1c6dd74aa0d9ab6b49e0c63fc612471141efe4f732d05afbcc430b",
+    "apps/web/src/state/actions/files.ts": "e3f0145f8f93a27b5c1a01e3850532ed12e8f735127a48856b8fddaf2c748207",
+    "apps/web/src/state/actions/imports.ts": "037261b23b4574cce54360e2bfadb1cdbac9f17078285660a57e1bf3f4e996bd",
+    "apps/web/src/state/actions/navigation.ts": "b2dbcb5bbd770d8f6566076235f58414994c869938181a17ecab41d94e9bd44a",
+    "apps/web/src/state/actions/portfolio.ts": "9dc0a1151e765702c933934ddde7b9f92f3b95c08cb06d9935948b59697eb665",
+    "apps/web/src/state/actions/tenant-notes.ts": "08b9a1fd5c06ecf6d912bf39df087d676e87328f984d92f802d5cf98f3249f8e",
+    "apps/web/src/state/actions/tickets.ts": "eab2607d70aec8c4c3eb127a9e5a1f8a185d12c3942b2de65acc20a8d09a6832",
+    "apps/web/src/state/types.ts": "4e221bf6f4ff7742ce8d05ed25aba0f04132f8f85632d27a88900c326b7a55b2",
+    "apps/web/src/state/useLiveWorkspace.ts": "c4117ca7248946c7ba4b24f6b70ed13a13422c02ad9a2ee91df2b49af99552d9",
+    "apps/web/src/state/useWorkspaceEffects.ts": "08ca0c0fe4c9f8d2b6b96d658cdce1963c73065c4bfec181ed9a8d61ae24ca8d",
+    "apps/web/src/state/useWorkspaceModel.ts": "4297ce7e399d48347dfb8ec128847977423a4e0d48c737d4efde18b9353801a4",
+    "apps/web/src/state/useWorkspaceState.ts": "408ead39b1950513adf474620535f55dac12e159d71a64ce4a2e0fabb9a20fca",
+    "apps/web/src/state/useWorkspaceView.ts": "ab4d9fdd7b8ea737037d31dd1f2c5c752445d7222aa2894b660726994dafa0d3",
+    "apps/web/src/styles.css": "e446e482dd6a32514e9b8b843079d9b92812d36ac18abddc3fa8918c5b63a28d",
+    "apps/web/src/styles/auth.css": "6b084f6b1baf2b880b11571d335b5ad35aacf11c173e51a408aa1cdcfec20ec0",
+    "apps/web/src/styles/base.css": "b82fd6ccf88a347542d0bbd57875a528b9ccd24f211d14e0ca586bb8a70aef95",
+    "apps/web/src/styles/board.css": "c491e72a6b6bc887cb0554788142d2aefa527139590ea2b8cef4396850e22f98",
+    "apps/web/src/styles/business.css": "ca4c38d02492475b38920f46809c6a6e4df55ce7b285c9d4c03a106abc95d7de",
+    "apps/web/src/styles/chat.css": "d0d300080c9f481d4a6394f6bb06e054cdcad854e3d67a8c6d2d92a8f41325c4",
+    "apps/web/src/styles/controls.css": "55991c5c0a8f0aed06d861cb09292791720006b3017790b5bab5583b35bbd6d4",
+    "apps/web/src/styles/dashboard.css": "eb00065f4a657c3b844580d3083698766b630d8d81e821bda9187115ee528da4",
+    "apps/web/src/styles/documents.css": "d0a7356d120c3038d0941b46064ac0b62f4f395ce014b939f63b612d208ed767",
+    "apps/web/src/styles/forms.css": "a37bea42d8378822a72ec55efcbbda1f69a24673eb74864b4847f653942deba5",
+    "apps/web/src/styles/kanban.css": "782ccfa41bbf698e9c529a48aeb6297941d209880737f29633d9d934e4ff7fb3",
+    "apps/web/src/styles/navigation.css": "996df55a694d9c805a9a8fd17aca3088b80d04f85991a61b76713ed853747790",
+    "apps/web/src/styles/platform.css": "0689b1c9951263774db674860434f0dd952bd1bee01fa0d47c07482ff105804b",
+    "apps/web/src/styles/properties.css": "98fa1d48438b4dba14730b2d1a6ad6b7df60da9a327c90974bd4e1bdb8b79629",
+    "apps/web/src/styles/responsive.css": "679f16e20fdfeebc715ad702424638ddf37f1b317925172b5d9368028f31e95f",
+    "apps/web/src/styles/shell.css": "81fbbec579a98a844078affe19663c709f6874e6ddfecdb7d9049a49bf0f62a3",
+    "apps/web/src/styles/surfaces.css": "98e62d86b5b8abf9101307eb8bd2ea5fad2e8cf4fb11b714a0911f1c88697722",
+    "apps/web/src/styles/tables.css": "74b9cb31a3287ea828b566ac94ee0ecda020bc8e8445692028f57f17c5f4dbe8",
+    "apps/web/src/styles/tenants.css": "4ed21e40d6ceb1f61853af0d5a68edf25877b5109f8219707114a21dae188059",
+    "apps/web/src/styles/tickets.css": "fb19277238258b631e8b48cbc453abf1eef83f02ddf38d5066cc4b2c5de5c1bb",
+    "apps/web/src/styles/tokens.css": "e4ac67b159f0298d9878939cd41c54aeb7a1c97c882528804fa6eb645664bbae",
+    "apps/web/src/ui/Checkbox.tsx": "021575107a49284358240b28aa1810ba82a69a21f5d1819abb0fa54469eb0d81",
+    "apps/web/src/ui/Disclosure.tsx": "e01cd15e9a9ed7684dfe0a376c783302893012d451a759666365b444a7fc0de8",
+    "apps/web/src/ui/SidePanel.tsx": "33784fac53455f5aad794b410844cf99f467a148318f5aa2834d4b22f503484c",
+    "apps/web/src/ui/WorkspaceHeaderActions.tsx": "aa6485b155e104329c24556c919826b7762c8a4cf68c941eff8fd2f6a4748238",
+    "apps/web/src/ui/WorkspaceTabs.tsx": "9c62fbf1539f7c7b5cf49c74e357ae14a3867dc1dc2308191470b162b0ad3b56",
+    "apps/web/src/ui/checkbox.css": "d857dfe6a242f46ac624fc30aa2a14e1fcd77a9d47a86acd13a5f5ed215e60a9",
+    "apps/web/src/ui/dashboard-workspace.css": "693e1312c223ba6a1f68579215389e07ba1eb7b83352691c8029caf4502c5920",
+    "apps/web/src/ui/form-layout.css": "ee8d55a6a85163cccfebb11bf49221084cde6cb2949989603ea329830965440c",
+    "apps/web/src/ui/index.tsx": "d6d7b9aa3cf1786b0a19a923cfab4ec5c9c258978c4b31305577a7f91ac20d38",
+    "apps/web/src/ui/navigation.css": "008d311b508380d70a1eb42366f6d48836d3229f081054aefedfa6d30ee39f2d",
+    "apps/web/src/ui/scrollbars.css": "0ebc544d1f575b9cefb459995013e5742537245b09818908bf269da29c4034c8",
+    "apps/web/src/ui/ui.css": "c4f9aaa9b575ccf4f34c8ee64798abafe4bbf7705781bab7a53ed447f6f7f548",
+    "apps/web/src/ui/useWorkspaceViewState.ts": "dd4f640394abcfb288ccc36d4fc4872c47ff07f9b886d9cfc2aeecd251d9c1e1",
+    "apps/web/src/ui/workspace-density.css": "91c740b7d41a559d700d205334bd0eea6012bc752d12f2b62129b4cbb02f6126",
+    "apps/web/src/ui/workspace.css": "d1e24be33fda62c8108c685c61f29884d10e8fd09ba188dda68a3b0f301d0cc5",
+    "apps/web/tsconfig.json": "6b3eee6d00882c52ca4f44ecf6f53c2d1b589f6366dab7a9a3c4b7414586a1ec",
+    "apps/web/vite.config.ts": "fead10cde349e5cead214cfb95a7a515050e7f9c3e38a54afcf1ed88ae7a30c7",
+    "infra/deploy/Dockerfile": "b834b0ed836c41dd15ae56148452ef3e4a9e67eaab83cf4a5ce7c90960296599",
+    "package-lock.json": "4f3bc94cd5ae7f1dc956ba3a01e337c3a1c9d58f84cb9a82cda08f6a7ad76515",
+    "package.json": "c2335ee269a095e37a2b8259beed5ccc699ff1a0a1809b3645be7dacb0822f26",
+    "packages/contracts/package.json": "9baba2413e6d46dd48f7cae0985a049617def38d631a0e47c3c575e1da7f2af3",
+    "packages/contracts/src/access.ts": "38b11020c481ac6bf9fa461e1eca26064f0f0b6ddffec176b8de0e2bc7710b14",
+    "packages/contracts/src/accounting.ts": "f677a40a6a341e0260fccff60dc100fea819d106f9a14be3a9b1fb11857c7e55",
+    "packages/contracts/src/agenda.ts": "95f071c56e095879e0ddbcf89dab169aad98305eec258fc30ee02b83fdb901d1",
+    "packages/contracts/src/business-workflows.ts": "a5cf46fd239613efdb22d44c6a13450464d677d2856c5d1b462e2b8751b3d385",
+    "packages/contracts/src/domain.d.ts": "6b19055e397c1384eafb0aea9daee9eae78569cd6557ee762d1b8fbe44d817d3",
+    "packages/contracts/src/domain.js": "6b22447f0d41f92cd7ba4e2a23e71a860f71a6a6cc8ecdd3a9b2c73074b14b48",
+    "packages/contracts/src/floor-plans.ts": "a1f141f96386613b5b1dc839d27e0a8efc7f63693cd0c1283b7f6848411300bc",
+    "packages/contracts/src/index.ts": "dee7fdcc14de0db2d9613c67a96a25d639c9ead759e42e3ef6d90ceebca5cebd",
+    "packages/contracts/src/maintenance-import.ts": "68f9b90266ffc3ba5834a50947e4f9d05f5c4092ec4da44d7b5952819128ece5",
+    "packages/contracts/src/operations-platform.ts": "14566db6816814e66785467c5190641e04576c1ec039e59bada132c7d908b17d",
+    "packages/contracts/src/permissions.ts": "aabcf55bd16e8e4b26cfd8f1312ed7287a0a0a5c911e0382f9e02a7c61728b17",
+    "packages/contracts/src/read-models.ts": "204f59f4243ed188c7f1688296f4ae0e3cd0404f4db5b4405be1c76f14ad6ca0",
+    "packages/contracts/src/realtime-schema.ts": "d5af8ebcc2fee8049d79f8fc46a3a7b1071a3a549943b35834231a98d95fe2ff",
+    "packages/contracts/src/realtime.ts": "7a6bb49bc7e635d3ccb4723c2feeeb224b98c957260a027655052d96316d291e",
+    "packages/contracts/src/registry.ts": "9827d02bec32643bc32c64a53a79f4c531491de491e78d50d52beeb40f698546",
+    "packages/contracts/src/requests.ts": "d66e6bd57bd24f8f8903b7a357554def9894b5bf738a01124ca1bc2cd1bf2cca",
+    "packages/contracts/src/ticket-search.ts": "a013a0209ea4f716883c86e430b714636b79e0fa7d48f746ae9dbfb1949f1c92",
+    "packages/contracts/tsconfig.json": "644091dbfd61459905bde5df8ee5c86b3e60171d58dd742ba2d68b937c78606c",
+    "scripts/create-initial-admin.mjs": "b6ff9241501b238cb6dbd3b8abbb9afc453b67480d7f6eafabea3cc03d10ac6b"
+  },
+  "apiSourceIdentity": "ed4cafb2a29f1f55c30553b6e468a3e33d88552d762cf10dbfe550c43635e5d4",
+  "migration016Sha256": "ff753273eba94c5374bc05b165bd6b7ce6eb647cac5b60d8155ce9e66ca49e5b",
+  "checks": {
+    "typecheck": "PASS",
+    "webBuild": "PASS",
+    "standalone": {
+      "tests": 90,
+      "pass": 88,
+      "skip": 2,
+      "fail": 0
+    },
+    "postgresRegression": {
+      "initialTests": 25,
+      "initialPass": 24,
+      "initialFail": 1,
+      "legacyFixtureReconstructionFixed": true,
+      "correctedTargetPass": 1,
+      "scopeGuardPersistedTargetPass": 1
+    },
+    "viewerBuilt": {
+      "groups": 4,
+      "errors": 0,
+      "writes": 0,
+      "defaults": 5
+    },
+    "editorBuilt": {
+      "checks": 12,
+      "writes": 0,
+      "errors": 0
+    },
+    "editorDesktopBuilt": {
+      "checks": 2,
+      "writes": 0
+    },
+    "editorRealPersistence": {
+      "checks": 16,
+      "successfulRunRequests": 4,
+      "defaultsUntouched": true
+    }
+  },
+  "migrationRehearsal": {
+    "verified": true,
+    "sourceIdentity": "ed4cafb2a29f1f55c30553b6e468a3e33d88552d762cf10dbfe550c43635e5d4",
+    "historicalTablesVerified": 59,
+    "historicalSequencesPreserved": true,
+    "migrationsBefore": 15,
+    "migrationsAfter": 16,
+    "idempotent": true,
+    "coverage": {
+      "properties": 3,
+      "buildings": 3,
+      "plans": 6,
+      "defaults": 6,
+      "missingSites": 0,
+      "missingBuildings": 0
+    },
+    "noApiWorkersStarted": true,
+    "productionMutations": false
+  },
+  "boundaries": [
+    "Browser persistence used only the separate cloned test database; demonstration records are not released.",
+    "Real persistence before final mobile footer refinement is complemented by read-only checks of the final built bundle.",
+    "No 1C, physical-device or full-TZ acceptance is claimed by this release."
+  ],
+  "retainedInitialFailures": [
+    "Pointer capture swallowed mouse clicks; fixed and targeted mouse checks passed.",
+    "Stale saved notice and long select/mobile footer overlap were fixed; final built checks passed.",
+    "Legacy test downgraded migration ledger without removing016 objects; only fixture reconstruction was corrected.",
+    "Release image guard stopped on external sloppy-prod-api-1 replacement; old receipt retained and stable read-only baseline reviewed."
+  ]
+}

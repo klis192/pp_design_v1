@@ -1,4 +1,9 @@
 import crypto from "node:crypto";
+import { assertPlanUnitLocations } from "./plan-location-scope.js";
+import {
+  ensureDefaultBuildingPlan,
+  isUntouchedDefaultPlan,
+} from "./default-floor-plans.js";
 
 // Unit labels are a read projection. Stable floor IDs own the location relation.
 export function locationForUnit(db, propertyId, input) {
@@ -37,6 +42,7 @@ export function locationForUnit(db, propertyId, input) {
     (b) => b.propertyId === propertyId && b.name === buildingName,
     { name: buildingName },
   );
+  ensureDefaultBuildingPlan(db, building);
   const entrance = ensure(
     "entrances",
     (e) => e.buildingId === building.id && e.name === entranceName,
@@ -91,6 +97,30 @@ export function saveStructure(db, kind, id, body) {
     )
   )
     throw new Error("Узел уже существует в этом родителе");
+  if (current && ["entrances", "floors"].includes(kind)) {
+    const nextBuildingId =
+      kind === "entrances"
+        ? input.buildingId
+        : db.getById("entrances", input.entranceId).buildingId;
+    const movedUnits = new Map(
+      db.data.units
+        .filter((unit) => {
+          const floor = db.getById("floors", unit.floor_id);
+          const entrance = db.getById("entrances", floor.entranceId);
+          return (
+            entrance.buildingId !== nextBuildingId &&
+            (kind === "entrances"
+              ? floor.entranceId === current.id
+              : floor.id === current.id)
+          );
+        })
+        .map((unit) => [
+          unit.id,
+          { floorId: unit.floor_id, buildingId: nextBuildingId },
+        ]),
+    );
+    assertPlanUnitLocations(db, movedUnits);
+  }
   const now = new Date().toISOString();
   const row = {
     ...input,
@@ -100,6 +130,7 @@ export function saveStructure(db, kind, id, body) {
   };
   if (current) Object.assign(current, row);
   else db.data[kind].push(row);
+  if (kind === "buildings") ensureDefaultBuildingPlan(db, row);
   for (const unit of db.data.units.filter(
     (u) => u.property_id === row.propertyId,
   ))
@@ -107,13 +138,28 @@ export function saveStructure(db, kind, id, body) {
       unit,
       locationForUnit(db, unit.property_id, { floorId: unit.floor_id }),
     );
+  for (const plan of db.data.floor_plans.filter(
+    (p) => p.propertyId === row.propertyId && p.floorId,
+  )) {
+    const floor = db.getById("floors", plan.floorId);
+    const buildingId = db.getById("entrances", floor.entranceId).buildingId;
+    if (plan.buildingId !== buildingId)
+      Object.assign(plan, {
+        buildingId,
+        version: (plan.version ?? 0) + 1,
+        updatedAt: now,
+      });
+  }
   return row;
 }
 
 export function deleteStructure(db, kind, id) {
   const dependencies =
     kind === "buildings"
-      ? db.data.entrances.some((e) => e.buildingId === id)
+      ? db.data.entrances.some((e) => e.buildingId === id) ||
+        db.data.floor_plans.some(
+          (p) => p.buildingId === id && !isUntouchedDefaultPlan(p),
+        )
       : kind === "entrances"
         ? db.data.floors.some((f) => f.entranceId === id)
         : db.data.units.some((u) => u.floor_id === id) ||
@@ -124,4 +170,8 @@ export function deleteStructure(db, kind, id) {
       { status: 409 },
     );
   db.data[kind] = db.data[kind].filter((r) => r.id !== id);
+  if (kind === "buildings")
+    db.data.floor_plans = db.data.floor_plans.filter(
+      (p) => p.buildingId !== id,
+    );
 }

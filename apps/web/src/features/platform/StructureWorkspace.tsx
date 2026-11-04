@@ -10,9 +10,11 @@ import type {
   Building,
   Entrance,
   Floor,
+  FloorPlan,
 } from "../../../../../packages/contracts/src/operations-platform";
 import type { Unit, Ticket, Row } from "../operations/shared";
 import { PlanEditor } from "./plans/PlanEditor";
+import { BuildingPlanCard } from "./plans/viewer/BuildingPlanCard";
 type Props = {
   token: string;
   properties: { id: string; name: string }[];
@@ -24,6 +26,9 @@ type Props = {
   canWrite?: boolean;
   embedded?: boolean;
   view?: "tree" | "plans";
+  initialPlanId?: string;
+  buildingId?: string | null;
+  onPlanEdit?: (plan: FloorPlan) => void;
 };
 type Node = Partial<Building & Entrance & Floor>;
 const nodeLabel = (kind: string, name: string) =>
@@ -45,6 +50,7 @@ export function StructureWorkspace(props: Props) {
     [draft, setDraft] = useState<Node | null>(null);
   const [dirty, setDirty] = useState(false);
   const [property, setProperty] = useState(props.properties[0]?.id ?? "");
+  const [planTarget, setPlanTarget] = useState<FloorPlan | null>(null);
   const mode = props.view ?? localMode;
   const { data, load: reload } = resource;
   const error = failure || resource.error;
@@ -104,6 +110,13 @@ export function StructureWorkspace(props: Props) {
       setBusy(false);
     }
   };
+  const editPlan = (plan: FloorPlan) => {
+    if (props.onPlanEdit) props.onPlanEdit(plan);
+    else {
+      setPlanTarget(plan);
+      setMode("plans");
+    }
+  };
   return (
     <article
       className={
@@ -120,7 +133,10 @@ export function StructureWorkspace(props: Props) {
               { id: "plans", label: "Планы" },
             ]}
             value={mode}
-            onChange={setMode}
+            onChange={(next) => {
+              setPlanTarget(null);
+              setMode(next);
+            }}
           />
         </div>
       )}
@@ -132,6 +148,7 @@ export function StructureWorkspace(props: Props) {
             onChange={(e) => {
               setProperty(e.target.value);
               setDraft(null);
+              setPlanTarget(null);
             }}
           >
             {props.properties.map((p) => (
@@ -148,7 +165,22 @@ export function StructureWorkspace(props: Props) {
         </p>
       )}
       {mode === "plans" ? (
-        <PlanEditor {...props} propertyId={property} structure={data} />
+        <PlanEditor
+          {...props}
+          propertyId={property}
+          structure={data}
+          initialPlanId={
+            props.initialPlanId ??
+            (planTarget?.propertyId === property ? planTarget.id : undefined)
+          }
+          buildingId={
+            props.buildingId !== undefined
+              ? props.buildingId
+              : planTarget?.propertyId === property
+                ? planTarget.buildingId
+                : undefined
+          }
+        />
       ) : (
         <>
           {props.canWrite && (
@@ -307,6 +339,15 @@ export function StructureWorkspace(props: Props) {
                       </IconButton>
                     )}
                   </div>
+                  <BuildingPlanCard
+                    compact
+                    token={props.token}
+                    propertyId={property}
+                    buildingId={b.id}
+                    units={props.units}
+                    tickets={props.tickets}
+                    onEdit={props.canWrite ? editPlan : undefined}
+                  />
                   <div className="structure-entrances">
                     {data.entrances
                       .filter((e) => e.buildingId === b.id)

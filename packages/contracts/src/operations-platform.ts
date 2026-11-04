@@ -138,8 +138,10 @@ export type FloorPlan = {
   id: string;
   propertyId: string;
   name: string;
+  buildingId?: string | null;
   floorId: string | null;
-  kind: "site" | "floor";
+  kind: "site" | "building" | "floor";
+  isDefault?: boolean;
   image: string;
   geometry: PlanGeometry;
   layers: string[];

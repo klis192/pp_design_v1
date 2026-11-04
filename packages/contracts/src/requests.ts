@@ -246,8 +246,9 @@ export const operationSchemas = {
   }),
   floorplans: z.strictObject({
     ...base,
+    buildingId: optionalId,
     floorId: optionalId,
-    kind: z.enum(["site", "floor"]).optional(),
+    kind: z.enum(["site", "building", "floor"]).optional(),
     sourceName: text.optional(),
     geometry: planGeometry.optional(),
     layers: z.array(name).max(200).optional(),

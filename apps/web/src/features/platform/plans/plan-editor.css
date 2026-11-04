@@ -1,6 +1,135 @@
 .plan-editor .plan-selection-toolbar {
+  display: flex;
+  align-items: center;
   flex-wrap: nowrap;
   gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+.plan-editor {
+  gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+}
+.plan-editor .plan-workspace {
+  grid-template-columns: minmax(0, 1fr) 280px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.plan-editor .plan-quick-save {
+  display: none;
+}
+.plan-editor .plan-canvas {
+  height: clamp(220px, calc(100dvh - 470px), 560px);
+}
+.plan-editor .plan-canvas[data-tool="pan"] {
+  cursor: grab;
+}
+.plan-editor .plan-canvas[data-tool="pan"]:active {
+  cursor: grabbing;
+}
+.plan-editor .plan-canvas[data-tool="draw"] {
+  cursor: crosshair;
+}
+.plan-editor .plan-canvas [role="button"]:focus-visible {
+  outline: 2px solid var(--ui-accent);
+  outline-offset: 3px;
+}
+.plan-editor .plan-inspector {
+  padding: 16px;
+  gap: 16px;
+  max-height: 600px;
+}
+.plan-editor .plan-inspector .ui-workspace-tabs {
+  gap: 0 12px;
+}
+.plan-inspector-fields,
+.plan-layer-list,
+.plan-ticket-links {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.plan-inspector-fields label {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  min-width: 0;
+}
+.plan-inspector-empty,
+.plan-inspector-summary {
+  color: var(--ui-muted);
+  font-size: 13px;
+  line-height: 20px;
+  margin: 0;
+}
+.plan-mode-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  min-height: 28px;
+  color: var(--ui-muted);
+  font-size: 13px;
+  line-height: 20px;
+}
+.plan-mode-label {
+  color: var(--ui-text);
+  font-weight: 600;
+}
+.plan-point-count {
+  font-variant-numeric: tabular-nums;
+}
+.plan-draw-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+.plan-savebar {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  background: var(--ui-surface);
+}
+.plan-savebar > span {
+  color: var(--ui-muted);
+  font-size: 13px;
+  line-height: 20px;
+  max-width: 70ch;
+  max-height: 80px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+}
+.plan-empty-state {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 24px 0;
+  color: var(--ui-muted);
+}
+@media (max-width: 1080px) {
+  .plan-editor {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+  .plan-editor .plan-canvas {
+    height: clamp(220px, calc(100dvh - 530px), 500px);
+  }
+  .plan-editor .plan-savebar {
+    position: static;
+  }
+  .plan-editor .plan-quick-save {
+    display: inline-flex;
+  }
 }
 
 .plan-editor .plan-selection-toolbar > .ui-control {
@@ -27,6 +156,21 @@
 }
 
 @media (max-width: 760px) {
+  .plan-editor .plan-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .plan-editor .plan-canvas {
+    height: clamp(180px, calc(100dvh - 610px), 320px);
+  }
+  .plan-editor .plan-inspector {
+    max-height: none;
+  }
+  .plan-draw-actions {
+    margin-left: 0;
+  }
+  .plan-savebar .ui-actions {
+    margin-left: auto;
+  }
   .plan-editor .plan-toolbar {
     gap: 8px 12px;
   }

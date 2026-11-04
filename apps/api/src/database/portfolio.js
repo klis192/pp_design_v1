@@ -1,5 +1,10 @@
 import { AuthDatabase } from "./auth.js";
 import { locationForUnit } from "../domain/structure.js";
+import { assertPlanUnitLocations } from "../domain/plan-location-scope.js";
+import {
+  ensureDefaultSitePlan,
+  isUntouchedDefaultPlan,
+} from "../domain/default-floor-plans.js";
 import {
   activeLeaseStages,
   clone,
@@ -35,6 +40,7 @@ export class PortfolioDatabase extends AuthDatabase {
 
     this.validatePropertyPayload(record);
     this.data.properties.push(record);
+    ensureDefaultSitePlan(this, record.id);
     return clone(record);
   }
 
@@ -70,10 +76,13 @@ export class PortfolioDatabase extends AuthDatabase {
     if (
       this.data.units.some((u) => u.property_id === id) ||
       this.data.operating_expenses.some((x) => x.propertyId === id) ||
-      this.data.floor_plans.some((x) => x.propertyId === id)
+      this.data.floor_plans.some(
+        (x) => x.propertyId === id && !isUntouchedDefaultPlan(x),
+      ) ||
+      this.data.buildings.some((x) => x.propertyId === id)
     )
       throw new Error(
-        "Нельзя удалить объект с помещениями, расходами или планами",
+        "Нельзя удалить объект с корпусами, помещениями, расходами или пользовательскими планами",
       );
     if (
       [
@@ -128,6 +137,9 @@ export class PortfolioDatabase extends AuthDatabase {
     );
     this.data.properties = this.data.properties.filter(
       (property) => property.id !== id,
+    );
+    this.data.floor_plans = this.data.floor_plans.filter(
+      (plan) => plan.propertyId !== id,
     );
     return createChangeResult(1);
   }
@@ -230,6 +242,15 @@ export class PortfolioDatabase extends AuthDatabase {
           ? current.floor_id
           : undefined),
     });
+
+    if (location.floor_id !== current.floor_id) {
+      const floor = this.getById("floors", location.floor_id);
+      const buildingId = this.getById("entrances", floor.entranceId).buildingId;
+      assertPlanUnitLocations(
+        this,
+        new Map([[current.id, { floorId: floor.id, buildingId }]]),
+      );
+    }
 
     this.ensureUnique(
       this.data.units,

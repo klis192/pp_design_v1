@@ -92,15 +92,18 @@ test("API regression: scoped finance, persisted notification reads, validation a
     });
     child.stdout.on("data", (d) => (output += d));
     child.stderr.on("data", (d) => (output += d));
-    for (let i = 0; i < 100; i++) {
+    const deadline = Date.now() + 30_000;
+    while (Date.now() < deadline) {
       try {
-        const r = await fetch(`http://127.0.0.1:${port}/health`);
+        const r = await fetch(`http://127.0.0.1:${port}/health`, {
+          signal: AbortSignal.timeout(2000),
+        });
         if (r.ok) return;
       } catch {}
       if (child.exitCode !== null) throw Error(output);
       await new Promise((r) => setTimeout(r, 30));
     }
-    throw Error(output);
+    throw Error(`API did not become healthy within 30 seconds. ${output}`);
   };
   const stop = async () => {
     if (child && child.exitCode === null) {
@@ -364,6 +367,99 @@ test("API regression: scoped finance, persisted notification reads, validation a
   );
   assert.equal((await call("/api/audit", f.manager)).status, 403);
   const structure = (await call("/api/structure", f.admin)).body;
+  const defaultPlans = (await call("/api/operations", f.manager)).body
+    .floorplans;
+  assert.equal(defaultPlans.length, 2);
+  assert.ok(
+    defaultPlans.every(
+      (item) => item.isDefault && item.propertyId === f.property.id,
+    ),
+  );
+  assert.equal(
+    defaultPlans.find((item) => item.kind === "site").buildingId,
+    null,
+  );
+  assert.equal(
+    (await call("/api/operations", unassigned)).body.floorplans.length,
+    0,
+  );
+  assert.equal(
+    (
+      await call("/api/structure/buildings", f.manager, "POST", {
+        propertyId: f.property.id,
+        name: "Без разрешения",
+      })
+    ).status,
+    403,
+  );
+  const buildingResult = await call(
+    "/api/structure/buildings",
+    f.admin,
+    "POST",
+    {
+      propertyId: f.property.id,
+      name: "Корпус с базовым планом",
+    },
+  );
+  assert.equal(buildingResult.status, 200, JSON.stringify(buildingResult.body));
+  const buildingId = buildingResult.body.item.id;
+  const buildingPlan = (
+    await call("/api/operations", f.manager)
+  ).body.floorplans.find((item) => item.buildingId === buildingId);
+  assert.ok(buildingPlan?.isDefault);
+  assert.equal(buildingPlan.kind, "building");
+  assert.equal(buildingPlan.version, 1);
+  assert.equal(buildingPlan.sourceName, "default-square.dxf");
+  assert.deepEqual(buildingPlan.geometry[0].points, [
+    { x: 100, y: 100 },
+    { x: 900, y: 100 },
+    { x: 900, y: 900 },
+    { x: 100, y: 900 },
+  ]);
+  assert.equal(
+    (
+      await call(
+        `/api/operations/floorplans/${buildingPlan.id}`,
+        f.admin,
+        "PUT",
+        { isDefault: true, version: 1 },
+      )
+    ).status,
+    400,
+  );
+  const customBuildingPlan = await call(
+    `/api/operations/floorplans/${buildingPlan.id}`,
+    f.admin,
+    "PUT",
+    {
+      name: "План корпуса после редактирования",
+      version: 1,
+    },
+  );
+  assert.equal(
+    customBuildingPlan.status,
+    200,
+    JSON.stringify(customBuildingPlan.body),
+  );
+  assert.equal(customBuildingPlan.body.item.isDefault, false);
+  assert.equal(customBuildingPlan.body.item.version, 2);
+  assert.equal(customBuildingPlan.body.item.createdBy, f.admin.id);
+  assert.equal(
+    (
+      await call(
+        `/api/operations/floorplans/${buildingPlan.id}`,
+        f.admin,
+        "PUT",
+        { name: "Устаревший план", version: 1 },
+      )
+    ).status,
+    409,
+  );
+  assert.equal(
+    (await call(`/api/structure/buildings/${buildingId}`, f.admin, "DELETE"))
+      .status,
+    409,
+  );
   const floor = structure.floors.find(
     (row) => row.propertyId === f.property.id,
   );

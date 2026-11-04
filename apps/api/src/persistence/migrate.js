@@ -20,6 +20,7 @@ const migrations = [
   "013-accounting-status.sql",
   "014-executor-refusal.sql",
   "015-dispatch.sql",
+  "016-default-building-plans.sql",
 ];
 
 async function sources() {

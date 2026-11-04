@@ -19,14 +19,23 @@ type Props = {
   updateGeometry: (g: PlanGeometry) => void;
   ticketUnits: Set<string>;
   unitLabels: Map<string, string>;
+  readOnly?: boolean;
+  interactive?: boolean;
+  ariaLabel?: string;
+  onActivate?: (id: string) => void;
+  onCloseContour?: () => void;
 };
 export function PlanCanvas(p: Props) {
   const svg = useRef<SVGSVGElement>(null);
+  const suppressClick = useRef(false);
   const drag = useRef<{
     start: Point;
     view: View;
     vertex?: number;
     shape?: string;
+    client: Point;
+    inverse: DOMMatrix;
+    moved: boolean;
   } | null>(null);
   const point = (event: React.PointerEvent) => {
     const element = svg.current!;
@@ -42,25 +51,43 @@ export function PlanCanvas(p: Props) {
     <svg
       ref={svg}
       className="plan-canvas"
-      role="img"
-      aria-label="Интерактивный план. Масштаб и инструменты находятся над планом."
+      role={p.interactive === false ? "img" : "group"}
+      aria-label={p.ariaLabel ?? "Интерактивный план"}
+      data-tool={p.tool}
       viewBox={`${p.view.x} ${p.view.y} ${p.view.width} ${p.view.height}`}
       onPointerDown={(e) => {
-        if (e.button !== 0) return;
-        if (p.tool === "draw") {
+        if (p.interactive === false || e.button !== 0) return;
+        suppressClick.current = false;
+        if (p.tool === "draw" && !p.readOnly) {
           p.addPoint(point(e));
           return;
         }
         if (p.tool === "pan") {
-          drag.current = { start: point(e), view: p.view };
-          e.currentTarget.setPointerCapture(e.pointerId);
+          const inverse = e.currentTarget.getScreenCTM()?.inverse();
+          if (!inverse) return;
+          drag.current = {
+            start: point(e),
+            view: p.view,
+            client: { x: e.clientX, y: e.clientY },
+            inverse,
+            moved: false,
+          };
         }
       }}
       onPointerMove={(e) => {
         if (!drag.current) return;
+        if (e.buttons === 0) {
+          drag.current = null;
+          return;
+        }
         const at = point(e),
           d = drag.current;
-        if (d.vertex !== undefined && d.shape) {
+        if (Math.hypot(e.clientX - d.client.x, e.clientY - d.client.y) >= 4) {
+          d.moved = true;
+          if (!e.currentTarget.hasPointerCapture(e.pointerId))
+            e.currentTarget.setPointerCapture(e.pointerId);
+        }
+        if (d.vertex !== undefined && d.shape && !p.readOnly) {
           p.updateGeometry(
             p.plan.geometry.map((s) =>
               s.id === d.shape
@@ -73,18 +100,26 @@ export function PlanCanvas(p: Props) {
                 : s,
             ),
           );
-        } else
+        } else if (d.moved) {
+          const moved = new DOMPoint(e.clientX, e.clientY).matrixTransform(
+            d.inverse,
+          );
           p.setView({
-            ...p.view,
-            x: p.view.x + d.start.x - at.x,
-            y: p.view.y + d.start.y - at.y,
+            ...d.view,
+            x: d.view.x + d.start.x - moved.x,
+            y: d.view.y + d.start.y - moved.y,
           });
+        }
       }}
-      onPointerUp={() => {
+      onPointerUp={(e) => {
+        suppressClick.current = Boolean(drag.current?.moved);
         drag.current = null;
+        if (e.currentTarget.hasPointerCapture(e.pointerId))
+          e.currentTarget.releasePointerCapture(e.pointerId);
       }}
       onPointerCancel={() => {
         drag.current = null;
+        suppressClick.current = false;
       }}
     >
       {p.plan.image && (
@@ -115,18 +150,29 @@ export function PlanCanvas(p: Props) {
             strokeWidth: active ? 2.5 : 1,
             vectorEffect: "non-scaling-stroke" as const,
             onClick: (e: React.MouseEvent) => {
-              if (p.tool !== "draw") {
+              if (
+                p.interactive !== false &&
+                p.tool !== "draw" &&
+                !suppressClick.current
+              ) {
                 e.stopPropagation();
                 p.select(s.id);
+                p.onActivate?.(s.id);
               }
             },
-            tabIndex: 0,
+            tabIndex: p.interactive === false ? undefined : 0,
             onKeyDown: (e: React.KeyboardEvent) => {
-              if (e.key === "Enter") p.select(s.id);
+              if (p.interactive !== false && ["Enter", " "].includes(e.key)) {
+                e.preventDefault();
+                p.select(s.id);
+                p.onActivate?.(s.id);
+              }
             },
-            role: "button",
+            role: p.interactive === false ? undefined : "button",
             "aria-label":
-              s.label || p.unitLabels.get(s.unitId ?? "") || s.layer,
+              s.label ||
+              p.unitLabels.get(s.unitId ?? "") ||
+              (s.id === "building-outline" ? "Контур здания" : s.layer),
           };
           return (
             <g key={s.id}>
@@ -170,6 +216,8 @@ export function PlanCanvas(p: Props) {
               )}
               {active &&
                 p.tool === "edit" &&
+                !p.readOnly &&
+                p.interactive !== false &&
                 s.points.map((v, i) => (
                   <circle
                     key={i}
@@ -179,15 +227,58 @@ export function PlanCanvas(p: Props) {
                     fill="white"
                     stroke="#1e79be"
                     vectorEffect="non-scaling-stroke"
+                    tabIndex={p.interactive === false ? undefined : 0}
+                    role="button"
+                    aria-label={`Вершина ${i + 1}`}
                     onPointerDown={(e) => {
+                      if (p.interactive === false || e.button !== 0) return;
                       e.stopPropagation();
+                      suppressClick.current = false;
+                      const inverse = svg.current!.getScreenCTM()?.inverse();
+                      if (!inverse) return;
                       drag.current = {
                         start: point(e),
                         view: p.view,
                         vertex: i,
                         shape: s.id,
+                        client: { x: e.clientX, y: e.clientY },
+                        inverse,
+                        moved: false,
                       };
                       svg.current!.setPointerCapture(e.pointerId);
+                    }}
+                    onKeyDown={(event) => {
+                      const directions: Record<
+                        string,
+                        readonly [number, number]
+                      > = {
+                        ArrowLeft: [-1, 0],
+                        ArrowRight: [1, 0],
+                        ArrowUp: [0, -1],
+                        ArrowDown: [0, 1],
+                      };
+                      const direction = directions[event.key];
+                      if (!direction) return;
+                      event.preventDefault();
+                      event.stopPropagation();
+                      const step = p.view.width / (event.shiftKey ? 10 : 100);
+                      p.updateGeometry(
+                        p.plan.geometry.map((item) =>
+                          item.id === s.id
+                            ? {
+                                ...item,
+                                points: item.points.map((point, index) =>
+                                  index === i
+                                    ? {
+                                        x: point.x + direction[0] * step,
+                                        y: point.y + direction[1] * step,
+                                      }
+                                    : point,
+                                ),
+                              }
+                            : item,
+                        ),
+                      );
                     }}
                   />
                 ))}
@@ -195,7 +286,34 @@ export function PlanCanvas(p: Props) {
           );
         })}
       {p.plan.markers.map((m) => (
-        <g key={m.unitId} onClick={() => p.select(`marker:${m.unitId}`)}>
+        <g
+          key={m.unitId}
+          role={p.interactive === false ? undefined : "button"}
+          tabIndex={p.interactive === false ? undefined : 0}
+          aria-label={`Помещение ${p.unitLabels.get(m.unitId) ?? "на плане"}`}
+          onClick={(event) => {
+            if (
+              p.interactive === false ||
+              p.tool === "draw" ||
+              suppressClick.current
+            )
+              return;
+            event.stopPropagation();
+            p.select(`marker:${m.unitId}`);
+            p.onActivate?.(`marker:${m.unitId}`);
+          }}
+          onKeyDown={(event) => {
+            if (
+              p.interactive === false ||
+              p.tool === "draw" ||
+              !["Enter", " "].includes(event.key)
+            )
+              return;
+            event.preventDefault();
+            p.select(`marker:${m.unitId}`);
+            p.onActivate?.(`marker:${m.unitId}`);
+          }}
+        >
           <circle
             cx={m.x * 10}
             cy={(m.y * p.imageHeight) / 100}
@@ -212,13 +330,48 @@ export function PlanCanvas(p: Props) {
         </g>
       ))}
       {p.points.length > 0 && (
-        <polyline
-          points={p.points.map((v) => `${v.x},${v.y}`).join(" ")}
-          fill="none"
-          stroke="#1e79be"
-          strokeWidth="2"
-          vectorEffect="non-scaling-stroke"
-        />
+        <>
+          <polyline
+            points={p.points.map((v) => `${v.x},${v.y}`).join(" ")}
+            fill="none"
+            stroke="#1e79be"
+            strokeWidth="2"
+            vectorEffect="non-scaling-stroke"
+          />
+          {p.points.map((point, index) => (
+            <circle
+              key={index}
+              cx={point.x}
+              cy={point.y}
+              r={p.view.width / 140}
+              fill={index === 0 ? "#008060" : "white"}
+              stroke="#008060"
+              vectorEffect="non-scaling-stroke"
+              role={index === 0 && p.points.length >= 3 ? "button" : undefined}
+              tabIndex={index === 0 && p.points.length >= 3 ? 0 : undefined}
+              aria-label={
+                index === 0 && p.points.length >= 3
+                  ? "Замкнуть контур"
+                  : undefined
+              }
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                event.stopPropagation();
+                if (index === 0 && p.points.length >= 3) p.onCloseContour?.();
+              }}
+              onKeyDown={(event) => {
+                if (
+                  index === 0 &&
+                  p.points.length >= 3 &&
+                  ["Enter", " "].includes(event.key)
+                ) {
+                  event.preventDefault();
+                  p.onCloseContour?.();
+                }
+              }}
+            />
+          ))}
+        </>
       )}
     </svg>
   );

@@ -16,6 +16,10 @@ import {
   hasPermission,
 } from "../../../packages/contracts/src/permissions.ts";
 import { nextOccurrence } from "./domain/maintenance.js";
+import {
+  ensureDefaultSitePlan,
+  ensureDefaultBuildingPlan,
+} from "./domain/default-floor-plans.js";
 
 const id = () => crypto.randomUUID();
 const today = () => new Date().toISOString().slice(0, 10);
@@ -388,7 +392,34 @@ export function saveOperation(db, user, kind, recordId, body) {
     const floor = input.floorId ? db.getById("floors", input.floorId) : null;
     if (input.floorId && floor?.propertyId !== propertyId)
       throw new Error("Этаж другого объекта");
-    if (input.kind === "floor" && !floor) throw new Error("Выберите этаж");
+    const kind =
+      input.kind ?? (floor ? "floor" : input.buildingId ? "building" : "site");
+    if (kind === "floor" && !floor) throw new Error("Выберите этаж");
+    const floorBuildingId = floor
+      ? db.getById("entrances", floor.entranceId)?.buildingId
+      : null;
+    if (floor && input.buildingId && input.buildingId !== floorBuildingId)
+      throw new Error("Этаж другого корпуса");
+    const buildingId = floorBuildingId ?? input.buildingId ?? null;
+    if (
+      buildingId &&
+      db.getById("buildings", buildingId)?.propertyId !== propertyId
+    )
+      throw new Error("Корпус другого объекта");
+    if (kind === "building" && (!buildingId || floor))
+      throw new Error("Выберите корпус без этажа");
+    if (kind === "site" && (buildingId || floor))
+      throw new Error("Генплан не привязывается к корпусу или этажу");
+    if (!["site", "building", "floor"].includes(kind))
+      throw new Error("Некорректный вид плана");
+    const unitInBuilding = (unit) => {
+      if (!buildingId) return true;
+      const unitFloor = db.getById("floors", unit.floor_id);
+      return (
+        db.getById("entrances", unitFloor?.entranceId)?.buildingId ===
+        buildingId
+      );
+    };
     const geometry = input.geometry ?? [];
     const identities = new Set();
     for (const shape of geometry) {
@@ -404,6 +435,7 @@ export function saveOperation(db, user, kind, recordId, body) {
         const unit = checkUnit(db, user, shape.unitId, propertyId);
         if (floor && unit.floor_id !== floor.id)
           throw new Error("Помещение другого этажа");
+        if (!unitInBuilding(unit)) throw new Error("Помещение другого корпуса");
       }
       if (shape.equipmentId) {
         const equipment = db.getById("equipment", shape.equipmentId);
@@ -411,14 +443,17 @@ export function saveOperation(db, user, kind, recordId, body) {
           !equipment ||
           equipment.propertyId !== propertyId ||
           (shape.unitId && equipment.unitId !== shape.unitId) ||
-          (floor && db.requireUnit(equipment.unitId).floor_id !== floor.id)
+          (floor && db.requireUnit(equipment.unitId).floor_id !== floor.id) ||
+          !unitInBuilding(db.requireUnit(equipment.unitId))
         )
           throw new Error("Оборудование недоступно на плане");
       }
     }
     Object.assign(record, {
       floorId: floor?.id ?? null,
-      kind: input.kind ?? "site",
+      buildingId,
+      kind,
+      isDefault: false,
       geometry,
       layers: [...new Set(geometry.map((s) => s.layer))],
       sourceName: input.sourceName ?? "",
@@ -428,9 +463,10 @@ export function saveOperation(db, user, kind, recordId, body) {
     if (markers.length > 2000) throw new Error("Слишком много меток");
     const unique = new Set();
     record.markers = markers.map((m) => {
-      checkUnit(db, user, m.unitId, propertyId);
-      if (floor && db.requireUnit(m.unitId).floor_id !== floor.id)
+      const markerUnit = checkUnit(db, user, m.unitId, propertyId);
+      if (floor && markerUnit.floor_id !== floor.id)
         throw new Error("Метка другого этажа");
+      if (!unitInBuilding(markerUnit)) throw new Error("Метка другого корпуса");
       if (unique.has(m.unitId)) throw new Error("Повторная метка помещения");
       unique.add(m.unitId);
       return {
@@ -616,6 +652,24 @@ export function saveOperation(db, user, kind, recordId, body) {
   return db.transaction(() => {
     if (existing) Object.assign(db.getById(collection, record.id), record);
     else db.data[collection].push(record);
+    if (kind === "floorplans" && existing) {
+      const oldKind = existing.floorId
+        ? "floor"
+        : existing.buildingId
+          ? "building"
+          : (existing.kind ?? "site");
+      const changedScope =
+        oldKind !== record.kind ||
+        (existing.buildingId ?? null) !== record.buildingId ||
+        (existing.floorId ?? null) !== record.floorId;
+      if (changedScope && oldKind === "site")
+        ensureDefaultSitePlan(db, propertyId);
+      if (changedScope && oldKind === "building")
+        ensureDefaultBuildingPlan(
+          db,
+          db.getById("buildings", existing.buildingId),
+        );
+    }
     db.audit(user, existing ? "updated" : "created", kind, record.id, {
       before: existing,
       after: record,
@@ -798,6 +852,23 @@ export function getOperations(db, user) {
               r.audience === (staff ? "staff" : "tenants"))),
       );
     if (key === "services" && !manager) rows = rows.filter((r) => r.active);
+    if (key === "floorplans")
+      rows = rows.map((plan) => {
+        const floor = plan.floorId ? db.getById("floors", plan.floorId) : null;
+        const floorBuilding = floor
+          ? db.getById("entrances", floor.entranceId)?.buildingId
+          : null;
+        return {
+          ...plan,
+          buildingId: plan.buildingId ?? floorBuilding ?? null,
+          kind: floor
+            ? "floor"
+            : plan.buildingId
+              ? "building"
+              : (plan.kind ?? "site"),
+          isDefault: plan.isDefault === true,
+        };
+      });
     result[key] = rows;
   }
   result.readings = staff

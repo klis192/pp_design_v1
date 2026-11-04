@@ -435,6 +435,14 @@ test("Business migration includes existing files and converts account bindings w
     f.manager.id,
   ]);
   await pg.pool.query("BEGIN");
+  // Reconstruct the pre-005 schema as well as its migration ledger. Newer
+  // plan columns/triggers belong to 016 and must not survive this fixture reset.
+  await pg.pool.query("DELETE FROM warehouse.floor_plans WHERE is_default IS TRUE");
+  await pg.pool.query(
+    "DROP FUNCTION warehouse.assert_floor_plan_building_context() CASCADE; " +
+      "ALTER TABLE warehouse.floor_plans DROP CONSTRAINT floor_plans_kind_valid, " +
+      "DROP COLUMN building_id CASCADE, DROP COLUMN is_default CASCADE",
+  );
   await pg.pool.query(
     "DROP TABLE " +
       Object.keys(businessTables)

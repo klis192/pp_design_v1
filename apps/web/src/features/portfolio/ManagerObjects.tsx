@@ -1,3 +1,5 @@
+import { useState } from "react";
+import type { FloorPlan } from "../../../../../packages/contracts/src/operations-platform";
 import { ActionIcon } from "../business/ActionIcon";
 import { IconButton } from "../../ui";
 import { DocumentRegistry } from "../business/DocumentRegistry";
@@ -13,6 +15,7 @@ import {
 import "./workspace.css";
 import { StructureWorkspace } from "../platform/StructureWorkspace";
 import { hasPermission } from "../../../../../packages/contracts/src/permissions";
+import { BuildingPlanCard } from "../platform/plans/viewer/BuildingPlanCard";
 export function ManagerObjects() {
   const {
     session,
@@ -44,6 +47,19 @@ export function ManagerObjects() {
     ["overview", "structure", "plans", "documents"] as const,
   );
   const visited = useVisitedSurfaceViews(selectedPropertyId, view);
+  const [planTarget, setPlanTarget] = useState<{
+    propertyId: string;
+    id: string;
+    buildingId: string | null;
+  } | null>(null);
+  const editPlan = (plan: FloorPlan) => {
+    setPlanTarget({
+      propertyId: plan.propertyId,
+      id: plan.id,
+      buildingId: plan.buildingId ?? null,
+    });
+    setView("plans");
+  };
   const activeProperty = propertyOperations.find(
     (p) => p.id === selectedPropertyId,
   );
@@ -119,7 +135,10 @@ export function ManagerObjects() {
         idPrefix="objects-view"
         label="Объект: представление"
         value={view}
-        onChange={(id) => setView(id as typeof view)}
+        onChange={(id) => {
+          if (id === "plans") setPlanTarget(null);
+          setView(id as typeof view);
+        }}
         items={[
           { id: "overview", label: "Обзор" },
           { id: "structure", label: "Структура" },
@@ -141,69 +160,89 @@ export function ManagerObjects() {
             <span>Открытых заявок: {activeProperty.openTicketCount}</span>
           </div>
         )}
-        {view === "overview" && selectedPropertySnapshot ? (
-          <article
-            className="mvp-card area-split-card selection-stage"
-            key={`manager-area-split-${selectedPropertyId}`}
-          >
-            <div className="mvp-card-head">
-              <div>
-                <h3>{locale === "ru" ? "Деление площадей" : "Area split"}</h3>
-              </div>
-              <small>
-                {formatArea(selectedPropertySnapshot.rentableArea, locale)}
-              </small>
-            </div>
-            <div
-              className="area-split-bar"
-              aria-label={
-                locale === "ru"
-                  ? "Деление площадей по статусам"
-                  : "Area split by status"
+        {view === "overview" && selectedPropertyId && (
+          <div className="portfolio-overview-grid">
+            <BuildingPlanCard
+              token={session.token}
+              propertyId={selectedPropertyId}
+              units={overview.units}
+              tickets={tickets}
+              onEdit={
+                hasPermission(session.user, "plans.write")
+                  ? editPlan
+                  : undefined
               }
-            >
-              {selectedPropertySnapshot.statusBreakdown.map((item) => (
-                <span
-                  className={`area-split-segment area-split-segment--${item.id}`}
-                  key={item.id}
-                  style={{
-                    width: `${Math.max(2, (item.area / Math.max(1, selectedPropertySnapshot.rentableArea)) * 100)}%`,
-                  }}
-                  title={`${item.label}: ${formatArea(item.area, locale)}`}
-                />
-              ))}
-            </div>
-            <div className="area-split-grid">
-              {selectedPropertySnapshot.statusBreakdown.map((item) => (
-                <div className="area-split-item" key={item.id}>
-                  <span
-                    className={`area-split-dot area-split-dot--${item.id}`}
-                  />
+            />
+            {selectedPropertySnapshot ? (
+              <article
+                className="mvp-card area-split-card selection-stage"
+                key={`manager-area-split-${selectedPropertyId}`}
+              >
+                <div className="mvp-card-head">
                   <div>
-                    <strong>{item.label}</strong>
-                    <small>
-                      {formatArea(item.area, locale)} ·{" "}
-                      {Math.round(
-                        (item.area /
-                          Math.max(1, selectedPropertySnapshot.rentableArea)) *
-                          100,
-                      )}
-                      %
-                    </small>
+                    <h3>
+                      {locale === "ru" ? "Деление площадей" : "Area split"}
+                    </h3>
                   </div>
+                  <small>
+                    {formatArea(selectedPropertySnapshot.rentableArea, locale)}
+                  </small>
                 </div>
-              ))}
-            </div>
-            <div className="area-type-grid">
-              {selectedPropertySnapshot.typeBreakdown.map((item) => (
-                <div className="area-type-chip" key={item.id}>
-                  <span>{item.label}</span>
-                  <strong>{formatArea(item.area, locale)}</strong>
+                <div
+                  className="area-split-bar"
+                  aria-label={
+                    locale === "ru"
+                      ? "Деление площадей по статусам"
+                      : "Area split by status"
+                  }
+                >
+                  {selectedPropertySnapshot.statusBreakdown.map((item) => (
+                    <span
+                      className={`area-split-segment area-split-segment--${item.id}`}
+                      key={item.id}
+                      style={{
+                        width: `${Math.max(2, (item.area / Math.max(1, selectedPropertySnapshot.rentableArea)) * 100)}%`,
+                      }}
+                      title={`${item.label}: ${formatArea(item.area, locale)}`}
+                    />
+                  ))}
                 </div>
-              ))}
-            </div>
-          </article>
-        ) : null}
+                <div className="area-split-grid">
+                  {selectedPropertySnapshot.statusBreakdown.map((item) => (
+                    <div className="area-split-item" key={item.id}>
+                      <span
+                        className={`area-split-dot area-split-dot--${item.id}`}
+                      />
+                      <div>
+                        <strong>{item.label}</strong>
+                        <small>
+                          {formatArea(item.area, locale)} ·{" "}
+                          {Math.round(
+                            (item.area /
+                              Math.max(
+                                1,
+                                selectedPropertySnapshot.rentableArea,
+                              )) *
+                              100,
+                          )}
+                          %
+                        </small>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="area-type-grid">
+                  {selectedPropertySnapshot.typeBreakdown.map((item) => (
+                    <div className="area-type-chip" key={item.id}>
+                      <span>{item.label}</span>
+                      <strong>{formatArea(item.area, locale)}</strong>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ) : null}
+          </div>
+        )}
 
         {(["structure", "plans"] as const)
           .filter((mode) => visited.includes(mode))
@@ -226,6 +265,17 @@ export function ManagerObjects() {
                 onUnit={openUnitDetail}
                 onTicket={openTicketDetail}
                 canWrite={hasPermission(session.user, "plans.write")}
+                initialPlanId={
+                  planTarget?.propertyId === selectedPropertyId
+                    ? planTarget.id
+                    : undefined
+                }
+                buildingId={
+                  planTarget?.propertyId === selectedPropertyId
+                    ? planTarget.buildingId
+                    : undefined
+                }
+                onPlanEdit={editPlan}
               />
             </article>
           ))}

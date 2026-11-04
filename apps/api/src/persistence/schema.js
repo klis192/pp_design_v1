@@ -328,7 +328,8 @@ export const tables = {
   }),
   floor_plans: table(
     {
-      text: "id propertyId name createdBy image floorId kind sourceName",
+      text: "id propertyId name createdBy image floorId buildingId kind sourceName",
+      boolean: "isDefault",
       jsonb: "markers geometry layers",
       integer: "version",
       timestamptz: "createdAt updatedAt",
@@ -339,6 +340,7 @@ export const tables = {
         propertyId: "properties",
         createdBy: "users",
         floorId: "floors",
+        buildingId: "buildings",
       },
     },
   ),

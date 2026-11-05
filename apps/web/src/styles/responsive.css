@@ -293,7 +293,7 @@
 
   .mvp-metric strong,
   .workspace-kpi strong {
-    font-size: clamp(1.2rem, 8vw, 2rem);
+    font-size: 22px;
   }
 
   .mvp-grid,
@@ -438,7 +438,7 @@
   overflow-wrap: anywhere;
 }
 .mvp-metric strong {
-  font-size: 28px;
+  font-size: 26px;
 }
 .mvp-list-row {
   flex-wrap: wrap;
@@ -461,7 +461,7 @@
   background: #fff0ed;
 }
 .lease-expired small {
-  color: #9f3423;
+  color: var(--danger);
 }
 .field-hint {
   display: block;
@@ -528,7 +528,7 @@
     gap: 12px;
   }
   .mobile-app-bar strong {
-    font-size: 17px;
+    font-size: 16px;
   }
   .mobile-app-bar .secondary-button {
     min-width: 98px;
@@ -564,7 +564,7 @@
     inset: 60px 0 0;
     border: 0;
     border-radius: 0;
-    background: #14232270;
+    background: rgba(21, 23, 28, 0.44);
     width: 100%;
   }
   .mobile-drawer-close {
@@ -574,9 +574,9 @@
     padding: 8px;
     min-height: 44px;
     background: transparent;
-    color: #d9e4df;
-    border: 1px solid #56615b;
-    border-radius: 6px;
+    color: var(--line-soft);
+    border: 1px solid var(--neutral-700);
+    border-radius: var(--radius-md);
   }
   .sidebar-nav {
     display: grid;
@@ -654,7 +654,7 @@
   }
   .mvp-card h3,
   .surface h3 {
-    font-size: 18px;
+    font-size: 16px;
   }
   .mvp-grid--dashboard,
   .mvp-grid,
@@ -864,7 +864,7 @@
   .plan-marker {
     min-height: 32px;
     padding: 4px;
-    font-size: 11px;
+    font-size: 12px;
   }
   .ticket-context {
     padding: 12px;
@@ -886,16 +886,16 @@
 /* Status contrast is shared by tables, cards and workflow views. */
 .status-pill--success {
   background: #e5f2e8;
-  color: #246637;
+  color: var(--line-600);
 }
 .status-pill--warning {
   background: #fff1d9;
-  color: #835400;
+  color: var(--warning);
 }
 .status-pill--critical,
 .status-pill--danger {
-  background: #fde9e6;
-  color: #9e332a;
+  background: var(--danger-soft);
+  color: var(--danger);
 }
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -939,7 +939,7 @@
 .forecast-track {
   height: 6px;
   background: #e7eeeb;
-  border-radius: 3px;
+  border-radius: var(--radius-md);
   overflow: hidden;
 }
 .forecast-track i {
@@ -948,7 +948,7 @@
   background: var(--accent);
 }
 .forecast-track .forecast-negative {
-  background: #a23c30;
+  background: var(--danger);
 }
 @media (max-width: 760px) {
   .forecast-comparison {
@@ -960,7 +960,7 @@
     gap: 8px;
   }
   .forecast-month strong {
-    font-size: 18px;
+    font-size: 16px;
   }
   .forecast-track {
     grid-column: 1 / -1;
@@ -1021,7 +1021,7 @@
   color: inherit;
 }
 .tenant-channel:focus-visible {
-  outline: 3px solid #143e65;
+  outline: 3px solid var(--primary-500);
   outline-offset: 3px;
 }
 .bot-link-panel {
@@ -1042,7 +1042,7 @@
   user-select: all;
   padding: 12px;
   background: #eef3f6;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
 }
 .bot-link-result small {
   color: var(--ink-muted);

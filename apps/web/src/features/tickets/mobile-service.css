@@ -131,7 +131,7 @@
     white-space: nowrap;
   }
   .ticket-record--personal .ticket-record-header .ui-workspace-tab__count {
-    font-size: 10px;
+    font-size: 12px;
     min-width: 14px;
     padding: 0 2px;
   }

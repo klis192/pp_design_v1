@@ -22,7 +22,7 @@
 
 .board-unit {
   padding: 14px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--line);
   background: var(--surface);
   color: var(--ink);

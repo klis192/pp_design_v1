@@ -7,7 +7,7 @@
 
 .industrial-hero-copy h2 {
   margin-top: 18px;
-  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  font-size: 40px;
 }
 
 .metrics-grid {
@@ -27,7 +27,7 @@
 .ticket-card,
 .notification-card,
 .detail-card {
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--line);
   background: var(--surface);
 }
@@ -36,7 +36,7 @@
   padding: 16px;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   color: var(--ink);
 }
 
@@ -49,7 +49,7 @@
 .metric-panel strong {
   display: block;
   margin-top: 6px;
-  font-size: 1.45rem;
+  font-size: 24px;
   font-weight: 600;
 }
 
@@ -86,7 +86,7 @@
   width: min(100%, 220px);
   min-height: 200px;
   padding: 14px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--line);
   background: var(--neutral-50);
   display: flex;
@@ -98,7 +98,7 @@
 .finance-bar-fill {
   width: 48px;
   min-height: 14px;
-  border-radius: 2px 2px 0 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
 .finance-bar-fill--billed {
@@ -118,7 +118,7 @@
   display: grid;
   gap: 2px;
   padding: 10px 12px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   border: 1px solid var(--line);
 }
@@ -167,7 +167,7 @@
 .summary-tile strong {
   display: block;
   margin-top: 8px;
-  font-size: 1.15rem;
+  font-size: 16px;
 }
 
 .summary-chip small {
@@ -320,7 +320,7 @@
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
-  font-size: 20px;
+  font-size: 22px;
   font-variant-numeric: tabular-nums;
 }
 .forecast-summary {
@@ -338,7 +338,7 @@
 .forecast-summary dd {
   margin: 4px 0 0;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 22px;
 }
 @media (max-width: 760px) {
   .forecast-summary {

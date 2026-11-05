@@ -43,7 +43,7 @@
   margin-bottom: 12px;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: var(--radius-md);
 }
 .register-options label:not(.ui-checkbox) {
   display: grid;
@@ -311,7 +311,7 @@
   max-width: 100%;
   padding: 5px 10px;
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   color: var(--ink);
   font: inherit;
@@ -534,7 +534,7 @@ button.active-filter:focus-visible {
   flex: 1 1 160px;
 }
 .billing-page .mvp-metric strong {
-  font-size: 1.25rem;
+  font-size: 22px;
 }
 .billing-page .mvp-metric small {
   margin-top: 2px;
@@ -703,7 +703,7 @@ button.active-filter:focus-visible {
   .data-register .register-table tbody tr:not(.register-details-row) {
     padding: 12px 14px;
     border: 1px solid var(--line);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background: var(--surface);
   }
   .data-register .register-table tbody tr[aria-selected="true"] {

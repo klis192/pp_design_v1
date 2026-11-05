@@ -182,18 +182,130 @@
   }
 }
 
+/* Узкий экран: путь вертикальный — станции сверху вниз, подпись и время в строку. */
 @container workspace (max-width: 620px) {
   .ticket-path {
     --dot: 14px;
     --rail: 3px;
-    padding: 14px 12px 12px;
+    --row: 30px;
+    padding: 14px 14px 12px;
+  }
+  .ticket-path__line {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: var(--row);
+  }
+  .ticket-path__line::before,
+  .ticket-path__line::after {
+    left: calc(var(--dot) / 2 - var(--rail) / 2);
+    top: calc(var(--row) / 2);
+    width: var(--rail);
+  }
+  .ticket-path__line::before {
+    right: auto;
+    height: calc(var(--row) * 4);
+  }
+  .ticket-path__line::after {
+    height: calc(var(--current) * var(--row));
+    transform-origin: center top;
+    animation-name: ticket-path-draw-down;
+  }
+  .ticket-path__station {
+    grid-template-columns: var(--dot) minmax(0, 1fr) auto;
+    align-items: center;
+    justify-items: start;
+    gap: 10px;
+    text-align: left;
   }
   .ticket-path__dot {
     border-width: 3px;
   }
+  .ticket-path__station[data-state="current"] .ticket-path__dot {
+    width: calc(var(--dot) + 4px);
+    height: calc(var(--dot) + 4px);
+    margin: 0 0 0 -2px;
+  }
   .ticket-path__label {
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 13px;
+  }
+  .ticket-path__time {
+    justify-self: end;
+  }
+  .ticket-path[data-rejected] .ticket-path__station[data-state="current"]::after {
+    top: auto;
+    bottom: -2px;
+    left: 0;
+    width: 14px;
+    height: 3px;
+  }
+  .ticket-path__branch {
+    margin-left: 6px;
+  }
+}
+/* Кабинеты исполнителя и арендатора — без контейнера рабочей области. */
+@media (max-width: 620px) {
+  .ticket-path {
+    --dot: 14px;
+    --rail: 3px;
+    --row: 30px;
+    padding: 14px 14px 12px;
+  }
+  .ticket-path__line {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: var(--row);
+  }
+  .ticket-path__line::before,
+  .ticket-path__line::after {
+    left: calc(var(--dot) / 2 - var(--rail) / 2);
+    top: calc(var(--row) / 2);
+    width: var(--rail);
+  }
+  .ticket-path__line::before {
+    right: auto;
+    height: calc(var(--row) * 4);
+  }
+  .ticket-path__line::after {
+    height: calc(var(--current) * var(--row));
+    transform-origin: center top;
+    animation-name: ticket-path-draw-down;
+  }
+  .ticket-path__station {
+    grid-template-columns: var(--dot) minmax(0, 1fr) auto;
+    align-items: center;
+    justify-items: start;
+    gap: 10px;
+    text-align: left;
+  }
+  .ticket-path__dot {
+    border-width: 3px;
+  }
+  .ticket-path__station[data-state="current"] .ticket-path__dot {
+    width: calc(var(--dot) + 4px);
+    height: calc(var(--dot) + 4px);
+    margin: 0 0 0 -2px;
+  }
+  .ticket-path__label {
+    font-size: 13px;
+  }
+  .ticket-path__time {
+    justify-self: end;
+  }
+  .ticket-path[data-rejected] .ticket-path__station[data-state="current"]::after {
+    top: auto;
+    bottom: -2px;
+    left: 0;
+    width: 14px;
+    height: 3px;
+  }
+  .ticket-path__branch {
+    margin-left: 6px;
+  }
+}
+@keyframes ticket-path-draw-down {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
   }
 }
 

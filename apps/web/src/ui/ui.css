@@ -100,7 +100,7 @@ body {
   border-color: var(--danger-line) !important;
 }
 .ui-button--danger:hover:not(:disabled) {
-  background: #fbdcd9;
+  background: var(--danger-line);
 }
 .ui-button.ui-button--text {
   background: transparent;
@@ -204,7 +204,7 @@ a:focus-visible {
   border-color: var(--ui-danger);
 }
 .ui-control[aria-invalid="true"]:focus {
-  box-shadow: 0 0 0 3px rgba(217, 45, 32, 0.18);
+  box-shadow: 0 0 0 3px rgba(228, 32, 46, 0.2);
 }
 .ui-select {
   appearance: none;
@@ -284,21 +284,21 @@ a:focus-visible {
 .ui-alert {
   padding: 12px 16px;
   border: 1px solid;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   overflow-wrap: anywhere;
 }
 .ui-alert--error {
-  color: #a3231a;
+  color: var(--danger);
   background: var(--danger-soft);
   border-color: var(--danger-line);
 }
 .ui-alert--success {
-  color: #0b6648;
+  color: var(--line-600);
   background: var(--success-soft);
   border-color: var(--success-line);
 }
 .ui-alert--info {
-  color: #1a44bd;
+  color: var(--link-hover);
   background: var(--info-soft);
   border-color: var(--info-line);
 }
@@ -307,7 +307,7 @@ a:focus-visible {
   width: fit-content;
   align-items: center;
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   font-size: 12px;
   font-weight: 600;
   line-height: 1.5;
@@ -316,19 +316,19 @@ a:focus-visible {
 }
 .ui-badge--success {
   background: var(--success-soft);
-  color: #0b6648;
+  color: var(--line-600);
 }
 .ui-badge--warning {
   background: var(--warning-soft);
-  color: #8a5200;
+  color: var(--warning);
 }
 .ui-badge--danger {
   background: var(--danger-soft);
-  color: #a3231a;
+  color: var(--danger);
 }
 .ui-badge--info {
   background: var(--info-soft);
-  color: #1a44bd;
+  color: var(--link-hover);
 }
 .ui-page-header {
   display: flex;
@@ -351,7 +351,7 @@ a:focus-visible {
 .ui-card {
   padding: 20px;
   border: 1px solid var(--ui-border);
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   background: white;
   min-width: 0;
 }
@@ -410,7 +410,7 @@ a:focus-visible {
   letter-spacing: normal;
 }
 .status-pill {
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   font-size: 12px;
   font-weight: 600;
   line-height: 1.5;

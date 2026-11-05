@@ -112,6 +112,7 @@
 .dashboard-workspace .dash-props,
 .dashboard-workspace .dash-leases {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0;
   margin: 0;
   padding: 0;
@@ -175,6 +176,12 @@
   display: grid;
   gap: 2px;
   min-width: 0;
+}
+.dashboard-workspace .dash-leases li > div:first-child {
+  flex: 1 1 auto;
+}
+.dashboard-workspace .dash-leases__when {
+  flex: none;
 }
 .dashboard-workspace .dash-leases strong {
   font-size: 13px;
@@ -398,11 +405,14 @@
   }
 }
 @container workspace (max-width: 620px) {
+  .dashboard-workspace .dash-side {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .dashboard-workspace .dash-status {
     flex-wrap: nowrap;
+    max-width: 100%;
     overflow-x: auto;
-    margin-inline: -14px;
-    padding: 0 14px 2px;
+    padding: 0 0 2px;
     scrollbar-width: none;
   }
   .dashboard-workspace .dash-status::-webkit-scrollbar {

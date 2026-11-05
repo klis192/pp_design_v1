@@ -59,7 +59,7 @@
   min-width: 16px;
   height: 18px;
   padding-inline: 4px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   background: var(--neutral-100);
   font-size: 12px;
   line-height: 18px;
@@ -102,7 +102,7 @@
 }
 .ui-side-panel__header h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
   line-height: 1.4;
   overflow-wrap: anywhere;
@@ -318,7 +318,7 @@
   padding: 20px;
   background: var(--ui-surface);
   border: 1px solid var(--ui-border);
-  border-radius: 6px;
+  border-radius: var(--radius-md);
 }
 .workspace-filter-grid > .workspace-filter-search {
   grid-column: auto;
@@ -360,7 +360,7 @@
     padding: 8px 0;
   }
   .workspace-record-header h2 {
-    font-size: 20px;
+    font-size: 22px;
   }
   .workspace-toolbar-row,
   .workspace-context-row,

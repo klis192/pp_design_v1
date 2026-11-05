@@ -44,7 +44,7 @@
 
 .nav-button {
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   background: transparent;
   color: var(--ink-soft);
   padding: 8px 12px;
@@ -63,7 +63,7 @@
 .nav-button small {
   min-width: 20px;
   padding: 1px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   background: var(--neutral-200);
   color: var(--ink-soft);
   font-size: 0.72rem;
@@ -130,7 +130,7 @@
 .workspace-kpi {
   min-width: 120px;
   padding: 12px 14px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--line);
   background: var(--surface);
 }
@@ -146,7 +146,7 @@
 .workspace-kpi strong {
   display: block;
   margin-top: 6px;
-  font-size: 1.2rem;
+  font-size: 16px;
 }
 
 .workspace-kpi small {
@@ -288,7 +288,7 @@
 .mvp-detail-head h2,
 .mvp-card h3 {
   font-family: var(--display-font);
-  font-size: 1.55rem;
+  font-size: 24px;
   font-weight: 600;
   letter-spacing: 0;
 }

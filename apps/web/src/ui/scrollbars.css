@@ -17,10 +17,10 @@
 }
 *::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
-  border-radius: 6px;
+  border-radius: var(--radius-md);
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: #777;
+  background: var(--neutral-600);
 }
 @media (pointer: coarse) {
   * {

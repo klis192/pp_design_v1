@@ -8,8 +8,8 @@
 }
 .kanban-column {
   background: #f2f5f7;
-  border: 1px solid #dce3e9;
-  border-radius: 12px;
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-lg);
   min-height: 220px;
   padding: 12px;
 }
@@ -21,7 +21,7 @@
 }
 .kanban-ticket {
   background: #fff;
-  border: 1px solid #dce3e9;
+  border: 1px solid var(--neutral-200);
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 10px;
@@ -37,8 +37,8 @@
 .kanban-ticket select {
   width: 100%;
   padding: 6px;
-  border: 1px solid #dce3e9;
-  border-radius: 5px;
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-md);
 }
 .kanban-ticket .text-button {
   text-align: left;
@@ -81,7 +81,7 @@
 }
 .operations-page .work-disclosure,
 .ticket-context .work-disclosure {
-  border-top: 1px solid #dce3e9;
+  border-top: 1px solid var(--neutral-200);
   padding-top: 12px;
   margin-top: 12px;
 }
@@ -93,11 +93,11 @@
 .unit-structure select {
   min-width: 0;
   max-width: 100%;
-  border: 1px solid #cbd5e1;
-  border-radius: 7px;
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--radius-md);
   padding: 10px;
   background: #fff;
-  color: #172c3b;
+  color: var(--primary-500);
   font: inherit;
 }
 .audit-values {
@@ -114,7 +114,7 @@
   margin: 18px 0;
   padding: 16px;
   background: #f6f8fa;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
 }
 .ticket-context .form-grid {
   margin: 14px 0;
@@ -136,10 +136,10 @@
   gap: 8px;
   text-align: left;
   padding: 14px;
-  border: 1px solid #ccd9e1;
+  border: 1px solid var(--neutral-300);
   border-radius: 8px;
   cursor: pointer;
-  color: #163043;
+  color: var(--primary-500);
 }
 .unit-map-cell span,
 .unit-map-cell small {
@@ -148,15 +148,15 @@
 }
 .unit-map-cell--occupied {
   background: #e6f3ee;
-  border-color: #a1cfbc;
+  border-color: var(--success-line);
 }
 .unit-map-cell--vacant {
   background: #f1f6fc;
-  border-color: #abc6e0;
+  border-color: var(--info-line);
 }
 .unit-map-cell--maintenance {
   background: #fff4da;
-  border-color: #debc69;
+  border-color: var(--warning-line);
 }
 .floor-plan {
   position: relative;
@@ -173,19 +173,19 @@
 .plan-marker {
   position: absolute;
   transform: translate(-50%, -50%);
-  border: 2px solid #17394c;
-  border-radius: 6px;
+  border: 2px solid var(--primary-500);
+  border-radius: var(--radius-md);
   padding: 5px 9px;
   cursor: pointer;
   font-weight: 700;
 }
 .ops-error {
-  color: #b53629;
+  color: var(--danger);
 }
 button:focus-visible,
 select:focus-visible,
 input:focus-visible {
-  outline: 3px solid #3686b5;
+  outline: 3px solid var(--link);
   outline-offset: 3px;
 }
 @media (max-width: 700px) {
@@ -237,7 +237,7 @@ h3 {
 }
 .mvp-card h3,
 .surface h3 {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.4;
   letter-spacing: -0.012em;
 }
@@ -291,7 +291,7 @@ h3 {
   text-decoration: underline;
 }
 .text-button--danger {
-  color: #af302a;
+  color: var(--danger);
 }
 .primary-button:hover,
 .secondary-button:hover,
@@ -355,7 +355,7 @@ label > span,
   color: var(--ink-soft);
 }
 .mvp-metric strong {
-  font-size: clamp(20px, 2vw, 28px);
+  font-size: 26px;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.025em;
 }
@@ -502,9 +502,9 @@ label > span,
 }
 .banner--error,
 .notice--error {
-  color: #962a24;
+  color: var(--danger);
   background: #fff0ec;
-  border: 1px solid #ebc1b8;
+  border: 1px solid var(--danger-line);
 }
 
 @container workspace (max-width: 1320px) {
@@ -542,7 +542,7 @@ label > span,
   display: block;
   height: 2px;
   width: 18px;
-  border-radius: 1px;
+  border-radius: var(--radius-md);
   background: currentColor;
 }
 .burger-icon--open i:first-child {

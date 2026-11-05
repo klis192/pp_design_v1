@@ -40,8 +40,8 @@
   flex-direction: column;
   justify-content: space-between;
   background:
-    radial-gradient(circle at top left, rgba(31, 94, 255, 0.18), transparent 26%),
-    linear-gradient(180deg, #18202c 0%, #0f141d 100%);
+    radial-gradient(circle at top left, var(--focus-ring), transparent 26%),
+    linear-gradient(180deg, var(--primary-500) 0%, #0f141d 100%);
   color: #eff4fb;
   border-color: rgba(255, 255, 255, 0.08);
 }
@@ -84,7 +84,7 @@
   margin-top: 26px;
   max-width: 11ch;
   font-family: var(--display-font);
-  font-size: clamp(3.5rem, 6vw, 6.2rem);
+  font-size: 40px;
   line-height: 0.92;
   letter-spacing: 0.01em;
 }
@@ -142,7 +142,7 @@
 .auth-preview-cell {
   min-height: 70px;
   padding: 12px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.08);
   display: grid;
   align-items: end;
@@ -151,11 +151,11 @@
 }
 
 .auth-preview-cell--filled {
-  background: rgba(31, 94, 255, 0.18);
+  background: var(--focus-ring);
 }
 
 .auth-preview-cell--accent {
-  background: rgba(29, 127, 78, 0.18);
+  background: var(--focus-ring);
 }
 
 .panel-topline {
@@ -173,7 +173,7 @@
 
 .auth-header h1 {
   font-family: var(--display-font);
-  font-size: clamp(2.4rem, 7vw, 3.4rem);
+  font-size: 40px;
   line-height: 0.96;
   letter-spacing: 0.02em;
 }
@@ -185,7 +185,7 @@
 
 .brand-lockup strong {
   display: block;
-  font-size: 1.2rem;
+  font-size: 16px;
 }
 
 .brand-lockup span {
@@ -198,14 +198,14 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 6px;
   padding: 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   background: var(--surface-muted);
 }
 
 .auth-tab {
   border: 0;
   padding: 8px 14px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   color: var(--ink-soft);
   background: transparent;
 }
@@ -219,20 +219,20 @@
 .banner {
   margin-top: 16px;
   padding: 14px 16px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: 1px solid transparent;
   font-size: 0.94rem;
 }
 
 .banner--error {
   background: var(--danger-soft);
-  border-color: rgba(192, 59, 43, 0.2);
+  border-color: rgba(228, 32, 46, 0.2);
   color: var(--danger);
 }
 
 .banner--notice {
   background: var(--accent-soft);
-  border-color: rgba(31, 94, 255, 0.16);
+  border-color: var(--focus-ring);
   color: var(--accent-strong);
 }
 
@@ -250,7 +250,7 @@
 
 .auth-form h2 {
   font-family: var(--display-font);
-  font-size: 1.8rem;
+  font-size: 26px;
   letter-spacing: 0.02em;
 }
 

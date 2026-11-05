@@ -125,10 +125,10 @@
 .document-category-pill {
   flex-shrink: 0;
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   background: var(--primary-100);
   color: var(--primary-700);
-  font-size: 0.68rem;
+  font-size: 12px;
   font-weight: 800;
 }
 
@@ -141,10 +141,10 @@
 .file-picked-summary > span {
   flex-shrink: 0;
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   background: var(--primary-100);
   color: var(--primary-700);
-  font-size: 0.68rem;
+  font-size: 12px;
   font-weight: 800;
 }
 

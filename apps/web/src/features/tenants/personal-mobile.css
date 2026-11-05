@@ -38,7 +38,7 @@
 .personal-services h3,
 .personal-chat h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 24px;
 }
 .personal-service-list {
@@ -126,7 +126,7 @@
   min-height: 0;
   background: var(--ui-surface);
   border: 1px solid var(--ui-border);
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   padding: 20px;
 }
 .personal-chat-list {

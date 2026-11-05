@@ -10,12 +10,12 @@ import "./unit-board.css";
 type BoardUnit = {
   id: string;
   propertyName: string | null;
-  building: string;
-  floor: number;
+  building: string | null;
+  floor: number | null;
   number: string;
   area: number;
-  type: string;
-  status: string;
+  type: string | null;
+  status: string | null;
   tenantName: string | null;
   leaseEndDate: string | null;
 };
@@ -61,13 +61,13 @@ export function UnitBoard({
     (a, b) =>
       (a.propertyName ?? "").localeCompare(b.propertyName ?? "", "ru") ||
       (a.building || "").localeCompare(b.building || "", "ru") ||
-      a.floor - b.floor ||
+      (a.floor ?? 0) - (b.floor ?? 0) ||
       a.number.localeCompare(b.number, "ru", { numeric: true }),
   )) {
     const key = [
       unit.propertyName ?? "",
       unit.building ? `Корпус ${unit.building}` : "",
-      `${unit.floor || 1} этаж`,
+      unit.floor != null ? `${unit.floor} этаж` : "",
     ]
       .filter(Boolean)
       .join(" · ");
@@ -78,6 +78,11 @@ export function UnitBoard({
     row.reduce((sum, unit) => sum + Math.max(Number(unit.area) || 0, 1), 0);
   // Масштаб общий для всех рядов: самый большой ряд занимает всю ширину.
   const widest = Math.max(1, ...[...rows.values()].map(rowArea));
+  // Поля из учёта могут прийти пустыми: тип, статус, этаж, корпус.
+  const statusLabel = (status: string | null) =>
+    (status && statusLabels[status]) || status || "Статус не указан";
+  const typeLabel = (type: string | null) =>
+    ((type && typeLabels[type]) || type || "").toLocaleLowerCase("ru-RU");
   const areaBy = (status: string) =>
     units
       .filter((unit) => unit.status === status)
@@ -122,8 +127,7 @@ export function UnitBoard({
         <ul className="unit-board__legend">
           {parts.map((part) => (
             <li key={part.status} data-status={part.status}>
-              {statusLabels[part.status] ?? part.status}{" "}
-              <b>{formatArea(part.area, locale)}</b>
+              {statusLabel(part.status)} <b>{formatArea(part.area, locale)}</b>
             </li>
           ))}
           <li data-kind="tickets">Открытые заявки</li>
@@ -146,12 +150,12 @@ export function UnitBoard({
                   key={unit.id}
                   type="button"
                   className="unit-bay"
-                  data-status={unit.status}
+                  data-status={unit.status ?? "unknown"}
                   style={{
                     flex: `0 1 calc((100% - ${(rowUnits.length - 1) * 6}px) * ${Math.max(Number(unit.area) || 0, 1) / widest})`,
                   }}
                   onClick={() => onUnit(unit.id)}
-                  aria-label={`Помещение ${unit.number}, ${formatArea(unit.area, locale)}, ${statusLabels[unit.status] ?? unit.status}${unit.tenantName ? `, ${unit.tenantName}` : ""}${open ? `, открытых заявок: ${open.count}` : ""}`}
+                  aria-label={`Помещение ${unit.number}, ${formatArea(unit.area, locale)}, ${statusLabel(unit.status)}${unit.tenantName ? `, ${unit.tenantName}` : ""}${open ? `, открытых заявок: ${open.count}` : ""}`}
                 >
                   <span className="unit-bay__top">
                     <span className="unit-bay__number">{unit.number}</span>
@@ -166,15 +170,14 @@ export function UnitBoard({
                     )}
                   </span>
                   <span className="unit-bay__meta">
-                    {formatArea(unit.area, locale)} ·{" "}
-                    {(typeLabels[unit.type] ?? unit.type).toLocaleLowerCase(
-                      "ru-RU",
-                    )}
+                    {[formatArea(unit.area, locale), typeLabel(unit.type)]
+                      .filter(Boolean)
+                      .join(" · ")}
                   </span>
                   <span className="unit-bay__who">
                     {unit.status === "occupied"
                       ? (unit.tenantName ?? "Арендатор не указан")
-                      : (statusLabels[unit.status] ?? unit.status)}
+                      : statusLabel(unit.status)}
                   </span>
                   {unit.status === "occupied" && unit.leaseEndDate && (
                     <span

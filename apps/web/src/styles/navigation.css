@@ -26,7 +26,7 @@
   min-height: 38px;
   padding: 8px 12px;
   border: 0;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   font-size: 15px;
 }
 .mvp-nav-button:hover {
@@ -50,7 +50,7 @@
   min-width: 24px;
   text-align: center;
   padding: 1px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   font-variant-numeric: tabular-nums;
 }
 .mvp-nav-button--active small {

@@ -1,5 +1,5 @@
 .lease-node {
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--line);
   background: var(--surface-muted);
 }
@@ -71,7 +71,7 @@
 .property-progress {
   margin-top: 12px;
   height: 6px;
-  border-radius: 2px;
+  border-radius: var(--radius-md);
   background: var(--neutral-200);
   overflow: hidden;
 }
@@ -94,7 +94,7 @@
 .property-stat-meta small,
 .property-meta span {
   padding: 3px 8px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   background: var(--surface-muted);
   color: var(--ink-soft);
 }
@@ -193,6 +193,6 @@
 
 .table-shell {
   overflow: auto;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--line);
 }

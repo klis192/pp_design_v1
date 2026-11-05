@@ -422,6 +422,54 @@ export function ManagerBilling() {
                 <dd>{pendingPaymentProofTickets.length}</dd>
               </div>
             </dl>
+            {billingTotals.billed > 0 && (
+              <div className="billing-collect">
+                <div className="billing-collect__bar" aria-hidden="true">
+                  {[
+                    ["paid", billingTotals.paid],
+                    ["overdue", billingTotals.overdue],
+                    [
+                      "due",
+                      Math.max(
+                        billingTotals.billed -
+                          billingTotals.paid -
+                          billingTotals.overdue,
+                        0,
+                      ),
+                    ],
+                  ].map(([kind, value]) =>
+                    Number(value) > 0 ? (
+                      <span
+                        key={kind}
+                        data-kind={kind}
+                        style={{ flexGrow: Number(value) }}
+                      />
+                    ) : null,
+                  )}
+                </div>
+                <p className="billing-collect__legend">
+                  Собрано{" "}
+                  {new Intl.NumberFormat("ru-RU", {
+                    maximumFractionDigits: 1,
+                  }).format((billingTotals.paid / billingTotals.billed) * 100)}
+                  {"\u00a0%"} начисленного
+                  {billingTotals.overdue > 0 && (
+                    <>
+                      {" · "}
+                      <span data-kind="overdue">
+                        просрочено{" "}
+                        {new Intl.NumberFormat("ru-RU", {
+                          maximumFractionDigits: 1,
+                        }).format(
+                          (billingTotals.overdue / billingTotals.billed) * 100,
+                        )}
+                        {"\u00a0%"}
+                      </span>
+                    </>
+                  )}
+                </p>
+              </div>
+            )}
             <Register
               title="Счета арендаторов"
               rows={billingInvoices.filter(

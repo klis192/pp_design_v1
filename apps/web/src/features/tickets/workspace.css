@@ -125,7 +125,7 @@
   border-radius: 8px;
   color: var(--ui-surface);
   background: var(--ui-accent);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 16px;
   text-align: center;
   pointer-events: none;
@@ -520,7 +520,7 @@
     padding-bottom: 8px;
   }
   .ticket-record-title h2 {
-    font-size: 18px;
+    font-size: 16px;
   }
   .ticket-record-header .ui-workspace-tabs {
     margin-top: 0;

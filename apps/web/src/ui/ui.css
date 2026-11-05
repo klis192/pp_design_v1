@@ -1,16 +1,21 @@
 :root {
-  --ui-bg: #f6f6f6;
-  --ui-surface: #ffffff;
-  --ui-text: #222222;
-  --ui-muted: #666666;
-  --ui-border: #e5e5e5;
-  --ui-border-strong: #d5d5d5;
-  --ui-accent: #008060;
-  --ui-accent-hover: #006a50;
-  --ui-danger: #d70c17;
-  --ui-radius: 6px;
-  --ui-field-radius: 4px;
+  /* Компонентный слой опирается на палитру из styles/tokens.css. */
+  --ui-bg: var(--neutral-0);
+  --ui-surface: var(--neutral-0);
+  --ui-text: var(--neutral-900);
+  --ui-muted: var(--neutral-700);
+  --ui-border: var(--neutral-200);
+  --ui-border-strong: var(--neutral-300);
+  --ui-accent: var(--primary-500);
+  --ui-accent-hover: var(--primary-600);
+  --ui-danger: var(--danger);
+  --ui-radius: 8px;
+  --ui-field-radius: 8px;
   --ui-control-height: 36px;
+  /* Поверхности: белые панели с тонкой рамкой на белом фоне. */
+  --ui-surface-border: var(--neutral-150);
+  --ui-surface-radius: 14px;
+  --ui-tile-radius: 10px;
   --ui-space-1: 4px;
   --ui-space-2: 8px;
   --ui-space-3: 12px;
@@ -24,10 +29,6 @@
   --ink-muted: var(--ui-muted);
   --line: var(--ui-border);
   --accent: var(--ui-accent);
-  --radius-xl: 8px;
-  --radius-lg: 6px;
-  --radius-md: 4px;
-  --radius-sm: 4px;
 }
 body {
   font-size: 15px;
@@ -35,8 +36,8 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 ::selection {
-  color: var(--primary-900);
-  background: var(--primary-100);
+  color: var(--ink);
+  background: var(--line-soft);
 }
 .ui-button {
   font: inherit;
@@ -81,7 +82,7 @@ body {
   border-color: var(--ui-border-strong) !important;
 }
 .ui-button--secondary:hover:not(:disabled) {
-  background: #f0f0f0;
+  background: var(--neutral-100);
 }
 .ui-button--secondary:active:not(:disabled),
 .ui-button--text:active:not(:disabled) {
@@ -94,12 +95,12 @@ body {
   }
 }
 .ui-button--danger {
-  background: #fee8e7;
+  background: var(--danger-soft);
   color: var(--ui-danger);
-  border-color: #f8a5a5 !important;
+  border-color: var(--danger-line) !important;
 }
 .ui-button--danger:hover:not(:disabled) {
-  background: #fdd8d7;
+  background: #fbdcd9;
 }
 .ui-button.ui-button--text {
   background: transparent;
@@ -108,7 +109,7 @@ body {
   text-align: left;
 }
 .ui-button--text:hover:not(:disabled) {
-  background: #f0f0f0;
+  background: var(--neutral-100);
 }
 .ui-button:disabled {
   cursor: not-allowed;
@@ -145,11 +146,11 @@ a:focus-visible {
   color: var(--ui-text);
 }
 .ui-button.ui-icon-button.ui-button--text[aria-expanded="true"] {
-  background: #e8f4ef;
+  background: var(--neutral-150);
   color: var(--ui-accent-hover);
 }
 .ui-button.ui-icon-button[aria-pressed="true"] {
-  background: #e8f4ef;
+  background: var(--neutral-150);
   color: var(--ui-accent-hover);
 }
 .ui-icon-button__icon {
@@ -179,7 +180,7 @@ a:focus-visible {
   box-shadow: none;
 }
 .ui-control:hover:not(:disabled) {
-  border-color: #aaaaaa;
+  border-color: var(--neutral-400);
 }
 .ui-control:not(.ui-textarea) {
   height: var(--ui-control-height);
@@ -189,7 +190,7 @@ a:focus-visible {
 }
 .ui-control:focus {
   border-color: var(--ui-accent);
-  box-shadow: 0 0 0 2px rgba(0, 128, 96, 0.2);
+  box-shadow: 0 0 0 3px var(--focus-ring);
   outline: none;
 }
 .ui-control:disabled {
@@ -203,12 +204,12 @@ a:focus-visible {
   border-color: var(--ui-danger);
 }
 .ui-control[aria-invalid="true"]:focus {
-  box-shadow: 0 0 0 2px rgba(215, 12, 23, 0.15);
+  box-shadow: 0 0 0 3px rgba(217, 45, 32, 0.18);
 }
 .ui-select {
   appearance: none;
   padding-right: 36px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23666666' stroke-width='1.5'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%235b616b' stroke-width='1.5'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
   background-position: right 10px center;
   background-repeat: no-repeat;
 }
@@ -251,7 +252,7 @@ a:focus-visible {
   cursor: pointer;
 }
 .ui-input--file:hover:not(:disabled)::file-selector-button {
-  background: #f0f0f0;
+  background: var(--neutral-100);
 }
 .ui-input--file:focus-visible {
   outline: 2px solid var(--ui-accent);
@@ -259,7 +260,7 @@ a:focus-visible {
 }
 .ui-input--file:disabled::file-selector-button {
   color: var(--ui-muted);
-  background: #f0f0f0;
+  background: var(--neutral-100);
   cursor: not-allowed;
 }
 .ui-field {
@@ -287,19 +288,19 @@ a:focus-visible {
   overflow-wrap: anywhere;
 }
 .ui-alert--error {
-  color: #9b1110;
-  background: #fee8e7;
-  border-color: #f8a5a5;
+  color: #a3231a;
+  background: var(--danger-soft);
+  border-color: var(--danger-line);
 }
 .ui-alert--success {
-  color: #006a2f;
-  background: #e3f5e9;
-  border-color: #8ed6a3;
+  color: #0b6648;
+  background: var(--success-soft);
+  border-color: var(--success-line);
 }
 .ui-alert--info {
-  color: #1a5276;
-  background: #eef5fc;
-  border-color: #bfd5e7;
+  color: #1a44bd;
+  background: var(--info-soft);
+  border-color: var(--info-line);
 }
 .ui-badge {
   display: inline-flex;
@@ -310,24 +311,24 @@ a:focus-visible {
   font-size: 12px;
   font-weight: 600;
   line-height: 1.5;
-  background: #f0f0f0;
-  color: #666666;
+  background: var(--neutral-100);
+  color: var(--ui-muted);
 }
 .ui-badge--success {
-  background: #e3f5e9;
-  color: #006a2f;
+  background: var(--success-soft);
+  color: #0b6648;
 }
 .ui-badge--warning {
-  background: #fff0d9;
-  color: #9b5300;
+  background: var(--warning-soft);
+  color: #8a5200;
 }
 .ui-badge--danger {
-  background: #fee8e7;
-  color: #9b1110;
+  background: var(--danger-soft);
+  color: #a3231a;
 }
 .ui-badge--info {
-  background: #eef5fc;
-  color: #1a5276;
+  background: var(--info-soft);
+  color: #1a44bd;
 }
 .ui-page-header {
   display: flex;

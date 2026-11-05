@@ -1,0 +1,441 @@
+/*
+ * Главная управляющего: строка статусов-фильтров, таблица заявок
+ * с мини-линией пути и сводки «Объекты» и «Договоры к продлению».
+ * Полная линия пути живёт в карточке заявки (TicketPath).
+ */
+.dashboard-page.dashboard-workspace {
+  gap: 16px;
+}
+
+/* ---------- Строка статусов ---------- */
+.dashboard-workspace .dash-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.dashboard-workspace .dash-status__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--neutral-200);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease-out,
+    border-color 150ms ease-out,
+    color 150ms ease-out;
+}
+.dashboard-workspace .dash-status__tab b {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.dashboard-workspace .dash-status__tab:hover {
+  border-color: var(--neutral-400);
+}
+.dashboard-workspace .dash-status__tab[data-empty] {
+  color: var(--neutral-600);
+}
+.dashboard-workspace .dash-status__tab[data-alert] b {
+  color: var(--danger);
+}
+.dashboard-workspace .dash-status__tab[aria-pressed="true"] {
+  border-color: var(--primary-500);
+  background: var(--primary-500);
+  color: #ffffff;
+}
+.dashboard-workspace .dash-status__tab[aria-pressed="true"] b {
+  color: #ffffff;
+}
+.dashboard-workspace .dash-status__tab:focus-visible {
+  outline: 2px solid var(--line-500);
+  outline-offset: 2px;
+}
+.dashboard-workspace .dash-status__sep {
+  width: 1px;
+  height: 22px;
+  margin: 0 6px;
+  background: var(--neutral-200);
+}
+
+/* ---------- Раскладка ---------- */
+.dashboard-workspace .dash-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  align-items: start;
+  gap: 16px;
+}
+
+/* ---------- Сводки справа ---------- */
+.dashboard-workspace .dash-side {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.dashboard-workspace .dash-side__block {
+  padding: 16px 18px;
+  border: 1px solid var(--ui-surface-border);
+  border-radius: var(--ui-surface-radius);
+  background: var(--surface);
+}
+.dashboard-workspace .dash-side__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.dashboard-workspace .dash-side__head h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+}
+.dashboard-workspace .dash-side__link.ui-button {
+  min-height: 32px;
+  margin-right: -8px;
+  padding-inline: 8px;
+  font-size: 13px;
+}
+.dashboard-workspace .dash-side__empty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--neutral-700);
+}
+.dashboard-workspace .dash-props,
+.dashboard-workspace .dash-leases {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dashboard-workspace .dash-props li {
+  display: grid;
+  gap: 6px;
+  padding: 10px 0;
+  border-top: 1px solid var(--neutral-100);
+}
+.dashboard-workspace .dash-props li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.dashboard-workspace .dash-props__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+}
+.dashboard-workspace .dash-props__row strong {
+  font-weight: 600;
+}
+.dashboard-workspace .dash-props__row span {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.dashboard-workspace .dash-props__bar {
+  height: 6px;
+  border-radius: var(--radius-md);
+  background: var(--neutral-150);
+  overflow: hidden;
+}
+.dashboard-workspace .dash-props__bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--line-500);
+}
+.dashboard-workspace .dash-props small,
+.dashboard-workspace .dash-leases small {
+  font-size: 12px;
+  color: var(--neutral-600);
+  font-variant-numeric: tabular-nums;
+}
+.dashboard-workspace .dash-leases li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 0;
+  border-top: 1px solid var(--neutral-100);
+}
+.dashboard-workspace .dash-leases li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.dashboard-workspace .dash-leases li > div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.dashboard-workspace .dash-leases strong {
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.dashboard-workspace .dash-leases__when {
+  text-align: right;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.dashboard-workspace .dash-leases__when small {
+  color: var(--warning);
+  font-weight: 600;
+}
+
+/* ---------- Таблица заявок ---------- */
+.dashboard-page.dashboard-workspace .dashboard-tickets {
+  padding: 16px 20px 6px;
+}
+.dashboard-page.dashboard-workspace .dashboard-list-heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px 20px;
+}
+.dashboard-page.dashboard-workspace .dashboard-filter-bar {
+  margin: 0;
+}
+.dashboard-page.dashboard-workspace .dashboard-filter-bar .filter-bar-controls {
+  grid-template-columns: minmax(200px, 320px) minmax(160px, 220px);
+  justify-content: end;
+}
+.dashboard-page.dashboard-workspace .dashboard-filter-bar .filter-bar-summary {
+  display: none;
+}
+.dashboard-workspace .dash-all-link {
+  padding-inline: 10px;
+}
+.dashboard-workspace .dashboard-ticket-head,
+.dashboard-page.dashboard-workspace .dashboard-ticket-list > button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px 150px 130px;
+  align-items: center;
+  gap: 16px;
+}
+.dashboard-workspace .dashboard-ticket-head {
+  margin-top: 14px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--neutral-150);
+  color: var(--neutral-600);
+  font-size: 12px;
+  font-weight: 500;
+}
+.dashboard-workspace .dashboard-ticket-head > span:last-child {
+  text-align: right;
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-list {
+  border-top: 0;
+}
+/* Сбрасываем раскладку строк из прежних правил главной. */
+.dashboard-page.dashboard-workspace .dashboard-ticket-list > :where(button) > :where(*) {
+  grid-column: auto;
+  grid-row: auto;
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-list > button {
+  position: relative;
+  margin: 0;
+  padding: 11px 10px;
+  border-radius: 0;
+  border-bottom: 1px solid var(--neutral-100);
+  text-align: left;
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-list > button:last-child {
+  border-bottom: 0;
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-list > button:hover {
+  background: var(--neutral-50);
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-copy strong {
+  font-size: 14.5px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-number {
+  color: var(--neutral-600);
+  font-size: 12.5px;
+  font-weight: 400;
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-urgent {
+  margin-left: 8px;
+  color: var(--danger);
+  font-weight: 600;
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-assignee {
+  font-size: 14px;
+  color: var(--ink);
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-assignee[data-empty] {
+  color: var(--danger);
+  font-weight: 500;
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-sla {
+  justify-self: end;
+  white-space: nowrap;
+  font-size: 13.5px;
+  color: var(--neutral-700);
+  font-variant-numeric: tabular-nums;
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-sla[data-tone="warning"] {
+  color: var(--warning);
+  font-weight: 600;
+}
+.dashboard-page.dashboard-workspace .dashboard-ticket-sla[data-tone="critical"] {
+  color: var(--danger);
+  font-weight: 600;
+}
+.dashboard-page.dashboard-workspace .dashboard-tickets > .empty-state {
+  border-top: 0;
+  padding: 40px 0 48px;
+}
+
+/* Мини-линия: путь пройден зелёным до текущей станции, текущая — графитовая. */
+.dashboard-workspace .metro-mini {
+  --step: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 10px) minmax(0, 1fr);
+  align-items: center;
+  min-width: 0;
+  column-gap: 10px;
+  position: relative;
+}
+.dashboard-workspace .metro-mini::before,
+.dashboard-workspace .metro-mini::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+}
+.dashboard-workspace .metro-mini::before {
+  width: 60px;
+  background: var(--neutral-200);
+}
+.dashboard-workspace .metro-mini::after {
+  width: calc(var(--step) * 20px);
+  background: var(--line-500);
+}
+.dashboard-workspace .metro-mini i {
+  position: relative;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--neutral-300);
+  border-radius: 50%;
+  background: var(--surface);
+}
+.dashboard-workspace .metro-mini i[data-state="done"] {
+  border-color: var(--line-500);
+  background: var(--line-500);
+}
+.dashboard-workspace .metro-mini i[data-state="current"] {
+  width: 12px;
+  height: 12px;
+  margin: -1px;
+  border-color: var(--primary-500);
+  background: var(--primary-500);
+}
+.dashboard-workspace .metro-mini[data-paused] i[data-state="current"] {
+  border-style: dashed;
+  background: var(--surface);
+}
+.dashboard-workspace .metro-mini__label {
+  min-width: 0;
+  padding-left: 2px;
+  overflow: hidden;
+  font-size: 13px;
+  color: var(--neutral-700);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ---------- Узкая рабочая область ---------- */
+@container workspace (max-width: 1100px) {
+  .dashboard-workspace .dash-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dashboard-workspace .dash-side {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+@container workspace (max-width: 1000px) {
+  .dashboard-page.dashboard-workspace .dashboard-list-heading {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .dashboard-page.dashboard-workspace .dashboard-filter-bar {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .dashboard-page.dashboard-workspace .dashboard-filter-bar .filter-bar-controls {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    justify-content: stretch;
+  }
+  .dashboard-page.dashboard-workspace .dashboard-filter-bar .filter-search {
+    grid-column: auto;
+  }
+  .dashboard-workspace .dashboard-ticket-head,
+  .dashboard-page.dashboard-workspace .dashboard-ticket-list > button {
+    grid-template-columns: minmax(0, 1fr) 130px 70px 130px;
+  }
+  .dashboard-workspace .metro-mini__label {
+    display: none;
+  }
+}
+@container workspace (max-width: 620px) {
+  .dashboard-workspace .dash-status {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-inline: -14px;
+    padding: 0 14px 2px;
+    scrollbar-width: none;
+  }
+  .dashboard-workspace .dash-status::-webkit-scrollbar {
+    display: none;
+  }
+  .dashboard-workspace .dash-status__tab {
+    flex: none;
+    min-height: 40px;
+  }
+  .dashboard-page.dashboard-workspace .dashboard-tickets {
+    padding: 14px 14px 4px;
+  }
+  .dashboard-page.dashboard-workspace .dashboard-filter-bar .filter-bar-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dashboard-workspace .dashboard-ticket-head {
+    display: none;
+  }
+  .dashboard-page.dashboard-workspace .dashboard-ticket-list > button {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 6px 12px;
+    padding: 12px 2px;
+  }
+  .dashboard-page.dashboard-workspace .dashboard-ticket-copy {
+    grid-column: 1 / -1;
+  }
+  .dashboard-page.dashboard-workspace .dashboard-ticket-assignee {
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-workspace .dash-status__tab {
+    transition: none;
+  }
+}

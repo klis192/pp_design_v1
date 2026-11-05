@@ -13,6 +13,7 @@ import { Button, IconButton, Select, Textarea } from "../../ui";
 import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
 import { TicketAttachmentBlock } from "./TicketAttachmentBlock";
 import { TicketOperationsBlock } from "./TicketOperationsBlock";
+import { TicketPath } from "./TicketPath";
 import "./workspace.css";
 import "./mobile-service.css";
 
@@ -205,6 +206,13 @@ export function TicketRecord({
           }}
         />
       </header>
+
+      <TicketPath
+        key={ticket.id}
+        ticket={ticket}
+        history={ticketHistory}
+        locale={locale}
+      />
 
       <section {...panel("work")}>
         <div className="ticket-work-layout">

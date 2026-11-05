@@ -231,17 +231,27 @@
 .workspace-toolbar-row > .ui-icon-button {
   margin-left: auto;
 }
+/* Контекст страницы (объект) — строка «Подпись: выбор», без отдельной карточки. */
 .workspace-context-row {
-  padding: 12px 16px;
-  background: var(--ui-surface);
-  border: 1px solid var(--ui-border);
-  border-radius: 6px;
+  padding: 0;
+  background: none;
+  border: 0;
 }
 .workspace-context-row > label {
-  display: grid;
-  gap: 6px;
-  flex: 0 1 400px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 1 420px;
   min-width: 200px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--neutral-700);
+}
+.workspace-context-row > label > .ui-control {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--ink);
+  font-weight: 500;
 }
 .workspace-record-header {
   position: sticky;

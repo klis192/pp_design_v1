@@ -3,6 +3,7 @@ import { mobileProduct } from "../../mobile-product";
 import { useWorkspaceContext } from "../../app/WorkspaceContext";
 import { Button, Input } from "../../ui";
 import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
+import { LoginSitePlan } from "./LoginSitePlan";
 export function LoginPage() {
   const {
     session,
@@ -42,6 +43,7 @@ export function LoginPage() {
 
   return (
     <main className="auth-shell auth-shell--mvp">
+      <LoginSitePlan />
       <section className="login-card">
         <div className="login-head">
           <div className="login-brand">

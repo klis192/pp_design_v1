@@ -13,6 +13,7 @@ import {
   useSurfaceView,
   useVisitedSurfaceViews,
 } from "../operations/useSurfaceView";
+import { UnitBoard } from "./UnitBoard";
 import "./workspace.css";
 export function ManagerUnits() {
   const {
@@ -44,8 +45,8 @@ export function ManagerUnits() {
   } = useWorkspace();
   const [view, setView] = useSurfaceView(
     `wirehouse.view.units:${session.user.id}:${selectedPropertyId}`,
-    "list",
-    ["list", "structure", "plans"] as const,
+    "board",
+    ["board", "list", "structure", "plans"] as const,
   );
   const visited = useVisitedSurfaceViews(selectedPropertyId, view);
   return (
@@ -100,6 +101,7 @@ export function ManagerUnits() {
         value={view}
         onChange={(id) => setView(id as typeof view)}
         items={[
+          { id: "board", label: "Шахматка" },
           { id: "list", label: "Список" },
           { id: "structure", label: "Структура" },
           { id: "plans", label: "Планы" },
@@ -111,6 +113,21 @@ export function ManagerUnits() {
         id={`units-view-panel-${view}`}
         aria-labelledby={`units-view-tab-${view}`}
       >
+        {view === "board" && (
+          <article className="mvp-card unit-board-card">
+            <UnitBoard
+              units={overview.units.filter(
+                (unit) =>
+                  !selectedPropertyId || unit.propertyId === selectedPropertyId,
+              )}
+              tickets={tickets}
+              locale={locale}
+              typeLabels={t.unitTypes}
+              statusLabels={t.unitStatuses}
+              onUnit={openUnitDetail}
+            />
+          </article>
+        )}
         {view === "list" && (
           <div className="workspace-filter-row">
             <label>

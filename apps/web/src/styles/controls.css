@@ -15,7 +15,7 @@ input:focus,
 select:focus,
 textarea:focus {
   border-color: var(--primary-500);
-  box-shadow: 0 0 0 2px rgba(0, 128, 96, 0.2);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 textarea {

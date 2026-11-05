@@ -1,0 +1,205 @@
+/*
+ * Путь заявки («Линия метро») в карточке заявки.
+ * Пройденное — зелёная линия, текущая станция — графит (красная при
+ * просрочке), будущее — серые станции. При открытии линия прорисовывается
+ * один раз; при prefers-reduced-motion появляется сразу.
+ */
+.ticket-path {
+  --dot: 18px;
+  --rail: 4px;
+  --step: 20%;
+  display: grid;
+  gap: 10px;
+  margin: 4px 0 0;
+  padding: 18px 20px 14px;
+  border: 1px solid var(--ui-surface-border);
+  border-radius: var(--ui-surface-radius);
+  background: var(--surface);
+}
+.ticket-path__line {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* Серый рельс через центры станций и зелёный пройденный участок поверх. */
+.ticket-path__line::before,
+.ticket-path__line::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  top: calc(var(--dot) / 2 - var(--rail) / 2);
+  height: var(--rail);
+  border-radius: var(--rail);
+}
+.ticket-path__line::before {
+  right: 10%;
+  background: var(--neutral-200);
+}
+.ticket-path__line::after {
+  width: calc(var(--current) * var(--step));
+  background: var(--line-500);
+  transform-origin: left center;
+  animation: ticket-path-draw 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ticket-path__station {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  min-width: 0;
+  text-align: center;
+}
+.ticket-path__dot {
+  width: var(--dot);
+  height: var(--dot);
+  border: 4px solid var(--neutral-300);
+  border-radius: 50%;
+  background: var(--surface);
+}
+.ticket-path__station[data-state="done"] .ticket-path__dot {
+  border-color: var(--line-500);
+  background: var(--line-500);
+  animation: ticket-path-stop 260ms ease-out both;
+  animation-delay: calc(var(--i) * 90ms);
+}
+.ticket-path__station[data-state="current"] .ticket-path__dot {
+  width: calc(var(--dot) + 6px);
+  height: calc(var(--dot) + 6px);
+  margin-top: -3px;
+  border-color: var(--primary-500);
+  background: var(--primary-500);
+  box-shadow: 0 0 0 4px var(--surface);
+  animation: ticket-path-stop 320ms ease-out both;
+  animation-delay: calc(var(--i) * 90ms + 120ms);
+}
+.ticket-path[data-overdue] .ticket-path__station[data-state="current"] .ticket-path__dot {
+  border-color: var(--danger);
+  background: var(--surface);
+}
+.ticket-path__label {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.ticket-path__station[data-state="todo"] .ticket-path__label {
+  color: var(--neutral-600);
+  font-weight: 500;
+}
+.ticket-path__time {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--neutral-600);
+  font-variant-numeric: tabular-nums;
+}
+
+.ticket-path[data-paused] .ticket-path__station[data-state="current"] .ticket-path__dot {
+  border-style: dashed;
+  background: var(--surface);
+}
+/* Отменённая заявка: линия обрывается поперечной чертой после текущей станции. */
+.ticket-path[data-rejected] .ticket-path__station[data-state="current"]::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: calc(50% + 18px);
+  width: 3px;
+  height: 16px;
+  border-radius: var(--radius-md);
+  background: var(--neutral-600);
+}
+.ticket-path[data-rejected] .ticket-path__station[data-state="current"] .ticket-path__dot {
+  border-color: var(--neutral-600);
+  background: var(--neutral-600);
+}
+
+/* Пауза — ветка от «В работе». */
+.ticket-path__branch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 0 calc(50% - 10px);
+  padding-left: 12px;
+  border-left: 2px dashed var(--neutral-300);
+  font-size: 13px;
+  color: var(--neutral-700);
+}
+.ticket-path__branch-dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border: 3px dashed var(--neutral-500);
+  border-radius: 50%;
+}
+.ticket-path__branch[data-active] {
+  color: var(--ink);
+  font-weight: 600;
+}
+.ticket-path__branch[data-active] .ticket-path__branch-dot {
+  border-color: var(--primary-500);
+}
+
+.ticket-path__sla {
+  margin: 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--neutral-100);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.ticket-path__sla span {
+  font-weight: 400;
+  color: var(--neutral-700);
+}
+.ticket-path__sla[data-tone="warning"] {
+  color: var(--warning);
+}
+.ticket-path__sla[data-tone="critical"] {
+  color: var(--danger);
+}
+
+@keyframes ticket-path-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes ticket-path-stop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@container workspace (max-width: 620px) {
+  .ticket-path {
+    --dot: 14px;
+    --rail: 3px;
+    padding: 14px 12px 12px;
+  }
+  .ticket-path__dot {
+    border-width: 3px;
+  }
+  .ticket-path__label {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticket-path__line::after,
+  .ticket-path__dot {
+    animation: none !important;
+  }
+}

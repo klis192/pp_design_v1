@@ -1,0 +1,525 @@
+/*
+ * Тема «Линия метро» — визуальный слой поверх общей компоновки.
+ * Подключается последним. Меняет только внешний вид: цвета, шрифт,
+ * радиусы, отступы поверхностей. Геометрия полей (36/44 px), порядок
+ * элементов и поведение остаются в исходных файлах.
+ *
+ * Правила:
+ * - графит — действие и выбранное; зелёная линия — путь заявки и фокус;
+ *   красный — только просрочка и срочное; синий — ссылка;
+ * - статус изображается станцией: кружок + подпись, без заливки;
+ * - белые панели с тонкой рамкой на белом фоне, меню — светло-серое;
+ * - тень только у слоёв поверх контента.
+ */
+
+/* ---------- База ---------- */
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-sans);
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.01em;
+}
+.record-number,
+.dashboard-ticket-number,
+.ui-workspace-tab__count,
+.mvp-nav-button small,
+.status-pill {
+  font-variant-numeric: tabular-nums;
+}
+:where(a) {
+  color: var(--link);
+}
+::selection {
+  background: var(--line-soft);
+  color: var(--ink);
+}
+
+/* ---------- Оболочка ---------- */
+.mvp-shell {
+  background: var(--bg);
+}
+.mvp-sidebar {
+  background: var(--neutral-50);
+  border-right: 1px solid var(--neutral-150);
+  color: var(--ink-soft);
+}
+.mvp-brand {
+  border-bottom: 0;
+  padding: 4px 20px 12px;
+}
+.mvp-brand strong {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.navigation-group-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--neutral-600);
+}
+.mvp-nav-button {
+  position: relative;
+  border-radius: var(--radius-md);
+  color: var(--neutral-800);
+  font-weight: 450;
+  transition:
+    background-color 150ms ease-out,
+    color 150ms ease-out;
+}
+.mvp-nav-button:hover {
+  background: var(--neutral-150);
+  color: var(--ink);
+}
+.mvp-nav-button > svg {
+  color: var(--neutral-600);
+}
+.mvp-nav-button--active,
+.mvp-nav-button--active:hover {
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(21, 23, 28, 0.08);
+}
+.mvp-nav-button--active > svg {
+  color: var(--line-500);
+}
+.mvp-nav-button small {
+  min-width: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--neutral-600);
+  font-weight: 600;
+}
+.mvp-nav-button--active small {
+  background: transparent;
+  color: var(--ink);
+}
+.workspace-extra-nav {
+  border-top: 0;
+}
+.mvp-user {
+  border-top: 0;
+  margin: 8px;
+  padding: 10px;
+  border: 1px solid var(--neutral-150);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.mvp-user__avatar {
+  background: var(--primary-500);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Заголовки рабочей области: плотная шкала 26 / 16. */
+.mvp-page-header h2,
+.workspace-header h1,
+.surface-head h2 {
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+.ticket-record-title h2,
+.workspace-record-header h2 {
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+.mvp-card h3,
+.workspace-surface h3,
+.dashboard-list-title h3,
+.register-heading h3 {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+/* ---------- Поверхности ---------- */
+.mvp-card,
+.workspace-surface,
+.ui-card {
+  border: 1px solid var(--ui-surface-border);
+  border-radius: var(--ui-surface-radius);
+  background: var(--surface);
+  box-shadow: none;
+}
+.mvp-card,
+.workspace-surface {
+  padding: 20px;
+}
+
+/* ---------- Кнопки ---------- */
+.ui-button {
+  font-weight: 500;
+}
+.ui-button--primary,
+.primary-button {
+  background: var(--primary-500);
+  color: #ffffff;
+}
+.ui-button--primary:hover:not(:disabled),
+.primary-button:hover:not(:disabled) {
+  background: var(--primary-600);
+}
+.ui-button--primary:active:not(:disabled) {
+  background: var(--primary-800);
+}
+.ui-button--secondary {
+  background: var(--surface);
+  border-color: var(--neutral-300) !important;
+}
+.ui-button--secondary:hover:not(:disabled) {
+  background: var(--neutral-50);
+}
+.ui-button.ui-button--text:not(.ui-icon-button):not(.text-button--neutral):not(
+    .text-button--danger
+  ):not(.workspace-extra-toggle) {
+  color: var(--link);
+}
+.ui-button.ui-button--text:not(.ui-icon-button):hover:not(:disabled) {
+  background: var(--info-soft);
+}
+.ui-button.text-button--neutral {
+  color: var(--ink-soft);
+}
+.ui-button--plain.ui-icon-button:hover:not(:disabled),
+.ui-button.ui-icon-button.ui-button--text:hover:not(:disabled) {
+  background: var(--neutral-100);
+}
+.ui-button.ui-icon-button[aria-pressed="true"] {
+  background: var(--primary-500);
+  color: #ffffff;
+}
+.ui-button.ui-icon-button.ui-button--text[aria-expanded="true"] {
+  background: var(--neutral-100);
+  color: var(--ink);
+}
+.ui-button:focus-visible,
+.ui-control:focus-visible,
+.mvp-nav-button:focus-visible,
+.ui-workspace-tab:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--line-500);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* ---------- Поля: высота прежняя, визуально легче ---------- */
+.ui-control {
+  border-color: var(--neutral-200);
+  background-color: var(--surface);
+}
+.ui-control:hover:not(:disabled) {
+  border-color: var(--neutral-400);
+}
+.ui-control:focus {
+  border-color: var(--line-500);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+.ui-field {
+  gap: 6px;
+}
+.ui-field label,
+.filter-search > label,
+.filter-bar label > span,
+.auth-form label > span {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--neutral-700);
+}
+.filter-search-icon {
+  color: var(--neutral-600);
+}
+
+/* ---------- Вкладки ---------- */
+.ui-workspace-tabs {
+  border-bottom-color: var(--neutral-150);
+}
+.ui-workspace-tab {
+  color: var(--neutral-700);
+  font-weight: 500;
+}
+.ui-workspace-tab[aria-selected="true"] {
+  color: var(--ink);
+  font-weight: 600;
+}
+.ui-workspace-tab[aria-selected="true"]::after {
+  height: 2px;
+  background: var(--primary-500);
+}
+.ui-workspace-tab__count {
+  border-radius: 999px;
+  padding-inline: 6px;
+  background: var(--neutral-100);
+  color: var(--neutral-700);
+  font-weight: 600;
+}
+.ui-workspace-tab[aria-selected="true"] .ui-workspace-tab__count {
+  background: var(--primary-500);
+  color: #ffffff;
+}
+
+/* ---------- Статус как станция ---------- */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent !important;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.status-pill::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  background: var(--surface);
+}
+.status-pill--new {
+  color: var(--ink);
+}
+.status-pill--in_progress,
+.status-pill--accepted {
+  color: var(--line-500);
+}
+.status-pill--in_progress::before {
+  background: currentColor;
+}
+.ui-badge {
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-weight: 600;
+}
+
+/* ---------- Заявки: канбан ---------- */
+.kanban-column > h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
+.kanban-column > h3 small {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding-inline: 6px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--neutral-800);
+  font-weight: 600;
+}
+.kanban-ticket {
+  border: 1px solid var(--neutral-150);
+  border-radius: var(--ui-tile-radius);
+  background: var(--surface);
+  box-shadow: none;
+  transition: border-color 150ms ease-out;
+}
+.kanban-ticket:hover {
+  border-color: var(--neutral-300);
+}
+.view-switch {
+  border-color: var(--neutral-200);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+/* ---------- Карточка заявки ---------- */
+.ticket-context-facts dt,
+.business-stats dt {
+  color: var(--neutral-600);
+}
+.ticket-description {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* ---------- Боковая панель ---------- */
+.ui-side-panel {
+  border-radius: var(--radius-2xl) 0 0 var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------- Экран входа ---------- */
+.auth-shell--mvp {
+  background: var(--surface);
+}
+.login-card {
+  border: 0;
+  box-shadow: none;
+  padding: 8px 0;
+  background: transparent;
+}
+.login-brand strong {
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: -0.03em;
+}
+.login-brand span {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.login-title {
+  margin-top: 36px;
+}
+.login-title p {
+  color: var(--ink);
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+.auth-form .text-button--neutral {
+  justify-self: start;
+  padding-inline: 0;
+}
+.auth-form .text-button--neutral:hover:not(:disabled) {
+  background: transparent;
+  color: var(--ink);
+}
+/* Слева — светлая карточка с «дышащим» размытым пятном цвета линии. */
+.login-visual {
+  display: none;
+}
+@media (min-width: 900px) {
+  .auth-shell--mvp {
+    display: grid;
+    grid-template-columns: minmax(380px, 47%) minmax(0, 1fr);
+    align-items: center;
+    justify-items: center;
+    min-height: 100vh;
+    padding: 0;
+    background: var(--neutral-100);
+  }
+  .login-visual {
+    position: relative;
+    display: block;
+    align-self: stretch;
+    justify-self: stretch;
+    margin: 24px 0 24px 24px;
+    border-radius: var(--radius-2xl);
+    background: var(--surface);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .login-visual__glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    filter: blur(64px);
+    opacity: 0.5;
+  }
+  .login-visual__shape {
+    width: 100%;
+    height: 100%;
+    background: var(--line-500);
+    transition: clip-path 3000ms cubic-bezier(0.45, 0, 0.55, 1);
+  }
+  .login-visual__text {
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    top: 50%;
+    z-index: 1;
+    display: grid;
+    gap: 10px;
+    transform: translateY(-50%);
+  }
+  .login-visual__text strong {
+    font-size: 40px;
+    line-height: 44px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+  /* Название уже на карточке слева — над формой не повторяем. */
+  .login-card .login-head {
+    display: none;
+  }
+  .login-card .login-title {
+    margin-top: 0;
+  }
+  .login-visual__text span {
+    max-width: 360px;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--neutral-800);
+  }
+  .login-card {
+    width: min(380px, calc(100% - 64px));
+  }
+}
+@media (max-width: 899px) {
+  .auth-shell--mvp {
+    align-items: start;
+  }
+  .login-card {
+    margin-top: 32px;
+  }
+}
+
+/* ---------- Мобильные панели ---------- */
+@media (max-width: 1080px) {
+  .mobile-app-bar {
+    background: var(--surface);
+    border-bottom-color: var(--neutral-150);
+  }
+  .mobile-app-bar h1 {
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+  .mobile-primary-nav {
+    border-top-color: var(--neutral-150);
+  }
+  .mobile-primary-nav button {
+    border-radius: var(--radius-lg);
+    color: var(--neutral-700);
+  }
+  .mobile-primary-nav button[aria-current="page"] {
+    background: transparent;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .mobile-primary-nav button[aria-current="page"] svg {
+    color: var(--line-500);
+  }
+  .mvp-page-header h2,
+  .workspace-header h1,
+  .surface-head h2 {
+    font-size: 22px;
+    line-height: 28px;
+  }
+  .mvp-card,
+  .workspace-surface {
+    padding: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mvp-nav-button,
+  .kanban-ticket {
+    transition: none;
+  }
+}

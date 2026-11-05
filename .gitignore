@@ -65,3 +65,7 @@ infra/deploy/deploy-web.sh
 
 # Obsolete parallel entry point; TypeScript is the canonical contracts source.
 /packages/contracts/src/index.js
+
+
+# Impeccable design plugin workspace (local tool state; DESIGN.md is the source of truth).
+apps/web/.impeccable/

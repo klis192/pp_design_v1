@@ -1,6 +1,6 @@
 import { type FormEvent } from "react";
 import { apiRequest } from "../../api/client";
-import { TOKEN_KEY } from "../../shared/navigation";
+import { clearSessionToken } from "../../platform/native";
 import { type SessionUser } from "../../shared/types";
 import type { WorkspaceBase } from "../types";
 import type { useDataActions } from "./data";
@@ -347,7 +347,7 @@ export function useAuthActions(
   };
 
   const handleLogout = () => {
-    window.localStorage.removeItem(TOKEN_KEY);
+    clearSessionToken();
     setSession(null);
     setOverview(null);
     setTickets([]);

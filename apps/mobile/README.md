@@ -8,6 +8,12 @@ Bundle ID `ru.skladkontur.app` после публикации в магазин
 
 Capacitor закреплен на 7.6.9. Web-ресурсы упакованы в приложение; HTTPS origin API задается при сборке, без секретов 1С.
 
+Внутри приложения (`apps/web/src/platform/native.ts`, включается только при наличии нативного моста Capacitor; в браузере поведение прежнее):
+
+- документы, выписки, фото и выгрузки сохраняются во временный кэш и открываются через системное меню «Поделиться» (открыть в просмотрщике, сохранить в «Файлы», отправить в мессенджер) — WebView не поддерживает `<a download>` и blob-ссылки;
+- токен входа дублируется в `@capacitor/preferences` и восстанавливается при запуске, если iOS очистил хранилище WebView;
+- iOS: страница рисуется под вырезом (`viewport-fit=cover`), верхние панели смещаются стилями `styles/mobile-app.css`; в `Info.plist` добавляются описания доступа к камере и фото. Android 15: WebView получает отступы от системных полос (`adjustMarginsForEdgeToEdge: auto`).
+
 ```powershell
 $env:VITE_WAREHOUSE_API_BASE_URL='https://your-crm.example'
 node apps/mobile/scripts/prepare.mjs android

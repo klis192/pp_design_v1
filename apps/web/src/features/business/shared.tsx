@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { apiRequest, runtimeApiBase } from "../../api/client";
+import { deliverFile } from "../../platform/native";
 import { useLiveQuery } from "../../realtime/RealtimeContext";
 export function useResource<T>(token: string, path: string, initial: T) {
   const mutationPending = useRef(false);
@@ -100,13 +101,7 @@ export async function downloadDocument(
   });
   if (!res.ok)
     throw new Error("Не удалось получить файл. Обновите список документов.");
-  const blob = await res.blob(),
-    url = URL.createObjectURL(blob),
-    a = document.createElement("a");
-  a.href = url;
-  a.download = name;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  await deliverFile(await res.blob(), name);
 }
 export const date = (v: string | null) =>
   v ? new Date(v).toLocaleDateString("ru-RU") : "—";

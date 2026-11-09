@@ -6,6 +6,45 @@ import http from "node:http";
 import { once } from "node:events";
 import { chromium } from "playwright";
 
+// Serves the prepared www bundle the way the native shell loads it.
+async function serveMobileBuild() {
+  const root = path.resolve(".local/mobile/app/www");
+  assert.ok(
+    fs.existsSync(path.join(root, "index.html")),
+    "Run apps/mobile/scripts/prepare.mjs before testing",
+  );
+  const server = http.createServer((req, res) => {
+    const name = decodeURIComponent(
+      new URL(req.url, "http://localhost").pathname,
+    );
+    const file = path.resolve(
+      root,
+      "." + (name === "/" ? "/index.html" : name),
+    );
+    if (
+      !file.startsWith(root + path.sep) ||
+      !fs.existsSync(file) ||
+      !fs.statSync(file).isFile()
+    ) {
+      res.writeHead(404);
+      res.end();
+      return;
+    }
+    res.setHeader(
+      "Content-Type",
+      file.endsWith(".js")
+        ? "text/javascript"
+        : file.endsWith(".css")
+          ? "text/css"
+          : "text/html",
+    );
+    res.end(fs.readFileSync(file));
+  });
+  server.listen(0, "127.0.0.1");
+  await once(server, "listening");
+  return server;
+}
+
 test(
   "The mobile app offers tenant and worker login, rejects other roles and retains credentials during a network failure",
   { timeout: 120000 },
@@ -13,40 +52,7 @@ test(
     const browser = await chromium.launch({ headless: true });
     t.after(() => browser.close());
     {
-      const root = path.resolve(".local/mobile/app/www");
-      assert.ok(
-        fs.existsSync(path.join(root, "index.html")),
-        "Run apps/mobile/scripts/prepare.mjs before testing",
-      );
-      const server = http.createServer((req, res) => {
-        const name = decodeURIComponent(
-          new URL(req.url, "http://localhost").pathname,
-        );
-        const file = path.resolve(
-          root,
-          "." + (name === "/" ? "/index.html" : name),
-        );
-        if (
-          !file.startsWith(root + path.sep) ||
-          !fs.existsSync(file) ||
-          !fs.statSync(file).isFile()
-        ) {
-          res.writeHead(404);
-          res.end();
-          return;
-        }
-        res.setHeader(
-          "Content-Type",
-          file.endsWith(".js")
-            ? "text/javascript"
-            : file.endsWith(".css")
-              ? "text/css"
-              : "text/html",
-        );
-        res.end(fs.readFileSync(file));
-      });
-      server.listen(0, "127.0.0.1");
-      await once(server, "listening");
+      const server = await serveMobileBuild();
       try {
         for (const scenario of ["admin", "manager", "expired", "network"]) {
           const context = await browser.newContext({
@@ -152,5 +158,69 @@ test(
         await new Promise((r) => server.close(r));
       }
     }
+  },
+);
+
+test(
+  "Inside the native shell the session token is restored from native preferences and cleared from them when the server rejects it",
+  { timeout: 60000 },
+  async (t) => {
+    const browser = await chromium.launch({ headless: true });
+    t.after(() => browser.close());
+    const server = await serveMobileBuild();
+    t.after(() => new Promise((r) => server.close(r)));
+    const context = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+      }),
+      page = await context.newPage();
+    const calls = [];
+    await context.exposeFunction("__recordNativeCall", (call) =>
+      calls.push(call),
+    );
+    // Minimal stand-in for the Capacitor native bridge: Preferences only.
+    await page.addInitScript(() => {
+      const store = { "warehouse-platform-token": "native-test-only-token" };
+      window.androidBridge = {};
+      window.Capacitor = {
+        isNativePlatform: () => true,
+        getPlatform: () => "android",
+        PluginHeaders: [
+          {
+            name: "Preferences",
+            methods: ["get", "set", "remove"].map((name) => ({
+              name,
+              rtype: "promise",
+            })),
+          },
+        ],
+        nativePromise: async (plugin, method, options) => {
+          await window.__recordNativeCall(`${plugin}.${method}`);
+          if (method === "get") return { value: store[options.key] ?? null };
+          if (method === "set") store[options.key] = options.value;
+          if (method === "remove") delete store[options.key];
+          return {};
+        },
+      };
+    });
+    let authorization = "";
+    await page.route("**/api/**", (route) => {
+      const endpoint = new URL(route.request().url()).pathname;
+      if (endpoint === "/api/auth/tenant/onboarding")
+        return route.fulfill({ json: { channels: [] } });
+      if (endpoint === "/api/auth/me")
+        authorization = route.request().headers().authorization ?? "";
+      return route.fulfill({
+        status: 401,
+        json: { message: "Тестовый отказ", code: "TEST_ONLY" },
+      });
+    });
+    await page.goto(`http://127.0.0.1:${server.address().port}`);
+    await page.locator(".auth-shell").waitFor();
+    assert.equal(authorization, "Bearer native-test-only-token");
+    assert.ok(calls.includes("Preferences.get"));
+    // The rejected token is cleared from native storage as well.
+    for (let i = 0; i < 20 && !calls.includes("Preferences.remove"); i++)
+      await new Promise((r) => setTimeout(r, 100));
+    assert.ok(calls.includes("Preferences.remove"), calls.join(", "));
   },
 );

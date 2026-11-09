@@ -37,7 +37,7 @@ if (
 )
   throw Error("Set VITE_WAREHOUSE_API_BASE_URL to the HTTPS CRM origin");
 const target = path.join(root, ".local/mobile/app");
-const { version } = JSON.parse(
+const { version, dependencies } = JSON.parse(
   fs.readFileSync(path.join(root, "apps/mobile/package.json"), "utf8"),
 );
 if (!/^\d+\.\d+\.\d+$/.test(version))
@@ -47,7 +47,12 @@ const [major, minor, patch] = version.split(".").map(Number),
 fs.mkdirSync(target, { recursive: true });
 fs.writeFileSync(
   path.join(target, "package.json"),
-  JSON.stringify({ name: "wirehouse-mobile", version, private: true }, null, 2),
+  // Capacitor registers native plugins from this manifest's dependencies.
+  JSON.stringify(
+    { name: "wirehouse-mobile", version, private: true, dependencies },
+    null,
+    2,
+  ),
 );
 fs.writeFileSync(
   path.join(target, "capacitor.config.json"),
@@ -56,6 +61,9 @@ fs.writeFileSync(
       appId,
       appName,
       webDir: "www",
+      // Android 15 draws apps under the system bars; keep the WebView inside
+      // them. iOS draws under the notch and styles/mobile-app.css pads it.
+      android: { adjustMarginsForEdgeToEdge: "auto" },
     },
     null,
     2,
@@ -112,6 +120,27 @@ nativeVersion =
           `MARKETING_VERSION = ${version};`,
         );
 fs.writeFileSync(nativeVersionFile, nativeVersion);
+if (platform === "ios") {
+  // iOS terminates an app that opens the camera without a usage description.
+  const plistFile = path.join(target, "ios/App/App/Info.plist");
+  let plist = fs.readFileSync(plistFile, "utf8");
+  for (const [key, text] of [
+    [
+      "NSCameraUsageDescription",
+      "Камера нужна, чтобы сфотографировать работу, прибор учета или документ.",
+    ],
+    [
+      "NSPhotoLibraryUsageDescription",
+      "Доступ к фото нужен, чтобы приложить снимок к заявке или показанию.",
+    ],
+  ])
+    if (!plist.includes(`<key>${key}</key>`))
+      plist = plist.replace(
+        /<\/dict>\s*<\/plist>\s*$/,
+        `\t<key>${key}</key>\n\t<string>${text}</string>\n</dict>\n</plist>\n`,
+      );
+  fs.writeFileSync(plistFile, plist);
+}
 fs.writeFileSync(
   path.join(target, "build-manifest.json"),
   JSON.stringify(

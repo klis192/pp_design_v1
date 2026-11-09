@@ -9,6 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/core": "7.6.9",
+    "@capacitor/filesystem": "7.1.9",
+    "@capacitor/preferences": "7.0.4",
+    "@capacitor/share": "7.0.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },

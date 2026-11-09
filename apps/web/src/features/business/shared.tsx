@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { apiRequest, runtimeApiBase } from "../../api/client";
 import { deliverFile } from "../../platform/native";
+import { prepareUpload } from "../../platform/photo";
 import { useLiveQuery } from "../../realtime/RealtimeContext";
 export function useResource<T>(token: string, path: string, initial: T) {
   const mutationPending = useRef(false);
@@ -67,10 +68,11 @@ export { Register } from "./Register";
 export { Disclosure } from "../../ui/Disclosure";
 export async function uploadDocument(
   token: string,
-  file: File,
+  original: File,
   links: { entityType: string; entityId: string; phase?: string }[],
   category = "other",
 ) {
+  const file = await prepareUpload(original);
   if (file.size > 12 * 1024 * 1024) throw new Error("Файл больше 12 МБ");
   const contentBase64 = await new Promise<string>((resolve, reject) => {
     const reader = new FileReader();

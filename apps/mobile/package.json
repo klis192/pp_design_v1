@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prepare": "node scripts/prepare.mjs",
+    "prepare:android": "node scripts/prepare.mjs android",
+    "prepare:ios": "node scripts/prepare.mjs ios",
     "android:debug": "node scripts/android-debug.mjs"
   },
   "dependencies": {

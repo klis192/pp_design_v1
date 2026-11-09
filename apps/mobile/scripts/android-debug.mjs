@@ -6,12 +6,9 @@ const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../..",
 );
-const product = process.argv[2];
-if (!["client", "worker"].includes(product))
-  throw Error("Choose client or worker");
-const native = path.join(root, ".local/mobile", product, "android");
-if (!fs.existsSync(path.join(native, "gradlew.bat")))
-  throw Error("Prepare the Android product first");
+const native = path.join(root, ".local/mobile/app/android");
+if (!fs.existsSync(path.join(native, "gradle/wrapper/gradle-wrapper.jar")))
+  throw Error("Run prepare.mjs android first");
 if (!process.env.ANDROID_HOME) throw Error("ANDROID_HOME is required");
 fs.writeFileSync(
   path.join(native, "local.properties"),

@@ -7,16 +7,16 @@ import { once } from "node:events";
 import { chromium } from "playwright";
 
 test(
-  "Both mobile products expose only their own login, reject staff identities and retain credentials during a network failure",
+  "The mobile app offers tenant and worker login, rejects other roles and retains credentials during a network failure",
   { timeout: 120000 },
   async (t) => {
     const browser = await chromium.launch({ headless: true });
     t.after(() => browser.close());
-    for (const product of ["client", "worker"]) {
-      const root = path.resolve(".local/mobile", product, "www");
+    {
+      const root = path.resolve(".local/mobile/app/www");
       assert.ok(
         fs.existsSync(path.join(root, "index.html")),
-        "Prepare both native products before testing",
+        "Run apps/mobile/scripts/prepare.mjs before testing",
       );
       const server = http.createServer((req, res) => {
         const name = decodeURIComponent(
@@ -48,7 +48,7 @@ test(
       server.listen(0, "127.0.0.1");
       await once(server, "listening");
       try {
-        for (const scenario of ["wrong-role", "expired", "network"]) {
+        for (const scenario of ["admin", "manager", "expired", "network"]) {
           const context = await browser.newContext({
               viewport: { width: 390, height: 844 },
             }),
@@ -65,6 +65,13 @@ test(
               const endpoint = new URL(route.request().url()).pathname;
               if (endpoint === "/api/auth/tenant/onboarding")
                 return route.fulfill({ json: { channels: [] } });
+              if (endpoint === "/api/auth/staff/login")
+                return route.fulfill({
+                  json: {
+                    token: "mobile-test-only-token",
+                    user: { id: `test-${scenario}`, role: scenario },
+                  },
+                });
               if (endpoint !== "/api/auth/me") {
                 workspaceReads++;
                 return route.fulfill({
@@ -72,10 +79,14 @@ test(
                   json: { message: "Unexpected workspace read" },
                 });
               }
-              if (scenario === "wrong-role")
+              if (scenario === "admin" || scenario === "manager")
                 return route.fulfill({
                   json: {
-                    user: { id: "test-admin", role: "admin", permissions: [] },
+                    user: {
+                      id: `test-${scenario}`,
+                      role: scenario,
+                      permissions: [],
+                    },
                   },
                 });
               return route.fulfill({
@@ -85,15 +96,16 @@ test(
             });
             await page.goto(`http://127.0.0.1:${server.address().port}`);
             await page.locator(".auth-shell").waitFor();
-            assert.equal(await page.locator(".auth-tabs").count(), 0);
-            assert.equal(
-              await page
-                .locator(
-                  `input[name="${product === "client" ? "phone" : "email"}"]`,
-                )
-                .count(),
-              1,
-            );
+            const loginTabs = page.getByRole("tablist", {
+              name: "Способ входа",
+            });
+            await loginTabs.waitFor();
+            assert.equal(await page.locator('input[name="phone"]').count(), 1);
+            await loginTabs
+              .getByRole("tab", { name: "По паролю", exact: true })
+              .click();
+            assert.equal(await page.locator('input[name="email"]').count(), 1);
+            assert.equal(await page.locator('input[name="phone"]').count(), 0);
             assert.equal(workspaceReads, 0);
             assert.equal(
               await page.evaluate(() =>
@@ -101,6 +113,25 @@ test(
               ),
               scenario === "network" ? "mobile-test-only-token" : null,
             );
+            if (scenario === "admin" || scenario === "manager") {
+              await page
+                .locator('input[name="email"]')
+                .fill("staff@test.invalid");
+              await page.locator('input[name="password"]').fill("test-only");
+              await page.locator('form button[type="submit"]').first().click();
+              await page
+                .getByText(
+                  "Эта учетная запись не используется в мобильном приложении",
+                )
+                .waitFor();
+              assert.equal(workspaceReads, 0);
+              assert.equal(
+                await page.evaluate(() =>
+                  localStorage.getItem("warehouse-platform-token"),
+                ),
+                null,
+              );
+            }
             if (scenario === "network")
               await page
                 .getByRole("button", {

@@ -6,13 +6,26 @@ const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../..",
 );
-const product = process.argv[2],
-  platform = process.argv[3] ?? "android";
+// One application for every mobile role. The bundle ID is permanent once the
+// app is published: changing it later creates a different store application.
+const appId = "ru.skladkontur.app",
+  appName = "Склад Контур",
+  platform = process.argv[2] ?? "android";
+if (!["android", "ios"].includes(platform))
+  throw Error("Usage: prepare.mjs android|ios");
+const knownRoles = ["tenant", "worker", "manager", "admin"];
+const roles = (process.env.WAREHOUSE_MOBILE_ROLES ?? "tenant,worker")
+  .split(",")
+  .map((role) => role.trim())
+  .filter(Boolean);
 if (
-  !["client", "worker"].includes(product) ||
-  !["android", "ios"].includes(platform)
+  !roles.length ||
+  roles.some((role) => !knownRoles.includes(role)) ||
+  new Set(roles).size !== roles.length
 )
-  throw Error("Usage: prepare.mjs client|worker android|ios");
+  throw Error(
+    `WAREHOUSE_MOBILE_ROLES must list distinct roles from: ${knownRoles.join(", ")}`,
+  );
 const api = new URL(process.env.VITE_WAREHOUSE_API_BASE_URL ?? "");
 if (
   api.protocol !== "https:" ||
@@ -23,7 +36,7 @@ if (
   api.pathname !== "/"
 )
   throw Error("Set VITE_WAREHOUSE_API_BASE_URL to the HTTPS CRM origin");
-const target = path.join(root, ".local/mobile", product);
+const target = path.join(root, ".local/mobile/app");
 const { version } = JSON.parse(
   fs.readFileSync(path.join(root, "apps/mobile/package.json"), "utf8"),
 );
@@ -31,26 +44,17 @@ if (!/^\d+\.\d+\.\d+$/.test(version))
   throw Error("A stable mobile version is required");
 const [major, minor, patch] = version.split(".").map(Number),
   versionCode = major * 10000 + minor * 100 + patch;
-if (path.relative(path.join(root, ".local/mobile"), target) !== product)
-  throw Error("Generated product path escaped the workspace");
 fs.mkdirSync(target, { recursive: true });
 fs.writeFileSync(
   path.join(target, "package.json"),
-  JSON.stringify(
-    { name: `wirehouse-${product}`, version, private: true },
-    null,
-    2,
-  ),
+  JSON.stringify({ name: "wirehouse-mobile", version, private: true }, null, 2),
 );
 fs.writeFileSync(
   path.join(target, "capacitor.config.json"),
   JSON.stringify(
     {
-      appId: `ru.skladkontur.${product}`,
-      appName:
-        product === "client"
-          ? "Склад Контур · Клиент"
-          : "Склад Контур · Исполнитель",
+      appId,
+      appName,
       webDir: "www",
     },
     null,
@@ -73,7 +77,7 @@ execFileSync(
     stdio: "inherit",
     env: {
       ...process.env,
-      VITE_WAREHOUSE_PRODUCT: product,
+      VITE_WAREHOUSE_MOBILE_ROLES: roles.join(","),
       VITE_WAREHOUSE_API_BASE_URL: api.origin,
     },
   },
@@ -112,9 +116,9 @@ fs.writeFileSync(
   path.join(target, "build-manifest.json"),
   JSON.stringify(
     {
-      product,
       platform,
-      appId: `ru.skladkontur.${product}`,
+      appId,
+      roles,
       apiOrigin: api.origin,
       version,
       builtAt: new Date().toISOString(),
@@ -125,4 +129,4 @@ fs.writeFileSync(
     2,
   ),
 );
-console.log(`Prepared ${product}/${platform}: ${target}`);
+console.log(`Prepared ${platform} (${roles.join(", ")}): ${target}`);

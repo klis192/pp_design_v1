@@ -78,10 +78,19 @@ export function LoginPage() {
               onChange={(value) =>
                 setAuthMode(value === "tenant" ? "tenant" : "staff")
               }
-              items={[
-                { id: "staff", label: t.auth.staffTab },
-                { id: "tenant", label: t.auth.tenantTab },
-              ]}
+              // In the app people choose who they are; the browser keeps the
+              // sign-in method labels its users already know.
+              items={
+                isMobileApp
+                  ? [
+                      { id: "tenant", label: "Клиент" },
+                      { id: "staff", label: "Сотрудник" },
+                    ]
+                  : [
+                      { id: "staff", label: t.auth.staffTab },
+                      { id: "tenant", label: t.auth.tenantTab },
+                    ]
+              }
             />
           )}
 

@@ -108,7 +108,7 @@ test(
             await loginTabs.waitFor();
             assert.equal(await page.locator('input[name="phone"]').count(), 1);
             await loginTabs
-              .getByRole("tab", { name: "По паролю", exact: true })
+              .getByRole("tab", { name: "Сотрудник", exact: true })
               .click();
             assert.equal(await page.locator('input[name="email"]').count(), 1);
             assert.equal(await page.locator('input[name="phone"]').count(), 0);

@@ -25,7 +25,7 @@ npm run test:browser           # изолированные данные; без
 
 Инструкции по схеме, обновлению и резервным копиям: [DATABASE.md](docs/DATABASE.md).
 
-`TEST_POSTGRES_URL` включает проверки API и браузера на отдельных временных базах. `npm run test:postgres` проверяет миграции, ограничения и параллельную работу двух API; пользователь тестовой БД должен иметь право `CREATE DATABASE`. Дополнительные оболочки Android и Windows находятся в `apps/`; для запуска Electron после установки с `--ignore-scripts` выполните `npm rebuild electron`.
+`TEST_POSTGRES_URL` включает проверки API и браузера на отдельных временных базах. `npm run test:postgres` проверяет миграции, ограничения и параллельную работу двух API; пользователь тестовой БД должен иметь право `CREATE DATABASE`. Мобильное приложение для Android и iOS — `apps/mobile` ([сборка](apps/mobile/README.md), [решения и выкладка](docs/MOBILE_APP_2026-11-09.md)); оболочка Windows — `apps/desktop-windows`, для запуска Electron после установки с `--ignore-scripts` выполните `npm rebuild electron`.
 
 ## Состав
 

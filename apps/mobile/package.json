@@ -6,7 +6,8 @@
   "scripts": {
     "prepare:android": "node scripts/prepare.mjs android",
     "prepare:ios": "node scripts/prepare.mjs ios",
-    "android:debug": "node scripts/android-debug.mjs"
+    "android:debug": "node scripts/android-debug.mjs",
+    "android:release": "node scripts/android-release.mjs"
   },
   "dependencies": {
     "@capacitor/android": "7.6.9",

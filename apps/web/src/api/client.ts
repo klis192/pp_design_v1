@@ -1,5 +1,12 @@
 import type { ApiErrorDto } from "../../../../packages/contracts/src/requests.ts";
 import { ApiError, normalizeRequestError } from "./read-errors";
+import {
+  isCacheablePath,
+  markServerReachable,
+  markShownFromCache,
+  readSavedResponse,
+  saveResponse,
+} from "../platform/offline-cache";
 export { ApiError } from "./read-errors";
 export const runtimeApiBase =
   import.meta.env.VITE_WAREHOUSE_API_BASE_URL ||
@@ -15,9 +22,10 @@ export async function apiRequest<T>(
     signal?: AbortSignal;
   } = {},
 ): Promise<T> {
+  const method = options.method ?? "GET";
   try {
     const response = await fetch(`${runtimeApiBase}${path}`, {
-      method: options.method ?? "GET",
+      method,
       headers: {
         Accept: "application/json",
         ...(options.body !== undefined
@@ -31,6 +39,7 @@ export async function apiRequest<T>(
         ? AbortSignal.any([options.signal, AbortSignal.timeout(30000)])
         : AbortSignal.timeout(30000),
     });
+    // A Wi-Fi login page answers with HTML; the server itself has not replied.
     if (!response.headers.get("content-type")?.includes("application/json"))
       throw new ApiError(
         "Сервер вернул неожиданный ответ. Повторите запрос.",
@@ -38,6 +47,7 @@ export async function apiRequest<T>(
         "INVALID_RESPONSE",
       );
     const payload = await response.json();
+    markServerReachable();
     if (!response.ok) {
       const error = payload as ApiErrorDto;
       const details = error.fields
@@ -50,8 +60,26 @@ export async function apiRequest<T>(
         error.fields,
       );
     }
+    if (method === "GET") saveResponse(path, options.token, payload);
     return payload as T;
   } catch (error) {
-    throw normalizeRequestError(error, options.signal);
+    const failure = normalizeRequestError(error, options.signal);
+    // In the mobile app an unreachable server falls back to the last saved
+    // copy of a read. Server answers (4xx/5xx) and cancellations still throw.
+    if (
+      method === "GET" &&
+      failure instanceof ApiError &&
+      ["NETWORK_ERROR", "REQUEST_TIMEOUT", "INVALID_RESPONSE"].includes(
+        failure.code,
+      ) &&
+      isCacheablePath(path)
+    ) {
+      const saved = await readSavedResponse(path, options.token);
+      if (saved) {
+        markShownFromCache(saved.savedAt);
+        return saved.payload as T;
+      }
+    }
+    throw failure;
   }
 }

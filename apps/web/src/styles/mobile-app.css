@@ -23,3 +23,8 @@
 .mobile-app .ui-side-panel {
   height: calc(100dvh - env(safe-area-inset-top));
 }
+.banner--offline {
+  background: var(--warning-soft);
+  border-color: var(--warning-line);
+  color: var(--ink);
+}

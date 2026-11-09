@@ -2,6 +2,7 @@ import { LoginPage } from "../features/auth/LoginPage";
 import { isRoleAllowedInApp } from "../mobile-product";
 import { DocumentPanel } from "../features/leases/DocumentPanel";
 import { ManagerShell } from "../features/shell/ManagerShell";
+import { OfflineBanner } from "../features/shell/OfflineBanner";
 import { Section } from "../features/shell/Section";
 import { Button, IconButton } from "../ui";
 import { NavigationIcon } from "../features/shell/NavigationIcon";
@@ -168,6 +169,7 @@ export function WorkspaceRouter() {
           </header>
         )}
 
+        <OfflineBanner />
         {error ? (
           <div className="banner banner--error" role="alert">
             {error}

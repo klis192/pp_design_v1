@@ -11,6 +11,7 @@ import {
 import { apiRequest, runtimeApiBase } from "../api/client";
 import { QueryClient } from "./query-client";
 import { connectRealtime } from "./connection";
+import { offlineStatus } from "../platform/offline-cache";
 const Context = createContext<QueryClient | null>(null);
 export function RealtimeProvider({ children }: { children: ReactNode }) {
   const [client] = useState(
@@ -34,6 +35,17 @@ export function useRealtimeSession(
   const client = useQueryClient(),
     onUnauthorized = useRef(unauthorized);
   onUnauthorized.current = unauthorized;
+  // Reads answered from saved data look fresh to the query cache; once the
+  // server answers again, reload everything that is on screen.
+  useEffect(() => {
+    if (!token) return;
+    let wasOffline = offlineStatus.get() !== null;
+    return offlineStatus.subscribe(() => {
+      const offline = offlineStatus.get() !== null;
+      if (wasOffline && !offline) client.invalidate(token);
+      wasOffline = offline;
+    });
+  }, [token, client]);
   useEffect(() => {
     client.clearExcept(token ?? null);
     if (!token) return;

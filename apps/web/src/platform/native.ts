@@ -1,4 +1,5 @@
 import { TOKEN_KEY } from "../shared/navigation";
+import { wipeSavedResponses } from "./offline-cache";
 
 // The Capacitor native runtime injects window.Capacitor before the page loads.
 // Reading it directly keeps @capacitor/* out of the browser bundle: plugins are
@@ -42,6 +43,7 @@ export function storeSessionToken(token: string) {
 }
 
 export function clearSessionToken() {
+  wipeSavedResponses();
   window.localStorage.removeItem(TOKEN_KEY);
   if (isNativeApp)
     void withPreferences((store) => store.remove({ key: TOKEN_KEY })).catch(

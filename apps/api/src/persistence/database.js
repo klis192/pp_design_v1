@@ -44,6 +44,39 @@ export async function openDatabase({ databaseUrl }) {
       );
       return rows[0] ? decodeRow("users", rows[0]) : null;
     },
+    // Idempotency rows live outside the domain model and are written with the
+    // request's own SQL client, so they commit or roll back with the command.
+    async findIdempotentResponse(scope, key) {
+      const client = context.getStore()?.client;
+      if (!client) throw new Error("Idempotency read outside request scope");
+      const { rows } = await client.query(
+        "SELECT request_hash, status, headers, body FROM warehouse.idempotency_keys WHERE scope=$1 AND key=$2 AND created_at > now() - interval '24 hours'",
+        [scope, key],
+      );
+      return rows[0] ?? null;
+    },
+    async saveIdempotentResponse({
+      scope,
+      key,
+      requestHash,
+      status,
+      headers,
+      body,
+    }) {
+      const client = context.getStore()?.client;
+      if (!client) throw new Error("Idempotency write outside request scope");
+      await client.query(
+        "INSERT INTO warehouse.idempotency_keys (scope, key, request_hash, status, headers, body) VALUES ($1,$2,$3,$4,$5,$6) ON CONFLICT (scope, key) DO UPDATE SET request_hash=EXCLUDED.request_hash, status=EXCLUDED.status, headers=EXCLUDED.headers, body=EXCLUDED.body, created_at=now()",
+        [scope, key, requestHash, status, headers, body],
+      );
+    },
+    async pruneIdempotentResponses() {
+      const client = context.getStore()?.client;
+      if (!client) throw new Error("Idempotency cleanup outside request scope");
+      await client.query(
+        "DELETE FROM warehouse.idempotency_keys WHERE created_at < now() - interval '24 hours'",
+      );
+    },
     afterCommit(fn) {
       const scope = context.getStore();
       if (!scope) throw new Error("Post-commit action outside a transaction");

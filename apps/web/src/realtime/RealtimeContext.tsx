@@ -12,6 +12,8 @@ import { apiRequest, runtimeApiBase } from "../api/client";
 import { QueryClient } from "./query-client";
 import { connectRealtime } from "./connection";
 import { offlineStatus } from "../platform/offline-cache";
+import { onOutboxSent } from "../platform/outbox";
+import { sendQueuedCommands } from "../api/client";
 const Context = createContext<QueryClient | null>(null);
 export function RealtimeProvider({ children }: { children: ReactNode }) {
   const [client] = useState(
@@ -40,11 +42,27 @@ export function useRealtimeSession(
   useEffect(() => {
     if (!token) return;
     let wasOffline = offlineStatus.get() !== null;
-    return offlineStatus.subscribe(() => {
+    const send = () => void sendQueuedCommands(token).catch(() => undefined);
+    const stopOffline = offlineStatus.subscribe(() => {
       const offline = offlineStatus.get() !== null;
-      if (wasOffline && !offline) client.invalidate(token);
+      if (wasOffline && !offline) {
+        client.invalidate(token);
+        send();
+      }
       wasOffline = offline;
     });
+    // Queued commands go out at start-up, when the network or the server
+    // comes back, and every 30 s while any are waiting.
+    const stopSent = onOutboxSent(() => client.invalidate(token));
+    const timer = setInterval(send, 30000);
+    window.addEventListener("online", send);
+    send();
+    return () => {
+      stopOffline();
+      stopSent();
+      clearInterval(timer);
+      window.removeEventListener("online", send);
+    };
   }, [token, client]);
   useEffect(() => {
     client.clearExcept(token ?? null);

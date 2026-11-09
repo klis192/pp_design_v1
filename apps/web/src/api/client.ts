@@ -7,6 +7,13 @@ import {
   readSavedResponse,
   saveResponse,
 } from "../platform/offline-cache";
+import {
+  QUEUED_MESSAGE,
+  enqueueCommand,
+  flushOutbox,
+  hasPendingCommands,
+  isQueueable,
+} from "../platform/outbox";
 export { ApiError } from "./read-errors";
 export const runtimeApiBase =
   import.meta.env.VITE_WAREHOUSE_API_BASE_URL ||
@@ -52,12 +59,34 @@ export async function apiRequest<T>(
     method?: string;
     body?: unknown;
     signal?: AbortSignal;
+    // Set by the offline queue when it resends a saved command.
+    idempotencyKey?: string;
+    fromOutbox?: boolean;
   } = {},
 ): Promise<T> {
   const method = options.method ?? "GET";
   const body =
     options.body === undefined ? undefined : JSON.stringify(options.body);
   const attempt = commandAttempt(method, path, body ?? "");
+  if (attempt && options.idempotencyKey) attempt.key = options.idempotencyKey;
+  const queue =
+    attempt && options.token && !options.fromOutbox
+      ? (reason: unknown, sendNow: boolean) =>
+          queueCommand(
+            { token: options.token!, method, path, body: options.body },
+            attempt.key,
+            reason,
+            sendNow,
+          )
+      : null;
+  // While earlier commands wait in the queue, a new one waits behind them so
+  // a "submit" can never overtake the "start" it follows.
+  if (
+    queue &&
+    isQueueable(method, path, options.body) &&
+    (await hasPendingCommands(options.token))
+  )
+    await queue(null, true);
   try {
     const response = await fetch(`${runtimeApiBase}${path}`, {
       method,
@@ -109,6 +138,15 @@ export async function apiRequest<T>(
       )
     )
       unsettledCommands.set(attempt.id, { key: attempt.key, at: Date.now() });
+    if (
+      queue &&
+      failure instanceof ApiError &&
+      ["NETWORK_ERROR", "REQUEST_TIMEOUT", "INVALID_RESPONSE"].includes(
+        failure.code,
+      ) &&
+      isQueueable(method, path, options.body)
+    )
+      await queue(failure, false);
     // In the mobile app an unreachable server falls back to the last saved
     // copy of a read. Server answers (4xx/5xx) and cancellations still throw.
     if (
@@ -127,4 +165,40 @@ export async function apiRequest<T>(
     }
     throw failure;
   }
+}
+
+// Saves the command for later and reports it as queued; if the phone cannot
+// store it, the original failure is reported instead.
+async function queueCommand(
+  command: { token: string; method: string; path: string; body: unknown },
+  key: string,
+  failure: unknown,
+  sendNow: boolean,
+): Promise<never> {
+  try {
+    await enqueueCommand({ ...command, key });
+  } catch {
+    throw (
+      failure ??
+      new ApiError(
+        "Не удалось сохранить действие на телефоне. Повторите попытку.",
+        0,
+        "QUEUE_UNAVAILABLE",
+      )
+    );
+  }
+  if (sendNow) void sendQueuedCommands(command.token);
+  throw new ApiError(QUEUED_MESSAGE, 0, "QUEUED_OFFLINE");
+}
+
+export function sendQueuedCommands(token: string) {
+  return flushOutbox(token, (entry, body) =>
+    apiRequest(entry.path, {
+      method: entry.method,
+      token,
+      body,
+      idempotencyKey: entry.key,
+      fromOutbox: true,
+    }),
+  );
 }

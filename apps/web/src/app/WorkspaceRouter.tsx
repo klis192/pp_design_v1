@@ -4,6 +4,9 @@ import { usePushNotifications } from "../platform/push";
 import { DocumentPanel } from "../features/leases/DocumentPanel";
 import { ManagerShell } from "../features/shell/ManagerShell";
 import { OfflineBanner } from "../features/shell/OfflineBanner";
+import { OutboxBanner } from "../features/shell/OutboxBanner";
+import { useSyncExternalStore } from "react";
+import { QUEUED_MESSAGE, outboxStatus, tokenOwner } from "../platform/outbox";
 import { Section } from "../features/shell/Section";
 import { Button, IconButton } from "../ui";
 import { NavigationIcon } from "../features/shell/NavigationIcon";
@@ -32,7 +35,16 @@ export function WorkspaceRouter() {
     notice,
     locale,
     openTicketDetail,
+    tickets,
   } = useWorkspaceContext();
+  const queued = useSyncExternalStore(outboxStatus.subscribe, outboxStatus.get);
+  // The "saved for later" message stays only while something is still waiting.
+  const waiting =
+    session &&
+    queued.some(
+      (entry) =>
+        entry.status === "pending" && entry.owner === tokenOwner(session.token),
+    );
   usePushNotifications(
     session && overview && isRoleAllowedInApp(session.user.role)
       ? session.token
@@ -178,7 +190,19 @@ export function WorkspaceRouter() {
         )}
 
         <OfflineBanner />
-        {error ? (
+        <OutboxBanner
+          token={session.token}
+          ticketNumber={(id) =>
+            tickets.find((ticket) => ticket.id === id)?.number
+          }
+        />
+        {error === QUEUED_MESSAGE ? (
+          waiting ? (
+            <div className="banner banner--notice" role="status">
+              {error}
+            </div>
+          ) : null
+        ) : error ? (
           <div className="banner banner--error" role="alert">
             {error}
           </div>

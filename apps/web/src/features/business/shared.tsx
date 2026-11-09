@@ -24,7 +24,10 @@ export function useResource<T>(token: string, path: string, initial: T) {
       setNotice(message);
       return true;
     } catch (e) {
-      setError((e as Error).message);
+      // Saved for sending later: not an error, but the change is not applied yet.
+      if ((e as { code?: string }).code === "QUEUED_OFFLINE")
+        setNotice((e as Error).message);
+      else setError((e as Error).message);
       return false;
     } finally {
       mutationPending.current = false;

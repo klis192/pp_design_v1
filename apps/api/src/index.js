@@ -11,6 +11,8 @@ import { createAgendaRoutes } from "./routes/agenda.js";
 import { createAuthRoutes } from "./routes/auth.js";
 import { createBillingRoutes } from "./routes/billing.js";
 import { createDashboardRoutes } from "./routes/dashboard.js";
+import { createPushRoutes } from "./routes/push.js";
+import { createPushService, readPushConfig } from "./services/push.js";
 import { createExportsRoutes } from "./routes/exports.js";
 import { createImportsRoutes } from "./routes/imports.js";
 import { createLeasesRoutes } from "./routes/leases.js";
@@ -238,7 +240,15 @@ const {
   getNotificationEmailForUser,
   dispatchNotification,
   notifyTicketEvent,
-} = createNotificationsService({ db, sendEmail });
+} = createNotificationsService({
+  db,
+  sendEmail,
+  push: createPushService({
+    config: readPushConfig(),
+    listDevices: (userIds) => db.listPushDevices(userIds),
+    deleteDevices: (tokens) => db.deletePushDevices(tokens),
+  }),
+});
 const {
   excelXmlEscape,
   excelSheetName,
@@ -405,6 +415,7 @@ const routes = [
     fileStorage,
     sanitizeFilename,
   }),
+  createPushRoutes({ db, requireAuth, ok }),
   createDashboardRoutes({
     requireAuth,
     ok,

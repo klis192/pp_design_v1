@@ -1,5 +1,6 @@
 import { LoginPage } from "../features/auth/LoginPage";
 import { isRoleAllowedInApp } from "../mobile-product";
+import { usePushNotifications } from "../platform/push";
 import { DocumentPanel } from "../features/leases/DocumentPanel";
 import { ManagerShell } from "../features/shell/ManagerShell";
 import { OfflineBanner } from "../features/shell/OfflineBanner";
@@ -30,7 +31,14 @@ export function WorkspaceRouter() {
     error,
     notice,
     locale,
+    openTicketDetail,
   } = useWorkspaceContext();
+  usePushNotifications(
+    session && overview && isRoleAllowedInApp(session.user.role)
+      ? session.token
+      : undefined,
+    openTicketDetail,
+  );
   if (bootstrapping) {
     return <main className="loading-shell">{t.loading}</main>;
   }

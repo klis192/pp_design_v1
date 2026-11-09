@@ -1,6 +1,7 @@
 import { type FormEvent } from "react";
 import { apiRequest } from "../../api/client";
 import { clearSessionToken } from "../../platform/native";
+import { disablePush } from "../../platform/push";
 import { type SessionUser } from "../../shared/types";
 import type { WorkspaceBase } from "../types";
 import type { useDataActions } from "./data";
@@ -347,6 +348,7 @@ export function useAuthActions(
   };
 
   const handleLogout = () => {
+    disablePush(session?.token);
     clearSessionToken();
     setSession(null);
     setOverview(null);

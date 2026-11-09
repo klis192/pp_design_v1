@@ -77,6 +77,36 @@ export async function openDatabase({ databaseUrl }) {
         "DELETE FROM warehouse.idempotency_keys WHERE created_at < now() - interval '24 hours'",
       );
     },
+    async savePushDevice({ token, userId, platform }) {
+      const client = context.getStore()?.client;
+      if (!client) throw new Error("Push device write outside request scope");
+      await client.query(
+        "INSERT INTO warehouse.push_devices (token, user_id, platform) VALUES ($1,$2,$3) ON CONFLICT (token) DO UPDATE SET user_id=EXCLUDED.user_id, platform=EXCLUDED.platform, updated_at=now()",
+        [token, userId, platform],
+      );
+    },
+    async removePushDevice({ token, userId }) {
+      const client = context.getStore()?.client;
+      if (!client) throw new Error("Push device write outside request scope");
+      await client.query(
+        "DELETE FROM warehouse.push_devices WHERE token=$1 AND user_id=$2",
+        [token, userId],
+      );
+    },
+    // Used by the push sender after commit, outside any request scope.
+    async listPushDevices(userIds) {
+      const { rows } = await pool.query(
+        "SELECT d.token, d.platform FROM warehouse.push_devices d JOIN warehouse.users u ON u.id=d.user_id WHERE d.user_id = ANY($1) AND u.is_active=1",
+        [userIds],
+      );
+      return rows;
+    },
+    async deletePushDevices(tokens) {
+      await pool.query(
+        "DELETE FROM warehouse.push_devices WHERE token = ANY($1)",
+        [tokens],
+      );
+    },
     afterCommit(fn) {
       const scope = context.getStore();
       if (!scope) throw new Error("Post-commit action outside a transaction");

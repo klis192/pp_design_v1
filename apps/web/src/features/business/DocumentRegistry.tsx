@@ -170,6 +170,7 @@ export function DocumentRegistry({
             optional: true,
           },
         ]}
+        filtersActive={Boolean(category)}
         filters={
           <label>
             Категория

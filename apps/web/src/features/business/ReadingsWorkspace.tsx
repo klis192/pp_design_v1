@@ -305,6 +305,7 @@ export function ReadingsWorkspace({
                   optional: true,
                 },
               ]}
+              filtersActive={Boolean(status)}
               filters={
                 <label>
                   Решение

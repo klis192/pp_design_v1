@@ -103,15 +103,21 @@ export function WorkspaceRouter() {
     >
       <header className="mobile-app-bar">
         <h1>{sectionTitle}</h1>
+        {/* Sections are in the bottom bar (or there is only one), so the
+            header button opens the profile with sign-out. */}
         <IconButton
-          label={mobileNavOpen ? "Закрыть меню" : "Меню"}
+          label={mobileNavOpen ? "Закрыть профиль" : "Профиль"}
           ref={mobileMenuButton}
-          className="mobile-menu-button"
+          className="mobile-menu-button mobile-account-button"
           aria-controls="workspace-navigation"
           aria-expanded={mobileNavOpen}
           onClick={() => setMobileNavOpen(!mobileNavOpen)}
         >
-          <NavigationIcon name={mobileNavOpen ? "close" : "menu"} />
+          {mobileNavOpen ? (
+            <NavigationIcon name="close" />
+          ) : (
+            <span className="personal-account__avatar">{initials}</span>
+          )}
         </IconButton>
       </header>
       {mobileNavOpen && (
@@ -180,6 +186,10 @@ export function WorkspaceRouter() {
             <NavigationIcon name="logout" />
           </IconButton>
         </div>
+        <Button className="personal-signout" onClick={handleLogout}>
+          <NavigationIcon name="logout" />
+          {locale === "ru" ? "Выйти из аккаунта" : "Sign out"}
+        </Button>
       </aside>
 
       <section className="workspace-main" inert={mobileNavOpen || undefined}>

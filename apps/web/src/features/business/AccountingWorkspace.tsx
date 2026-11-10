@@ -247,6 +247,7 @@ export function AccountingWorkspace({
               optional: true,
             },
           ]}
+          filtersActive={Boolean(sourceFilter || status)}
           filters={
             <>
               {sourceFilters()}

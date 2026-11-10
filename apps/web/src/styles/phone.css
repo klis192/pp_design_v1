@@ -93,3 +93,55 @@
     box-shadow: none;
   }
 }
+
+/* Client and worker cabinets on a phone or tablet: sections live in the
+   bottom bar (client) or there is only one (worker), so the header button is
+   the profile — initials instead of a menu icon — and the panel shows the
+   account with sign-out instead of repeating the sections. */
+@media (max-width: 1080px) {
+  .personal-shell .mobile-account-button .personal-account__avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+  .personal-shell .mobile-account-button:not([aria-expanded="true"]) {
+    border-color: transparent;
+    background: transparent;
+  }
+  .personal-shell > .sidebar .sidebar-nav {
+    display: none;
+  }
+  .personal-shell > .sidebar .personal-account {
+    margin-top: 0;
+    padding: 0 0 16px;
+    border-top: 0;
+    border-bottom: 1px solid var(--ui-border);
+  }
+}
+
+@media (max-width: 760px) {
+  /* Sending a payment receipt is the client's main action on this tab. */
+  .personal-rental-actions > .ui-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Sign-out is spelled out in the profile panel on small screens; the desktop
+   sidebar keeps the icon next to the name. */
+.personal-shell .personal-signout {
+  display: none;
+}
+@media (max-width: 1080px) {
+  .personal-shell > .sidebar .personal-account > .ui-icon-button {
+    display: none;
+  }
+  .personal-shell > .sidebar .personal-account {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+  .personal-shell .personal-signout {
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
+  }
+}

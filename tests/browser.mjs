@@ -933,7 +933,9 @@ try {
     ),
     "Tenant fits 320px",
   );
-  await tenantPage.getByRole("button", { name: "Меню", exact: true }).click();
+  await tenantPage
+    .getByRole("button", { name: "Профиль", exact: true })
+    .click();
   await tenantPage.keyboard.press("Escape");
   const workerPage = await browser.newPage({
     viewport: { width: 320, height: 844 },
@@ -944,7 +946,9 @@ try {
     createToken({ sub: f.worker.id, role: "worker" }, secret),
   );
   await workerPage.goto("http://127.0.0.1:5173");
-  await workerPage.getByRole("button", { name: "Меню", exact: true }).waitFor();
+  await workerPage
+    .getByRole("button", { name: "Профиль", exact: true })
+    .waitFor();
   await workerPage
     .getByRole("button", {
       name: /^(?:Показать|Скрыть) Передать показание$/,

@@ -31,6 +31,18 @@ npm run mobile:ios            # Xcode-проект в .local/mobile/app/ios
 
 Отладочный APK: `.local/mobile/app/android/app/build/outputs/apk/debug/app-debug.apk`. Кэш Gradle по умолчанию: `.local/mobile/gradle-cache`. Каталог `.local/` не попадает в Git.
 
+### Проверка на эмуляторе Android
+
+Для эмулятора приложение можно собрать на локальный API по обычному HTTP: эмулятор видит компьютер по адресу `10.0.2.2`. Такая сборка открывается с `http://localhost`, разрешает незашифрованные запросы и помечается `devHttp` в `build-manifest.json`; `android-release.mjs` её не подписывает.
+
+```bash
+WAREHOUSE_MOBILE_DEV_HTTP=1 VITE_WAREHOUSE_API_BASE_URL=http://10.0.2.2:3001 npm run mobile:android
+# репозиторий в WSL: скопировать проект на диск Windows для Android Studio
+node apps/mobile/scripts/export-android.mjs /mnt/c/Users/<you>/wirehouse-mobile
+```
+
+В Android Studio: **File → Open** → `C:\Users\<you>\wirehouse-mobile\.local\mobile\app\android`, дождаться Gradle Sync, выбрать эмулятор и нажать **Run**. Android Studio использует свой JDK и SDK, отдельная установка не нужна. API в WSL на `127.0.0.1:3001` доступен эмулятору через пересылку портов WSL. После изменений в коде повторить обе команды и снова нажать Run.
+
 ### Release-подпись Android
 
 ```powershell

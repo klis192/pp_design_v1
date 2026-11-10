@@ -15,6 +15,14 @@ execFileSync(
   [path.join(root, "scripts/check-release-env.mjs"), "android"],
   { stdio: "inherit" },
 );
+const manifestFile = path.join(root, ".local/mobile/app/build-manifest.json");
+const prepared = fs.existsSync(manifestFile)
+  ? JSON.parse(fs.readFileSync(manifestFile, "utf8"))
+  : {};
+if (prepared.devHttp || !String(prepared.apiOrigin ?? "").startsWith("https:"))
+  throw Error(
+    "This project was prepared for development (plain HTTP API). Run prepare.mjs android with the HTTPS CRM origin and without WAREHOUSE_MOBILE_DEV_HTTP first.",
+  );
 const appGradle = path.join(androidProject, "app/build.gradle");
 if (!fs.existsSync(appGradle))
   throw Error("Run apps/mobile/scripts/prepare.mjs android first");

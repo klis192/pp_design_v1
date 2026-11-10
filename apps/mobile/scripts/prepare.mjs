@@ -44,15 +44,22 @@ const pushPlatforms = [
   ...(process.env.WAREHOUSE_IOS_PUSH === "1" ? ["ios"] : []),
 ];
 const api = new URL(process.env.VITE_WAREHOUSE_API_BASE_URL ?? "");
+// Development only: an emulator talks to a local API over plain HTTP
+// (http://10.0.2.2:3001 is the computer running the emulator). The app is then
+// served from http://localhost with cleartext traffic allowed, and
+// android-release.mjs refuses to sign such a build.
+const devHttp = process.env.WAREHOUSE_MOBILE_DEV_HTTP === "1";
 if (
-  api.protocol !== "https:" ||
+  (api.protocol !== "https:" && !(devHttp && api.protocol === "http:")) ||
   api.username ||
   api.password ||
   api.search ||
   api.hash ||
   api.pathname !== "/"
 )
-  throw Error("Set VITE_WAREHOUSE_API_BASE_URL to the HTTPS CRM origin");
+  throw Error(
+    "Set VITE_WAREHOUSE_API_BASE_URL to the HTTPS CRM origin (plain HTTP only with WAREHOUSE_MOBILE_DEV_HTTP=1)",
+  );
 const target = path.join(root, ".local/mobile/app");
 const { version, dependencies } = JSON.parse(
   fs.readFileSync(path.join(root, "apps/mobile/package.json"), "utf8"),
@@ -81,6 +88,9 @@ fs.writeFileSync(
       // Android 15 draws apps under the system bars; keep the WebView inside
       // them. iOS draws under the notch and styles/mobile-app.css pads it.
       android: { adjustMarginsForEdgeToEdge: "auto" },
+      ...(devHttp
+        ? { server: { androidScheme: "http", cleartext: true } }
+        : {}),
       // iOS shows a notification banner even while the app is open.
       plugins: {
         PushNotifications: { presentationOptions: ["badge", "sound", "alert"] },
@@ -259,6 +269,7 @@ fs.writeFileSync(
       appId,
       roles,
       push: pushPlatforms,
+      devHttp,
       apiOrigin: api.origin,
       version,
       builtAt: new Date().toISOString(),

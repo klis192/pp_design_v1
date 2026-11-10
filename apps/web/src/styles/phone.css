@@ -1,0 +1,95 @@
+/* Phone width (the mobile app and the web on a phone). One set of rules for
+   the shared building blocks instead of per-screen patches:
+   - workspace tabs stay on one line and scroll sideways (screens have 4–8
+     tabs; wrapping them into two or three rows looked broken);
+   - the search field takes the full row, with the filter button inside it;
+   - list registers are not wrapped in a second card;
+   - sign-in is a full screen, not a floating card. */
+@media (max-width: 760px) {
+  .ui-workspace-tabs {
+    flex-wrap: nowrap;
+    column-gap: 20px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ui-workspace-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .ui-workspace-tab {
+    flex: none;
+    white-space: nowrap;
+  }
+  /* The scroll container clips anything below its box. */
+  .ui-workspace-tab[aria-selected="true"]::after {
+    inset: auto 0 0;
+  }
+
+  /* The visible "Поиск" label repeated the placeholder next to the icon. */
+  .filter-search > label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .filter-bar-main:has(> .filter-bar-controls > .filter-search:first-child) {
+    position: relative;
+    display: block;
+  }
+  .filter-bar-main:has(> .filter-bar-controls > .filter-search:first-child)
+    > .filter-bar-controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+  .filter-bar-main:has(> .filter-bar-controls > .filter-search:first-child)
+    > .filter-bar-actions {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+  }
+  .filter-bar-main:has(> .filter-bar-actions)
+    > .filter-bar-controls
+    > .filter-search:first-child {
+    padding-inline-end: 52px;
+  }
+  /* An odd filter left alone on its row takes the whole row. */
+  .filter-bar-controls:has(> .filter-search:first-child)
+    > :nth-child(even):last-child,
+  .filter-bar-controls:not(:has(> .filter-search))
+    > :nth-child(odd):last-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Ticket rows are cards already; the surrounding card only ate width. */
+  .service-workspace .workspace-surface.service-list-panel,
+  .service-workspace .workspace-surface.worker-meters {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  /* List and card are separate screens here: mark the last opened task
+     instead of painting it as selected. */
+  .service-list-panel .register-table tbody tr.mvp-row-active {
+    background: var(--surface);
+    box-shadow: inset 3px 0 0 var(--ui-accent);
+  }
+
+  .auth-shell--mvp {
+    place-items: start stretch;
+    padding: 0;
+    background: var(--surface);
+  }
+  .auth-shell--mvp .login-card {
+    width: 100%;
+    min-height: 100dvh;
+    padding: calc(32px + env(safe-area-inset-top)) 20px 24px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}

@@ -54,6 +54,19 @@ $ADB install -r 'C:\Users\<you>\wirehouse-mobile\.local\mobile\app\android\app\b
 
 `JAVA_HOME` — JDK, который выбран в студии (Settings → Build Tools → Gradle → Gradle JDK); JDK 25 из комплекта студии Gradle 8.11 не запускает, системный JDK 17 не компилирует Capacitor 7. Режим полета для проверки очереди: `$ADB shell cmd connectivity airplane-mode enable|disable`.
 
+### Проверка на своем телефоне по USB
+
+Без сервера с этой веткой телефон можно подключить к локальному API кабелем. Включить на телефоне «Для разработчиков» → «Отладка по USB», подключить кабель и разрешить отладку.
+
+```bash
+WAREHOUSE_MOBILE_DEV_HTTP=1 VITE_WAREHOUSE_API_BASE_URL=http://127.0.0.1:3001 npm run mobile:android
+# собрать APK, как выше (Android Studio или gradlew.bat assembleDebug)
+adb -s <serial> reverse tcp:3001 tcp:3001   # 127.0.0.1:3001 на телефоне → API на компьютере
+adb -s <serial> install -r app-debug.apk
+```
+
+Адрес `127.0.0.1`, а не `localhost`: на `localhost` приложение раздает собственные файлы. Проброс держится, пока подключен кабель; после переподключения команду `adb reverse` нужно повторить.
+
 ### Release-подпись Android
 
 ```powershell

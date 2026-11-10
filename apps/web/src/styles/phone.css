@@ -79,6 +79,16 @@
     box-shadow: inset 3px 0 0 var(--ui-accent);
   }
 
+  /* Chat dialogs: rows inside the white list card, not grey strips. */
+  .personal-chat-list .stack-list > .list-row {
+    background: transparent;
+  }
+
+  /* The task card header drew its own bottom line right under the tabs'. */
+  .mvp-page.ticket-record .ticket-record-header {
+    border-bottom: 0;
+  }
+
   .auth-shell--mvp {
     place-items: start stretch;
     padding: 0;
@@ -91,6 +101,16 @@
     border: 0;
     border-radius: 0;
     box-shadow: none;
+  }
+  /* Text links on sign-in line up with the fields and the text around them. */
+  .auth-shell--mvp .auth-form > .text-button {
+    justify-self: start;
+    padding-inline: 0;
+    font-size: 14px;
+  }
+  .auth-shell--mvp .auth-connect-link .text-button {
+    padding-inline: 0;
+    font-size: 13px;
   }
 }
 

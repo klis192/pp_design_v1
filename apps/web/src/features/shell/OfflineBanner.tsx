@@ -12,7 +12,8 @@ const savedAtLabel = (savedAt: number) => {
     : `${saved.toLocaleDateString("ru-RU", { day: "numeric", month: "short" })} в ${time}`;
 };
 
-// Shown in the mobile app while reads are answered from saved data.
+// Shown in the mobile app while reads are answered from saved data. The
+// commands named here are the ones platform/outbox.ts queues.
 export function OfflineBanner() {
   const offlineSince = useSyncExternalStore(
     offlineStatus.subscribe,
@@ -22,8 +23,9 @@ export function OfflineBanner() {
   return (
     <div className="banner banner--offline" role="status">
       <strong>Нет связи с сервером.</strong> Показаны данные, сохранённые{" "}
-      {savedAtLabel(offlineSince)}. Изменения отправить не получится, пока связь
-      не вернётся.
+      {savedAtLabel(offlineSince)}. Комментарии, фото и действия по заявкам
+      сохранятся на телефоне и отправятся сами, остальные изменения — только при
+      связи.
     </div>
   );
 }

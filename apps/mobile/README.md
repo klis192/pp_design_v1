@@ -41,7 +41,18 @@ WAREHOUSE_MOBILE_DEV_HTTP=1 VITE_WAREHOUSE_API_BASE_URL=http://10.0.2.2:3001 npm
 node apps/mobile/scripts/export-android.mjs /mnt/c/Users/<you>/wirehouse-mobile
 ```
 
-В Android Studio: **File → Open** → `C:\Users\<you>\wirehouse-mobile\.local\mobile\app\android`, дождаться Gradle Sync, выбрать эмулятор и нажать **Run**. Android Studio использует свой JDK и SDK, отдельная установка не нужна. API в WSL на `127.0.0.1:3001` доступен эмулятору через пересылку портов WSL. После изменений в коде повторить обе команды и снова нажать Run.
+В Android Studio: **File → Open** → `C:\Users\<you>\wirehouse-mobile\.local\mobile\app\android`, дождаться Gradle Sync, выбрать эмулятор и нажать **Run**. Android Studio использует свой JDK и SDK, отдельная установка не нужна. API в WSL на `127.0.0.1:3001` доступен эмулятору через пересылку портов WSL. После изменений в коде повторить обе команды и снова нажать Run. Повторный экспорт сохраняет `local.properties`, `.idea` и кэши сборки, поэтому студия не синхронизирует проект заново.
+
+Без Android Studio (после первого Gradle Sync, когда Gradle и JDK уже скачаны) APK собирается и ставится из WSL:
+
+```bash
+cd /mnt/c/Users/<you>/wirehouse-mobile/.local/mobile/app/android
+JAVA_HOME='C:\Users\<you>\.jdks\jbr-21.0.11' WSLENV=JAVA_HOME/w cmd.exe /c gradlew.bat assembleDebug
+ADB=/mnt/c/Users/<you>/AppData/Local/Android/Sdk/platform-tools/adb.exe
+$ADB install -r 'C:\Users\<you>\wirehouse-mobile\.local\mobile\app\android\app\build\outputs\apk\debug\app-debug.apk'
+```
+
+`JAVA_HOME` — JDK, который выбран в студии (Settings → Build Tools → Gradle → Gradle JDK); JDK 25 из комплекта студии Gradle 8.11 не запускает, системный JDK 17 не компилирует Capacitor 7. Режим полета для проверки очереди: `$ADB shell cmd connectivity airplane-mode enable|disable`.
 
 ### Release-подпись Android
 
@@ -71,6 +82,8 @@ npm run android:release       # .local/mobile/release/sklad-kontur-<версия
 | Скачивание файлов | Документы, выписки, фото и выгрузки сохраняются во временный кэш и открываются системным меню «Поделиться». WebView не поддерживает `<a download>` и blob-ссылки. | `native.ts` |
 | Сохранение входа | Токен дублируется в `@capacitor/preferences` и восстанавливается при запуске, если iOS очистил хранилище WebView. | `native.ts` |
 | Вырез экрана | iOS: `viewport-fit=cover`, верхние панели смещаются на `env(safe-area-inset-top)`. Android 15: `adjustMarginsForEdgeToEdge: auto`. | `styles/mobile-app.css` |
+| Камера | Поля фото работ и показаний (`capture="environment"`) в приложении принимают `image/*`: только так Capacitor на Android открывает камеру, а не галерею. Манифест объявляет `<queries>` для `IMAGE_CAPTURE`, иначе Android 11+ скрывает от приложения программу камеры. | `photo.ts`, `scripts/prepare.mjs` |
+| Системные полосы | Тема Android всегда светлая (веб-интерфейс без темной темы): темные значки строки состояния и навигации на белом фоне. | `scripts/prepare.mjs` |
 | Сжатие фото | JPEG/PNG/WebP больше 600 КБ уменьшаются до 2048 px и пережимаются в JPEG, чтобы укладываться в 30 с на слабой связи. Документы и маленькие файлы не меняются. | `photo.ts` |
 | Просмотр без сети | Успешные GET-ответы сохраняются в IndexedDB с привязкой к сессии (до 300). Без связи показываются сохраненные данные и плашка «Нет связи с сервером… данные, сохранённые …». При возврате связи экран перезагружается, при выходе сохраненное удаляется. Файлы без сети не открываются. | `offline-cache.ts` |
 | Защита от повторов | Каждая команда несет `Idempotency-Key`. Если ответ потерялся, повторное нажатие с теми же данными получает результат первой попытки. | `api/client.ts` |

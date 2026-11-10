@@ -13,6 +13,8 @@ if (!process.argv[2] || target === root)
 if (!fs.existsSync(path.join(androidProject, "app/build.gradle")))
   throw Error("Run apps/mobile/scripts/prepare.mjs android first");
 
+// Android Studio's own files stay in the target between exports: the SDK path
+// (local.properties), project settings and build caches.
 const skip = new Set(["build", ".gradle", ".idea", "local.properties"]);
 const copy = (from, to) =>
   fs.cpSync(from, to, {
@@ -21,7 +23,10 @@ const copy = (from, to) =>
   });
 
 const androidTarget = path.join(target, ".local/mobile/app/android");
-fs.rmSync(androidTarget, { recursive: true, force: true });
+fs.mkdirSync(androidTarget, { recursive: true });
+for (const name of fs.readdirSync(androidTarget))
+  if (!skip.has(name))
+    fs.rmSync(path.join(androidTarget, name), { recursive: true, force: true });
 copy(androidProject, androidTarget);
 const plugins = Object.keys(
   JSON.parse(

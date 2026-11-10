@@ -152,6 +152,57 @@ nativeVersion =
           `MARKETING_VERSION = ${version};`,
         );
 fs.writeFileSync(nativeVersionFile, nativeVersion);
+if (platform === "android") {
+  // The web interface has no dark theme. Capacitor's DayNight template drew
+  // white status bar icons over the light strip above the page (unreadable on
+  // the emulator) and would turn that strip dark in system dark mode. Keep the
+  // activity light with dark icons; the strip matches the white header.
+  const stylesFile = path.join(
+    target,
+    "android/app/src/main/res/values/styles.xml",
+  );
+  let styles = fs.readFileSync(stylesFile, "utf8");
+  styles = styles.replace(
+    'parent="Theme.AppCompat.DayNight.NoActionBar"',
+    'parent="Theme.AppCompat.Light.NoActionBar"',
+  );
+  if (!styles.includes("windowLightStatusBar"))
+    styles = styles
+      .replace(
+        "<resources>",
+        '<resources xmlns:tools="http://schemas.android.com/tools">',
+      )
+      .replace(
+        /(<style name="AppTheme\.NoActionBar"[^>]*>)/,
+        `$1
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>`,
+      );
+  fs.writeFileSync(stylesFile, styles);
+  // Android 11+ hides other apps unless they are declared. Without this the
+  // WebView cannot find the camera app for <input capture> and shows the
+  // gallery picker instead.
+  const manifestFile = path.join(
+    target,
+    "android/app/src/main/AndroidManifest.xml",
+  );
+  const manifest = fs.readFileSync(manifestFile, "utf8");
+  if (!manifest.includes("android.media.action.IMAGE_CAPTURE"))
+    fs.writeFileSync(
+      manifestFile,
+      manifest.replace(
+        /<\/manifest>\s*$/,
+        `    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
+</manifest>
+`,
+      ),
+    );
+}
 if (platform === "ios") {
   // iOS terminates an app that opens the camera without a usage description.
   const plistFile = path.join(target, "ios/App/App/Info.plist");

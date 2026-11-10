@@ -378,6 +378,10 @@ export function useTicketsActions(
         setTicketComments(refreshedComments.items);
       });
     } catch (caughtError) {
+      // Queued offline: the text is saved on the phone, so clear the field;
+      // a second tap would otherwise queue or send the same comment again.
+      if ((caughtError as { code?: string }).code === "QUEUED_OFFLINE")
+        setCommentForm({ content: "" });
       setError(
         caughtError instanceof Error
           ? caughtError.message

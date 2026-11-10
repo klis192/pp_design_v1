@@ -1,5 +1,12 @@
 import { isMobileApp } from "../mobile-product";
 
+// Capacitor's Android WebView opens the camera for a capture input only when
+// `accept` is exactly "image/*"; a list of formats falls back to the gallery
+// picker, so the worker could not take a photo. Camera photos are JPEG, which
+// the server accepts. Browser builds keep the exact list.
+export const cameraAccept = (accept: string) =>
+  isMobileApp ? "image/*" : accept;
+
 const maxSide = 2048;
 const jpegQuality = 0.82;
 const leaveBelowBytes = 600 * 1024;

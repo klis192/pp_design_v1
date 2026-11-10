@@ -4,6 +4,7 @@ import { WorkspaceTabs } from "../../ui/WorkspaceTabs";
 import { useSurfaceView } from "../operations/useSurfaceView";
 import { Fragment, useEffect, useRef, useState, type FormEvent } from "react";
 import "./readings-photo.css";
+import { cameraAccept } from "../../platform/photo";
 import type {
   ReadingPeriod,
   ReadingSubmission,
@@ -79,7 +80,7 @@ function ReadingPhotoField({ required }: { required: boolean }) {
             name="photo"
             type="file"
             required={required}
-            accept="image/jpeg,image/png,image/webp"
+            accept={cameraAccept("image/jpeg,image/png,image/webp")}
             capture="environment"
             onChange={(event) =>
               setName(event.currentTarget.files?.[0]?.name ?? "")
